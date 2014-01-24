@@ -13,8 +13,6 @@
 /* Begin PBXFileReference section */
 		23206B921892A55E00FD142D /* Smoothed Particle Hydrodynamics in Zero Gravity */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "Smoothed Particle Hydrodynamics in Zero Gravity"; sourceTree = BUILT_PRODUCTS_DIR; };
 		239849E61892A5E100EB2E65 /* cute_image.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = cute_image.jpg; sourceTree = "<group>"; };
-		239849E71892A5E100EB2E65 /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon.png; sourceTree = "<group>"; };
-		239849E81892A5E100EB2E65 /* nice_music.ogg */ = {isa = PBXFileReference; lastKnownFileType = file; path = nice_music.ogg; sourceTree = "<group>"; };
 		239849E91892A5E100EB2E65 /* sansation.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = sansation.ttf; sourceTree = "<group>"; };
 		23CFB2BD1892A63E00C8D5DF /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
@@ -59,8 +57,6 @@
 			isa = PBXGroup;
 			children = (
 				239849E61892A5E100EB2E65 /* cute_image.jpg */,
-				239849E71892A5E100EB2E65 /* icon.png */,
-				239849E81892A5E100EB2E65 /* nice_music.ogg */,
 				239849E91892A5E100EB2E65 /* sansation.ttf */,
 			);
 			path = Include;
