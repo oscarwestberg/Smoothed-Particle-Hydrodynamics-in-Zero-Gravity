@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		23CFB2BE1892A63E00C8D5DF /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23CFB2BD1892A63E00C8D5DF /* main.cpp */; };
+		23CFB2C11892AC5800C8D5DF /* Game.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23CFB2BF1892AC5800C8D5DF /* Game.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -15,6 +16,8 @@
 		239849E61892A5E100EB2E65 /* cute_image.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = cute_image.jpg; sourceTree = "<group>"; };
 		239849E91892A5E100EB2E65 /* sansation.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = sansation.ttf; sourceTree = "<group>"; };
 		23CFB2BD1892A63E00C8D5DF /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = SOURCE_ROOT; };
+		23CFB2BF1892AC5800C8D5DF /* Game.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Game.cpp; sourceTree = SOURCE_ROOT; };
+		23CFB2C01892AC5800C8D5DF /* Game.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Game.h; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -48,6 +51,8 @@
 			isa = PBXGroup;
 			children = (
 				23CFB2BD1892A63E00C8D5DF /* main.cpp */,
+				23CFB2BF1892AC5800C8D5DF /* Game.cpp */,
+				23CFB2C01892AC5800C8D5DF /* Game.h */,
 				239849E51892A5E100EB2E65 /* Include */,
 			);
 			path = "Smoothed Particle Hydrodynamics in Zero Gravity";
@@ -113,6 +118,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				23CFB2BE1892A63E00C8D5DF /* main.cpp in Sources */,
+				23CFB2C11892AC5800C8D5DF /* Game.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
