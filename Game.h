@@ -9,8 +9,16 @@
 #ifndef __Smoothed_Particle_Hydrodynamics_in_Zero_Gravity__Game__
 #define __Smoothed_Particle_Hydrodynamics_in_Zero_Gravity__Game__
 
-#include <iostream>
+// Link statically with GLEW
+#define GLEW_STATIC
+
+#include <GL/glew.h>
 #include <SFML/Graphics.hpp>
+//#include <OpenGL/gl.h>
+//#include <OpenGL/glu.h>
+#include <iostream>
+#include <string>
+
 
 class Game
 {
@@ -18,6 +26,7 @@ public:Game();
 	void run();
     
 private:
+    void initOpenGL();
 	void update();
 	void render();
     void checkEvents();

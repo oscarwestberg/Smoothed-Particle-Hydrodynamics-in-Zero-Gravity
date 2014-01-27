@@ -7,17 +7,24 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		23C3D22A1896913B00639110 /* libGLEW.1.10.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 23C3D22818968F8A00639110 /* libGLEW.1.10.0.dylib */; };
 		23CFB2BE1892A63E00C8D5DF /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23CFB2BD1892A63E00C8D5DF /* main.cpp */; };
 		23CFB2C11892AC5800C8D5DF /* Game.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23CFB2BF1892AC5800C8D5DF /* Game.cpp */; };
+		23DD06131892AFAB00F8C728 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23DD06121892AFAB00F8C728 /* OpenGL.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		23206B921892A55E00FD142D /* Smoothed Particle Hydrodynamics in Zero Gravity */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "Smoothed Particle Hydrodynamics in Zero Gravity"; sourceTree = BUILT_PRODUCTS_DIR; };
+		236B73521892B448002D62E0 /* libGLEW.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libGLEW.a; path = ../../../../../usr/lib/libGLEW.a; sourceTree = "<group>"; };
 		239849E61892A5E100EB2E65 /* cute_image.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = cute_image.jpg; sourceTree = "<group>"; };
 		239849E91892A5E100EB2E65 /* sansation.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = sansation.ttf; sourceTree = "<group>"; };
+		23C3D226189686BD00639110 /* vertexshader.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = vertexshader.txt; sourceTree = SOURCE_ROOT; };
+		23C3D2271896878800639110 /* fragmentshader.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = fragmentshader.txt; sourceTree = SOURCE_ROOT; };
+		23C3D22818968F8A00639110 /* libGLEW.1.10.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libGLEW.1.10.0.dylib; path = ../../../../../usr/lib/libGLEW.1.10.0.dylib; sourceTree = "<group>"; };
 		23CFB2BD1892A63E00C8D5DF /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = SOURCE_ROOT; };
 		23CFB2BF1892AC5800C8D5DF /* Game.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Game.cpp; sourceTree = SOURCE_ROOT; };
 		23CFB2C01892AC5800C8D5DF /* Game.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Game.h; sourceTree = SOURCE_ROOT; };
+		23DD06121892AFAB00F8C728 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -25,6 +32,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				23C3D22A1896913B00639110 /* libGLEW.1.10.0.dylib in Frameworks */,
+				23DD06131892AFAB00F8C728 /* OpenGL.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -34,6 +43,9 @@
 		23206B8A1892A55E00FD142D = {
 			isa = PBXGroup;
 			children = (
+				23C3D22818968F8A00639110 /* libGLEW.1.10.0.dylib */,
+				236B73521892B448002D62E0 /* libGLEW.a */,
+				23DD06121892AFAB00F8C728 /* OpenGL.framework */,
 				23206B941892A55E00FD142D /* Smoothed Particle Hydrodynamics in Zero Gravity */,
 				23206B931892A55E00FD142D /* Products */,
 			);
@@ -54,6 +66,7 @@
 				23CFB2BF1892AC5800C8D5DF /* Game.cpp */,
 				23CFB2C01892AC5800C8D5DF /* Game.h */,
 				239849E51892A5E100EB2E65 /* Include */,
+				23C3D225189685F900639110 /* Shaders */,
 			);
 			path = "Smoothed Particle Hydrodynamics in Zero Gravity";
 			sourceTree = "<group>";
@@ -66,6 +79,15 @@
 			);
 			path = Include;
 			sourceTree = SOURCE_ROOT;
+		};
+		23C3D225189685F900639110 /* Shaders */ = {
+			isa = PBXGroup;
+			children = (
+				23C3D226189686BD00639110 /* vertexshader.txt */,
+				23C3D2271896878800639110 /* fragmentshader.txt */,
+			);
+			name = Shaders;
+			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
@@ -232,14 +254,36 @@
 		23206B9F1892A55E00FD142D /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"$(SFML_SYSTEM)",
+					"$(SFML_WINDOW)",
+					"$(SFML_GRAPHICS)",
+					"$(SFML_AUDIO)",
+					"$(SFML_NETWORK)",
+					"$(OPENGL)",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				VALID_ARCHS = "x86_64 i386";
 			};
 			name = Debug;
 		};
 		23206BA01892A55E00FD142D /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"$(SFML_SYSTEM)",
+					"$(SFML_WINDOW)",
+					"$(SFML_GRAPHICS)",
+					"$(SFML_AUDIO)",
+					"$(SFML_NETWORK)",
+					"$(OPENGL)",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				VALID_ARCHS = "x86_64 i386";
 			};
 			name = Release;
 		};
