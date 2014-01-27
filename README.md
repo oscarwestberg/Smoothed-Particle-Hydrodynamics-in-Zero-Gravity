@@ -1,9 +1,6 @@
 Smoothed-Particle-Hydrodynamics-in-Zero-Gravity
 ===============================================
 
-
-antos branch
-
 Project in the course TNM085
 
 Collaborators:
