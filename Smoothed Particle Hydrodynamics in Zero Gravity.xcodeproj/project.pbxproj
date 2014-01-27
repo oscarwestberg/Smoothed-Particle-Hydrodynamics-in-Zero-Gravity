@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		23C3D22A1896913B00639110 /* libGLEW.1.10.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 23C3D22818968F8A00639110 /* libGLEW.1.10.0.dylib */; };
 		23CFB2BE1892A63E00C8D5DF /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23CFB2BD1892A63E00C8D5DF /* main.cpp */; };
-		23CFB2C11892AC5800C8D5DF /* Game.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23CFB2BF1892AC5800C8D5DF /* Game.cpp */; };
 		23DD06131892AFAB00F8C728 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23DD06121892AFAB00F8C728 /* OpenGL.framework */; };
 /* End PBXBuildFile section */
 
@@ -22,8 +21,6 @@
 		23C3D2271896878800639110 /* fragmentshader.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = fragmentshader.txt; sourceTree = SOURCE_ROOT; };
 		23C3D22818968F8A00639110 /* libGLEW.1.10.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libGLEW.1.10.0.dylib; path = ../../../../../usr/lib/libGLEW.1.10.0.dylib; sourceTree = "<group>"; };
 		23CFB2BD1892A63E00C8D5DF /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = SOURCE_ROOT; };
-		23CFB2BF1892AC5800C8D5DF /* Game.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Game.cpp; sourceTree = SOURCE_ROOT; };
-		23CFB2C01892AC5800C8D5DF /* Game.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Game.h; sourceTree = SOURCE_ROOT; };
 		23DD06121892AFAB00F8C728 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -63,8 +60,6 @@
 			isa = PBXGroup;
 			children = (
 				23CFB2BD1892A63E00C8D5DF /* main.cpp */,
-				23CFB2BF1892AC5800C8D5DF /* Game.cpp */,
-				23CFB2C01892AC5800C8D5DF /* Game.h */,
 				239849E51892A5E100EB2E65 /* Include */,
 				23C3D225189685F900639110 /* Shaders */,
 			);
@@ -140,7 +135,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				23CFB2BE1892A63E00C8D5DF /* main.cpp in Sources */,
-				23CFB2C11892AC5800C8D5DF /* Game.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

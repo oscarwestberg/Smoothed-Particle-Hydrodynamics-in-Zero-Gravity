@@ -1,9 +1,7 @@
-#include "Game.h"
+#include <SFML/System.hpp>
 
-int main(int argc, char const** argv)
+int main()
 {
-    Game game;
-    game.run();
-    
-    return EXIT_SUCCESS;
+    sf::sleep(sf::seconds(1.f));
+    return 0;
 }
