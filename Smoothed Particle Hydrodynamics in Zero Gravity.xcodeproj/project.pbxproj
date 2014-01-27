@@ -185,6 +185,7 @@
 					"$(SFML_AUDIO)",
 					"$(SFML_NETWORK)",
 				);
+				SDKROOT = macosx;
 				SFML_AUDIO = "$(SFML_LINK_PREFIX) sfml-audio$(SFML_LINK_SUFFIX)";
 				SFML_BINARY_TYPE = FRAMEWORKS;
 				SFML_GRAPHICS = "$(SFML_LINK_PREFIX) sfml-graphics$(SFML_LINK_SUFFIX)";
@@ -235,6 +236,7 @@
 					"$(SFML_AUDIO)",
 					"$(SFML_NETWORK)",
 				);
+				SDKROOT = macosx;
 				SFML_AUDIO = "$(SFML_LINK_PREFIX) sfml-audio$(SFML_LINK_SUFFIX)";
 				SFML_BINARY_TYPE = FRAMEWORKS;
 				SFML_GRAPHICS = "$(SFML_LINK_PREFIX) sfml-graphics$(SFML_LINK_SUFFIX)";
