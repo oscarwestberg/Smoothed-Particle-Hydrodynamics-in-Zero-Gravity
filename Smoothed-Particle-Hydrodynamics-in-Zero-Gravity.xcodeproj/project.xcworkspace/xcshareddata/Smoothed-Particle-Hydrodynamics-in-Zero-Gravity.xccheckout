@@ -5,16 +5,16 @@
 	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
 	<false/>
 	<key>IDESourceControlProjectIdentifier</key>
-	<string>4D4D221E-E4B7-455A-9533-62841213CD35</string>
+	<string>4DB8418E-24F9-4167-94F1-01F85C11E01C</string>
 	<key>IDESourceControlProjectName</key>
-	<string>Smoothed Particle Hydrodynamics in Zero Gravity</string>
+	<string>Smoothed-Particle-Hydrodynamics-in-Zero-Gravity</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
 		<key>33349B2E-3CD9-4CD7-94B9-4D1144245EF3</key>
 		<string>https://github.com/Gudgurkan/Smoothed-Particle-Hydrodynamics-in-Zero-Gravity.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>Smoothed Particle Hydrodynamics in Zero Gravity/Smoothed Particle Hydrodynamics in Zero Gravity.xcodeproj/project.xcworkspace</string>
+	<string>Smoothed-Particle-Hydrodynamics-in-Zero-Gravity/Smoothed-Particle-Hydrodynamics-in-Zero-Gravity.xcodeproj/project.xcworkspace</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
 		<key>33349B2E-3CD9-4CD7-94B9-4D1144245EF3</key>
