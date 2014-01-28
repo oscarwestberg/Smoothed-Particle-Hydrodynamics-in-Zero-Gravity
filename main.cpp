@@ -1,3 +1,11 @@
+//
+//  main.cpp
+//  Smoothed Particle Hydrodynamics in Zero Gravity
+//
+//  Created by Oscar Westberg on 2014-01-24.
+//  Copyright (c) 2014 Group 7 @ Linköpings University, course TNM085. All rights reserved.
+//
+
 // Link statically with GLEW
 #define GLEW_STATIC
 
@@ -13,15 +21,20 @@
 
 /*
     TODO:
-    Shader loader function in Shader class with bug test
+    Shader loader function in Shader class with bug test - DONE
     Rotation from input affecting the view matrix
     Create a way to draw points in space
+ 
+    RULES:
+    Keep it simple
+    Keep it consistent
 */
 
 GLuint shaderProgram;
 glm::vec2 velocity;
 const float width = 800, height = 600;
 
+// Updates all the views using user input
 void update(){
     
     // -----------------------------------
@@ -58,6 +71,7 @@ void update(){
     glUniformMatrix4fv(uniProj, 1, GL_FALSE, glm::value_ptr(proj));
 }
 
+// Draw to the buffer and give vertices colors
 void render()
 {
     // In order to change the value of a shader variable, these functions have to be called
@@ -81,7 +95,7 @@ int main(int argc, char* argv[])
     
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     GLFWwindow* window = glfwCreateWindow(width, height, "OpenGL", NULL, NULL);
