@@ -11,6 +11,8 @@
 		2348F66E1896B5890084F516 /* libglfw.3.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 2348F66C1896B3F00084F516 /* libglfw.3.0.dylib */; };
 		2348F6701896B5B80084F516 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2348F66F1896B5B80084F516 /* main.cpp */; };
 		23DF8E9C1897A121003E946D /* Shader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23DF8E9A1897A121003E946D /* Shader.cpp */; };
+		23DF8E9F1897B265003E946D /* fragmentshader.frag in Sources */ = {isa = PBXBuildFile; fileRef = 23DF8E9D1897B265003E946D /* fragmentshader.frag */; };
+		23DF8EA01897B265003E946D /* vertexshader.vert in Sources */ = {isa = PBXBuildFile; fileRef = 23DF8E9E1897B265003E946D /* vertexshader.vert */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -32,6 +34,8 @@
 		2348F66F1896B5B80084F516 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = SOURCE_ROOT; };
 		23DF8E9A1897A121003E946D /* Shader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Shader.cpp; sourceTree = SOURCE_ROOT; };
 		23DF8E9B1897A121003E946D /* Shader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Shader.h; sourceTree = SOURCE_ROOT; };
+		23DF8E9D1897B265003E946D /* fragmentshader.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = fragmentshader.frag; sourceTree = SOURCE_ROOT; };
+		23DF8E9E1897B265003E946D /* vertexshader.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = vertexshader.vert; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -69,6 +73,8 @@
 			isa = PBXGroup;
 			children = (
 				2348F66F1896B5B80084F516 /* main.cpp */,
+				23DF8E9D1897B265003E946D /* fragmentshader.frag */,
+				23DF8E9E1897B265003E946D /* vertexshader.vert */,
 				23DF8E9A1897A121003E946D /* Shader.cpp */,
 				23DF8E9B1897A121003E946D /* Shader.h */,
 			);
@@ -127,6 +133,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				23DF8E9C1897A121003E946D /* Shader.cpp in Sources */,
+				23DF8EA01897B265003E946D /* vertexshader.vert in Sources */,
+				23DF8E9F1897B265003E946D /* fragmentshader.frag in Sources */,
 				2348F6701896B5B80084F516 /* main.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

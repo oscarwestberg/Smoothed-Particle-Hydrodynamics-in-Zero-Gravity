@@ -9,26 +9,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
-
-// Shader sources
-const GLchar* vertexSource =
-"#version 150 core\n"
-"in vec2 position;"
-"uniform mat4 M;"
-"uniform mat4 V;"
-"uniform mat4 P;"
-"void main() {"
-"   gl_Position = P * V * M * vec4(position, 0.0, 1.0);"
-"}";
-
-const GLchar* fragmentSource =
-"#version 150 core\n"
-"uniform vec3 triangleColor;"
-"out vec4 outColor;"
-"void main()"
-"{"
-"    outColor = vec4(triangleColor, 1.0);"
-"}";
+#include "Shader.h"
 
 /*
     TODO:
@@ -138,18 +119,7 @@ int main(int argc, char* argv[])
     // --------------------------------------------
     
     // Load and compile shaders
-    GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
-    glShaderSource(vertexShader, 1, &vertexSource, NULL);
-    glCompileShader(vertexShader);
-    
-    GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-    glShaderSource(fragmentShader, 1, &fragmentSource, NULL);
-    glCompileShader(fragmentShader);
-    
-    // Connect the shaders, make them a unified program
-    shaderProgram = glCreateProgram();
-    glAttachShader(shaderProgram, vertexShader);
-    glAttachShader(shaderProgram, fragmentShader);
+    shaderProgram = LoadShaders( "vertexshader.vert", "fragmentshader.frag" );
     
     // Fragment shaders can have several outputs, so we have to define which one we're looking for
     glBindFragDataLocation(shaderProgram, 0, "outColor");
@@ -164,20 +134,6 @@ int main(int argc, char* argv[])
     // Specify how the data is gathered from the vertex array
     glEnableVertexAttribArray(posAttrib);
     glVertexAttribPointer(posAttrib, 2, GL_FLOAT, GL_FALSE, 0, 0);
-    
-    // Check if shader was compiled correctly
-    GLint status;
-    char buffer[512];
-    
-    glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &status);
-    glGetShaderInfoLog(vertexShader, 512, NULL, buffer);
-    if(buffer[2] != 0)
-        fprintf(stderr, "Vertex shader status: %s\n", buffer);
-    
-    glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &status);
-    glGetShaderInfoLog(fragmentShader, 512, NULL, buffer);
-    if(buffer[2] != 0)
-        fprintf(stderr, "Fragment shader status: %s\n", buffer);
     
     // --------------------------------------------
     // Main loop
@@ -203,9 +159,6 @@ int main(int argc, char* argv[])
     // -----------------------------------
     
     glDeleteProgram(shaderProgram);
-    glDeleteShader(fragmentShader);
-    glDeleteShader(vertexShader);
-
     glDeleteBuffers(1, &vbo);
     glDeleteVertexArrays(1, &vao);
 }
