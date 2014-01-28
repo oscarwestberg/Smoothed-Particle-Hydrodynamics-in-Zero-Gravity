@@ -1,8 +1,6 @@
 Smoothed-Particle-Hydrodynamics-in-Zero-Gravity
 ===============================================
 
-test
-
 Project in the course TNM085
 
 Collaborators:

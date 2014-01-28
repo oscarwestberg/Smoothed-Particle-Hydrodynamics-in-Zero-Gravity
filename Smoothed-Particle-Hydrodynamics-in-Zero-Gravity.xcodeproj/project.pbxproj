@@ -8,9 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		2348F66B1896B35D0084F516 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2348F66A1896B35D0084F516 /* OpenGL.framework */; };
+		2348F66E1896B5890084F516 /* libglfw.3.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 2348F66C1896B3F00084F516 /* libglfw.3.0.dylib */; };
 		2348F6701896B5B80084F516 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2348F66F1896B5B80084F516 /* main.cpp */; };
-		9B7332671897A6D90060D209 /* libglfw3.3.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 9B7332661897A6D90060D209 /* libglfw3.3.0.dylib */; };
-		9B7332691897A6F80060D209 /* libGLEW.1.10.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 9B7332681897A6F80060D209 /* libGLEW.1.10.0.dylib */; };
+		23DF8E9C1897A121003E946D /* Shader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23DF8E9A1897A121003E946D /* Shader.cpp */; };
+		23DF8E9F1897B265003E946D /* fragmentshader.frag in Sources */ = {isa = PBXBuildFile; fileRef = 23DF8E9D1897B265003E946D /* fragmentshader.frag */; };
+		23DF8EA01897B265003E946D /* vertexshader.vert in Sources */ = {isa = PBXBuildFile; fileRef = 23DF8E9E1897B265003E946D /* vertexshader.vert */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -28,9 +30,12 @@
 /* Begin PBXFileReference section */
 		2348F65E1896B3340084F516 /* Smoothed-Particle-Hydrodynamics-in-Zero-Gravity */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "Smoothed-Particle-Hydrodynamics-in-Zero-Gravity"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2348F66A1896B35D0084F516 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
+		2348F66C1896B3F00084F516 /* libglfw.3.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libglfw.3.0.dylib; path = ../../../../../../usr/local/lib/libglfw.3.0.dylib; sourceTree = "<group>"; };
 		2348F66F1896B5B80084F516 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = SOURCE_ROOT; };
-		9B7332661897A6D90060D209 /* libglfw3.3.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libglfw3.3.0.dylib; path = ../../../../../usr/local/Cellar/glfw3/3.0.3/lib/libglfw3.3.0.dylib; sourceTree = "<group>"; };
-		9B7332681897A6F80060D209 /* libGLEW.1.10.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libGLEW.1.10.0.dylib; path = ../../../../../usr/local/Cellar/glew/1.10.0/lib/libGLEW.1.10.0.dylib; sourceTree = "<group>"; };
+		23DF8E9A1897A121003E946D /* Shader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Shader.cpp; sourceTree = SOURCE_ROOT; };
+		23DF8E9B1897A121003E946D /* Shader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Shader.h; sourceTree = SOURCE_ROOT; };
+		23DF8E9D1897B265003E946D /* fragmentshader.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = fragmentshader.frag; sourceTree = SOURCE_ROOT; };
+		23DF8E9E1897B265003E946D /* vertexshader.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = vertexshader.vert; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -38,8 +43,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9B7332691897A6F80060D209 /* libGLEW.1.10.0.dylib in Frameworks */,
-				9B7332671897A6D90060D209 /* libglfw3.3.0.dylib in Frameworks */,
+				2348F66E1896B5890084F516 /* libglfw.3.0.dylib in Frameworks */,
 				2348F66B1896B35D0084F516 /* OpenGL.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -50,8 +54,7 @@
 		2348F6551896B3340084F516 = {
 			isa = PBXGroup;
 			children = (
-				9B7332681897A6F80060D209 /* libGLEW.1.10.0.dylib */,
-				9B7332661897A6D90060D209 /* libglfw3.3.0.dylib */,
+				2348F66C1896B3F00084F516 /* libglfw.3.0.dylib */,
 				2348F66A1896B35D0084F516 /* OpenGL.framework */,
 				2348F6601896B3340084F516 /* Smoothed-Particle-Hydrodynamics-in-Zero-Gravity */,
 				2348F65F1896B3340084F516 /* Products */,
@@ -70,6 +73,10 @@
 			isa = PBXGroup;
 			children = (
 				2348F66F1896B5B80084F516 /* main.cpp */,
+				23DF8E9D1897B265003E946D /* fragmentshader.frag */,
+				23DF8E9E1897B265003E946D /* vertexshader.vert */,
+				23DF8E9A1897A121003E946D /* Shader.cpp */,
+				23DF8E9B1897A121003E946D /* Shader.h */,
 			);
 			path = "Smoothed-Particle-Hydrodynamics-in-Zero-Gravity";
 			sourceTree = "<group>";
@@ -125,6 +132,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				23DF8E9C1897A121003E946D /* Shader.cpp in Sources */,
+				23DF8EA01897B265003E946D /* vertexshader.vert in Sources */,
+				23DF8E9F1897B265003E946D /* fragmentshader.frag in Sources */,
 				2348F6701896B5B80084F516 /* main.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -208,11 +218,7 @@
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					/usr/local/include,
 				);
-				LIBRARY_SEARCH_PATHS = (
-					/usr/local/lib,
-					/usr/local/Cellar/glfw3/3.0.3/lib,
-					/usr/local/Cellar/glew/1.10.0/lib,
-				);
+				LIBRARY_SEARCH_PATHS = /usr/local/lib;
 				OTHER_LDFLAGS = /usr/lib/libGLEW.dylib;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -226,11 +232,7 @@
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					/usr/local/include,
 				);
-				LIBRARY_SEARCH_PATHS = (
-					/usr/local/lib,
-					/usr/local/Cellar/glfw3/3.0.3/lib,
-					/usr/local/Cellar/glew/1.10.0/lib,
-				);
+				LIBRARY_SEARCH_PATHS = /usr/local/lib;
 				OTHER_LDFLAGS = /usr/lib/libGLEW.dylib;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
