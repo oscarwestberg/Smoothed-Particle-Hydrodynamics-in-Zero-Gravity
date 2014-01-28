@@ -10,6 +10,7 @@
 		2348F66B1896B35D0084F516 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2348F66A1896B35D0084F516 /* OpenGL.framework */; };
 		2348F66E1896B5890084F516 /* libglfw.3.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 2348F66C1896B3F00084F516 /* libglfw.3.0.dylib */; };
 		2348F6701896B5B80084F516 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2348F66F1896B5B80084F516 /* main.cpp */; };
+		23DF8E9C1897A121003E946D /* Shader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23DF8E9A1897A121003E946D /* Shader.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -29,6 +30,8 @@
 		2348F66A1896B35D0084F516 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 		2348F66C1896B3F00084F516 /* libglfw.3.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libglfw.3.0.dylib; path = ../../../../../../usr/local/lib/libglfw.3.0.dylib; sourceTree = "<group>"; };
 		2348F66F1896B5B80084F516 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = SOURCE_ROOT; };
+		23DF8E9A1897A121003E946D /* Shader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Shader.cpp; sourceTree = SOURCE_ROOT; };
+		23DF8E9B1897A121003E946D /* Shader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Shader.h; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -66,6 +69,8 @@
 			isa = PBXGroup;
 			children = (
 				2348F66F1896B5B80084F516 /* main.cpp */,
+				23DF8E9A1897A121003E946D /* Shader.cpp */,
+				23DF8E9B1897A121003E946D /* Shader.h */,
 			);
 			path = "Smoothed-Particle-Hydrodynamics-in-Zero-Gravity";
 			sourceTree = "<group>";
@@ -121,6 +126,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				23DF8E9C1897A121003E946D /* Shader.cpp in Sources */,
 				2348F6701896B5B80084F516 /* main.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
