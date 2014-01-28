@@ -1,5 +1,6 @@
 // Link statically with GLEW
 #define GLEW_STATIC
+#define GLM_FORCE_RADIANS
 
 // Headers
 #include <GL/glew.h>
