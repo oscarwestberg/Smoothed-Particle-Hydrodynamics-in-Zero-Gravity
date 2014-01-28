@@ -14,10 +14,10 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "23206B911892A55E00FD142D"
-               BuildableName = "Smoothed Particle Hydrodynamics in Zero Gravity"
-               BlueprintName = "Smoothed Particle Hydrodynamics in Zero Gravity"
-               ReferencedContainer = "container:Smoothed Particle Hydrodynamics in Zero Gravity.xcodeproj">
+               BlueprintIdentifier = "2348F65D1896B3340084F516"
+               BuildableName = "Smoothed-Particle-Hydrodynamics-in-Zero-Gravity"
+               BlueprintName = "Smoothed-Particle-Hydrodynamics-in-Zero-Gravity"
+               ReferencedContainer = "container:Smoothed-Particle-Hydrodynamics-in-Zero-Gravity.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -32,10 +32,10 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "23206B911892A55E00FD142D"
-            BuildableName = "Smoothed Particle Hydrodynamics in Zero Gravity"
-            BlueprintName = "Smoothed Particle Hydrodynamics in Zero Gravity"
-            ReferencedContainer = "container:Smoothed Particle Hydrodynamics in Zero Gravity.xcodeproj">
+            BlueprintIdentifier = "2348F65D1896B3340084F516"
+            BuildableName = "Smoothed-Particle-Hydrodynamics-in-Zero-Gravity"
+            BlueprintName = "Smoothed-Particle-Hydrodynamics-in-Zero-Gravity"
+            ReferencedContainer = "container:Smoothed-Particle-Hydrodynamics-in-Zero-Gravity.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
    </TestAction>
@@ -51,10 +51,10 @@
       <BuildableProductRunnable>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "23206B911892A55E00FD142D"
-            BuildableName = "Smoothed Particle Hydrodynamics in Zero Gravity"
-            BlueprintName = "Smoothed Particle Hydrodynamics in Zero Gravity"
-            ReferencedContainer = "container:Smoothed Particle Hydrodynamics in Zero Gravity.xcodeproj">
+            BlueprintIdentifier = "2348F65D1896B3340084F516"
+            BuildableName = "Smoothed-Particle-Hydrodynamics-in-Zero-Gravity"
+            BlueprintName = "Smoothed-Particle-Hydrodynamics-in-Zero-Gravity"
+            ReferencedContainer = "container:Smoothed-Particle-Hydrodynamics-in-Zero-Gravity.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -69,10 +69,10 @@
       <BuildableProductRunnable>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "23206B911892A55E00FD142D"
-            BuildableName = "Smoothed Particle Hydrodynamics in Zero Gravity"
-            BlueprintName = "Smoothed Particle Hydrodynamics in Zero Gravity"
-            ReferencedContainer = "container:Smoothed Particle Hydrodynamics in Zero Gravity.xcodeproj">
+            BlueprintIdentifier = "2348F65D1896B3340084F516"
+            BuildableName = "Smoothed-Particle-Hydrodynamics-in-Zero-Gravity"
+            BlueprintName = "Smoothed-Particle-Hydrodynamics-in-Zero-Gravity"
+            ReferencedContainer = "container:Smoothed-Particle-Hydrodynamics-in-Zero-Gravity.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
