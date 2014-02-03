@@ -21,11 +21,10 @@ public:
     ParticleSystem(); //constructor
     ~ParticleSystem(); //destructor
     int getParticleAmount();
-    
     void initParticleSystem();
+    void updateParticles(float DeltaTimeMillis);
     
 private:
-    void updateParticles(int DeltaTimeMillis);
     GLuint vao;
     GLuint vbo;
 };

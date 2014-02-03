@@ -24,7 +24,9 @@
     TODO:
     Shader loader function in Shader class with bug test - DONE
     Rotation from input affecting the view matrix
-    Create a way to draw points in space for testing
+    Create a way to draw points in space for testing - DONE
+    Find a way to change the values in the vertex  buffer - DONE
+    Update the way time is calculated
     XML to load settings? Particle amount, resolution etc?
     Find a way to create a single model from all the particles
  
@@ -41,6 +43,10 @@ ParticleSystem particleSystem;
 // Updates all the views using user input
 void update(){
     
+    float time = (float)glfwGetTime();
+    
+    particleSystem.updateParticles(time);
+    
     // -----------------------------------
     // Model Matrix
     // -----------------------------------
@@ -49,7 +55,7 @@ void update(){
     glm::mat4 trans;
     trans = glm::rotate(
                         trans,
-                        (float)clock() / (float)CLOCKS_PER_SEC * 180.0f,
+                        time/30 * 180.0f,
                         glm::vec3(0.0f, 0.0f, 1.0f)
                         );
     // Change the shader variable

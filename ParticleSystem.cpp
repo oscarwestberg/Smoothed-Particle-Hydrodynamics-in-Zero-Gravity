@@ -8,13 +8,8 @@
 
 #include "ParticleSystem.h"
 
-#define MAX_PARTICLES 300
+#define MAX_PARTICLES 1000
 #define MAX_VERTICES MAX_PARTICLES*3
-#define PARTICLE_LIFETIME 10.0f
-
-#define PARTICLE_TYPE_LAUNCHER 0.0f
-#define PARTICLE_TYPE_SHELL 1.0f
-#define PARTICLE_TYPE_SECONDARY_SHELL 2.0f
 
 struct Particle
 {
@@ -22,6 +17,8 @@ struct Particle
     glm::vec3 vel;
     float LifetimeMillis; 
 };
+
+Particle Particles[MAX_PARTICLES];
 
 ParticleSystem::ParticleSystem(){
 
@@ -34,7 +31,6 @@ ParticleSystem::~ParticleSystem(){
 
 void ParticleSystem::initParticleSystem()
 {
-    Particle Particles[MAX_PARTICLES];
     GLfloat points[MAX_VERTICES];
     
     //srand(time(NULL)); // Not needed?
@@ -69,7 +65,20 @@ int ParticleSystem::getParticleAmount(){
     return MAX_VERTICES;
 }
 
-void ParticleSystem::updateParticles(int DeltaTimeMillis){
-
+void ParticleSystem::updateParticles(float deltaTime){
+    GLfloat* data;
+    data = (GLfloat*) glMapBuffer(GL_ARRAY_BUFFER, GL_READ_WRITE);
+    
+    if (data != (GLfloat*) NULL) {
+        for(int i = 0; i < MAX_PARTICLES; ++i ){
+            data[3*i] *= 1-deltaTime/1000;
+            data[3*i+1] *= 1-deltaTime/1000;
+            data[3*i+2] *= 1-deltaTime/1000;  /* Modify Z values */
+        }
+        glUnmapBuffer(GL_ARRAY_BUFFER);
+    } else {
+        printf ("Could not change buffer data");
+    }
+    
 }
 
