@@ -26,9 +26,9 @@
     Rotation from input affecting the view matrix
     Create a way to draw points in space for testing - DONE
     Find a way to change the values in the vertex  buffer - DONE
-    Update the way time is calculated
+    Update the way time is calculated - DONE
     XML to load settings? Particle amount, resolution etc?
-    Find a way to create a single model from all the particles
+    Implement Metaballs
  
     RULES:
     Keep it simple
@@ -37,15 +37,16 @@
 
 GLuint shaderProgram;
 glm::vec2 velocity;
+float previousTime = 0;
 const float width = 800, height = 600;
 ParticleSystem particleSystem;
 
 // Updates all the views using user input
-void update(){
-    
+void update()
+{
     float time = (float)glfwGetTime();
     
-    particleSystem.updateParticles(time);
+    particleSystem.updateParticles(time-previousTime);
     
     // -----------------------------------
     // Model Matrix
@@ -53,11 +54,11 @@ void update(){
     
     // Create a 4x4 matrix
     glm::mat4 trans;
-    trans = glm::rotate(
-                        trans,
-                        time/30 * 180.0f,
-                        glm::vec3(0.0f, 0.0f, 1.0f)
-                        );
+//    trans = glm::rotate(
+//                        trans,
+//                        time * 180.0f,
+//                        glm::vec3(0.0f, 0.0f, 1.0f)
+//                        );
     // Change the shader variable
     GLint uniTrans = glGetUniformLocation(shaderProgram, "M");
     // Give it a value
@@ -81,9 +82,11 @@ void update(){
     // -----------------------------------
     
     // Vertical field-of-view, Aspect ratio, Near and Far planes.
-    glm::mat4 proj = glm::perspective(45.0f, width / height, 1.0f, 10.0f);
+    glm::mat4 proj = glm::perspective(45.0f, width / height, 0.1f, 20.0f);
     GLint uniProj = glGetUniformLocation(shaderProgram, "P");
     glUniformMatrix4fv(uniProj, 1, GL_FALSE, glm::value_ptr(proj));
+    
+    previousTime = time;
 }
 
 // Draw to the buffer and give vertices colors
@@ -149,8 +152,7 @@ int main(int argc, char* argv[])
     // Main loop
     // --------------------------------------------
     
-    while(!glfwWindowShouldClose(window))
-    {
+    while(!glfwWindowShouldClose(window)){
         if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
             glfwSetWindowShouldClose(window, GL_TRUE);
         if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)

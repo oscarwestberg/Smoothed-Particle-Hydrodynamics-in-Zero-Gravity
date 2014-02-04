@@ -7,8 +7,9 @@
 //
 
 #include "ParticleSystem.h"
+#include <math.h>
 
-#define MAX_PARTICLES 1000
+#define MAX_PARTICLES 300
 #define MAX_VERTICES MAX_PARTICLES*3
 
 struct Particle
@@ -20,11 +21,13 @@ struct Particle
 
 Particle Particles[MAX_PARTICLES];
 
-ParticleSystem::ParticleSystem(){
+ParticleSystem::ParticleSystem()
+{
 
 }
 
-ParticleSystem::~ParticleSystem(){
+ParticleSystem::~ParticleSystem()
+{
     glDeleteBuffers(1, &vbo);
     glDeleteVertexArrays(1, &vao);
 }
@@ -35,14 +38,15 @@ void ParticleSystem::initParticleSystem()
     
     //srand(time(NULL)); // Not needed?
     
-    for(int i = 1; i < MAX_PARTICLES+1; i++){
-        Particles[i-1].pos.x = static_cast <float> (rand() % 1000) / static_cast <float> (500) -1;
-        Particles[i-1].pos.y = static_cast <float> (rand() % 1000) / static_cast <float> (500) -1;
-        Particles[i-1].pos.z = static_cast <float> (rand() % 1000) / static_cast <float> (500) -1;
+    // Give all the particles an initial value
+    for(int i = 0; i < MAX_PARTICLES; i++){
+        Particles[i].pos.x = static_cast <float> (rand() % 1000) / static_cast <float> (500) -1;
+        Particles[i].pos.y = static_cast <float> (rand() % 1000) / static_cast <float> (500) -1;
+        Particles[i].pos.z = static_cast <float> (rand() % 1000) / static_cast <float> (500) -1;
         
-        points[i*3-2] = Particles[i-1].pos.x;
-        points[i*3-1] = Particles[i-1].pos.y;
-        points[i*3] = Particles[i-1].pos.z;
+        points[i*3] = Particles[i].pos.x;
+        points[i*3+1] = Particles[i].pos.y;
+        points[i*3+2] = Particles[i].pos.z;
     }
     
     // -----------------------------------
@@ -61,21 +65,42 @@ void ParticleSystem::initParticleSystem()
     glBufferData(GL_ARRAY_BUFFER, sizeof(points), points, GL_STATIC_DRAW); // Copy vertex data to buffer
 }
 
-int ParticleSystem::getParticleAmount(){
+int ParticleSystem::getParticleAmount()
+{
     return MAX_VERTICES;
 }
 
-void ParticleSystem::updateParticles(float deltaTime){
+void ParticleSystem::updateParticles(float deltaTime)
+{
     GLfloat* data;
     data = (GLfloat*) glMapBuffer(GL_ARRAY_BUFFER, GL_READ_WRITE);
     
+    // Change the values in the buffer
     if (data != (GLfloat*) NULL) {
         for(int i = 0; i < MAX_PARTICLES; ++i ){
-            data[3*i] *= 1-deltaTime/1000;
-            data[3*i+1] *= 1-deltaTime/1000;
-            data[3*i+2] *= 1-deltaTime/1000;  /* Modify Z values */
+            glm::vec3 force;
+            
+            for(int j = 0; j < MAX_PARTICLES; ++j){
+                float distance = sqrt((Particles[i].pos.x - Particles[j].pos.x)*
+                                      (Particles[i].pos.x - Particles[j].pos.x)+
+                                      (Particles[i].pos.y - Particles[j].pos.y)*
+                                      (Particles[i].pos.y - Particles[j].pos.y)+
+                                      (Particles[i].pos.z - Particles[j].pos.z)*
+                                      (Particles[i].pos.z - Particles[j].pos.z)
+                                      )/18;
+                force += glm::vec3((Particles[j].pos.x - Particles[i].pos.x),
+                                   (Particles[j].pos.y - Particles[i].pos.y),
+                                   (Particles[j].pos.z - Particles[i].pos.z))*distance*(deltaTime/100000);
+            }
+            
+            Particles[i].vel += force;
+            Particles[i].pos += Particles[i].vel;
+            data[3*i] = Particles[i].pos.x;      // Modify X values
+            data[3*i+1] = Particles[i].pos.y;    // Modify Y values
+            data[3*i+2] = Particles[i].pos.z;    // Modify Z values
         }
         glUnmapBuffer(GL_ARRAY_BUFFER);
+        
     } else {
         printf ("Could not change buffer data");
     }
