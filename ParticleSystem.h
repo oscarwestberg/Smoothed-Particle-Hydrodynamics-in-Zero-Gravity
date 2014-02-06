@@ -10,23 +10,29 @@
 #define __Smoothed_Particle_Hydrodynamics_in_Zero_Gravity__Particles__
 
 #include <GL/glew.h>
-//#include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 #include <iostream>
+
+#define MAX_PARTICLES 50
+
+struct Particle
+{
+    glm::vec3 pos;
+    glm::vec3 vel;
+    float LifetimeMillis;
+};
 
 class ParticleSystem
 {
     
 public:
-    ParticleSystem(); //constructor
-    ~ParticleSystem(); //destructor
-    int getParticleAmount();
     void initParticleSystem();
     void updateParticles(float DeltaTimeMillis);
     
+    Particle Particles[MAX_PARTICLES];
+    
 private:
-    GLuint vao;
-    GLuint vbo;
+    
 };
 
 #endif /* defined(__Smoothed_Particle_Hydrodynamics_in_Zero_Gravity__Particles__) */

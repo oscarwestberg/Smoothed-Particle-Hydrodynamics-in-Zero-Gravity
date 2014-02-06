@@ -7,7 +7,7 @@
 //
 
 // Link statically with GLEW
-#define GLEW_STATIC
+//#define GLEW_STATIC
 
 // Headers
 #include <GL/glew.h>
@@ -28,7 +28,9 @@
     Find a way to change the values in the vertex  buffer - DONE
     Update the way time is calculated - DONE
     XML to load settings? Particle amount, resolution etc?
-    Implement Metaballs
+    Implement Metaballs/Isosurface 2D - DONE
+    -II- in 3D 
+    Find a way to use the MVP matrix in the shader
  
     RULES:
     Keep it simple
@@ -41,27 +43,22 @@ float previousTime = 0;
 const float width = 800, height = 600;
 ParticleSystem particleSystem;
 
+#define MAX_PARTICLES 50
+
 // Updates all the views using user input
 void update()
 {
+    // Update the particle system
     float time = (float)glfwGetTime();
-    
     particleSystem.updateParticles(time-previousTime);
     
     // -----------------------------------
-    // Model Matrix
+    // Model Matrix - currently ignored
     // -----------------------------------
     
     // Create a 4x4 matrix
     glm::mat4 trans;
-//    trans = glm::rotate(
-//                        trans,
-//                        time * 180.0f,
-//                        glm::vec3(0.0f, 0.0f, 1.0f)
-//                        );
-    // Change the shader variable
     GLint uniTrans = glGetUniformLocation(shaderProgram, "M");
-    // Give it a value
     glUniformMatrix4fv(uniTrans, 1, GL_FALSE, glm::value_ptr(trans));
     
     // -----------------------------------
@@ -92,24 +89,30 @@ void update()
 // Draw to the buffer and give vertices colors
 void render()
 {
-    // In order to change the value of a shader variable, these functions have to be called
-    GLint uniColor = glGetUniformLocation(shaderProgram, "triangleColor");
-//    float time = (float)glfwGetTime();
-//    glUniform3f(uniColor, (sin(time * 4.0f) + 1.0f) / 2.0f, 0.0f, 0.0f);
-    glUniform3f(uniColor, 1.0f, 1.0f, 1.0f);
+    // Send positions to shader by putting the xzy values in seperate GLfloats
+    GLfloat v1[MAX_PARTICLES];
+    GLfloat v2[MAX_PARTICLES];
+    GLfloat v3[MAX_PARTICLES];
     
+    for(int i = 0; i < MAX_PARTICLES; i++){
+        v1[i] = particleSystem.Particles[i].pos.x;
+        v2[i] = particleSystem.Particles[i].pos.y;
+        v3[i] = particleSystem.Particles[i].pos.z;
+    }
+
+    glUniform3fv(glGetUniformLocation(shaderProgram, "positions"), 50,(v1, v2, v3));
+
     // Clear the screen
+    // Entire system is drawn to a square that covers the screen
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
-    
-    // Draw a points from the buffer
-    glDrawArrays(GL_POINTS, 0, particleSystem.getParticleAmount());
+    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 }
 
 int main(int argc, char* argv[])
 {
     // -----------------------------------
-    // Initialize glfw and glew
+    // Initialize
     // -----------------------------------
     
     glfwInit();
@@ -127,11 +130,49 @@ int main(int argc, char* argv[])
     // Initialize the particle system and have it load into buffers
     particleSystem.initParticleSystem();
     
+    // -----------------------------------
+    // Create buffers
+    // -----------------------------------
+    
+    // Create Vertex Array Object -  these store the links between VBOs and the raw vertex data
+    GLuint vao;
+    glGenVertexArrays(1, &vao);
+    glBindVertexArray(vao);
+    
+    // Used to upload data to the graphics card
+    // OpenGL handles the memory, so all we need is an int pointing to it
+    // Vertex buffer object
+    GLuint vbo;
+    glGenBuffers(1, &vbo); // Generate buffer
+    
+    GLfloat vertices[] = {
+        -1.0f,  1.0f, 1.0f, 0.0f, 0.0f, // Top-left
+        1.0f,  1.0f, 0.0f, 1.0f, 0.0f, // Top-right
+        1.0f, -1.0f, 0.0f, 0.0f, 1.0f, // Bottom-right
+        -1.0f, -1.0f, 1.0f, 1.0f, 1.0f  // Bottom-left
+    };
+    
+    glBindBuffer(GL_ARRAY_BUFFER, vbo); // Upload data
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW); // Upload data
+    
+    // Create an element array
+    GLuint ebo;
+    glGenBuffers(1, &ebo);
+    
+    GLuint elements[] = {
+        0, 1, 2,
+        2, 3, 0
+    };
+    
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(elements), elements, GL_STATIC_DRAW);
+    
     // --------------------------------------------
     // Compile and link shaders
     // --------------------------------------------
     
     // Load and compile shaders
+    glEnable(GL_BLEND);
     shaderProgram = LoadShaders( "vertexshader.vert", "fragmentshader.frag" );
     
     // Fragment shaders can have several outputs, so we have to define which one we're looking for
@@ -146,7 +187,7 @@ int main(int argc, char* argv[])
     
     // Specify how the data is gathered from the vertex array
     glEnableVertexAttribArray(posAttrib);
-    glVertexAttribPointer(posAttrib, 3, GL_FLOAT, GL_FALSE, 0, 0);
+    glVertexAttribPointer(posAttrib, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), 0);
     
     // --------------------------------------------
     // Main loop
@@ -171,4 +212,6 @@ int main(int argc, char* argv[])
     // -----------------------------------
     
     glDeleteProgram(shaderProgram);
+    glDeleteBuffers(1, &vbo);
+    glDeleteVertexArrays(1, &vao);
 }
