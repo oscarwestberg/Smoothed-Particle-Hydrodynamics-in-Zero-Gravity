@@ -43,8 +43,6 @@ float previousTime = 0;
 const float width = 800, height = 600;
 ParticleSystem particleSystem;
 
-#define MAX_PARTICLES 50
-
 // Updates all the views using user input
 void update()
 {
@@ -100,7 +98,16 @@ void render()
         v3[i] = particleSystem.Particles[i].pos.z;
     }
 
-    glUniform3fv(glGetUniformLocation(shaderProgram, "positions"), 50,(v1, v2, v3));
+    //glUniform3fv(glGetUniformLocation(shaderProgram, "positions"), MAX_PARTICLES, (v1,v2,v3));
+    glm::vec3 particlePositions[50];
+    
+    // Send positions to shader by putting the xzy values in seperate GLfloats
+    for(int i = 0; i < MAX_PARTICLES; i++){
+        particlePositions[i] = glm::vec3(particleSystem.Particles[i].pos);
+    }
+    
+	GLint myLoc = glGetUniformLocation(shaderProgram, "positions");
+    glUniform3fv(myLoc, MAX_PARTICLES, &particlePositions[0][0]);
 
     // Clear the screen
     // Entire system is drawn to a square that covers the screen

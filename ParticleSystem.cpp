@@ -9,7 +9,6 @@
 #include "ParticleSystem.h"
 #include <math.h>
 
-#define MAX_PARTICLES 50
 #define MAX_VERTICES MAX_PARTICLES*3
 
 glm::vec3 positions[MAX_PARTICLES];
