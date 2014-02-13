@@ -35,6 +35,7 @@
     RULES:
     Keep it simple
     Keep it consistent
+	Rösta vänster
 */
 
 GLuint shaderProgram;
