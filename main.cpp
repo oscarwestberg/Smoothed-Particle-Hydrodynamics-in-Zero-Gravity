@@ -22,15 +22,12 @@
 
 /*
     TODO:
-    Shader loader function in Shader class with bug test - DONE
-    Rotation from input affecting the view matrix
-    Create a way to draw points in space for testing - DONE
-    Find a way to change the values in the vertex  buffer - DONE
-    Update the way time is calculated - DONE
-    XML to load settings? Particle amount, resolution etc?
-    Implement Metaballs/Isosurface 2D - DONE
+	* Send coordinates to shader using texture (Teodor)
+	* Port code from MATLAB to ParticleSystem.cpp
+    * Rotation from input affecting the view matrix
+    * XML to load settings? Particle amount, resolution etc?
     -II- in 3D 
-    Find a way to use the MVP matrix in the shader
+    * Find a way to use the MVP matrix in the shader
  
     RULES:
     Keep it simple
