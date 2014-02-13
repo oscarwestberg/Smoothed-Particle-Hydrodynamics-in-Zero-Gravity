@@ -99,7 +99,7 @@ void render()
     }
 
     //glUniform3fv(glGetUniformLocation(shaderProgram, "positions"), MAX_PARTICLES, (v1,v2,v3));
-    glm::vec3 particlePositions[50];
+    glm::vec3 particlePositions[MAX_PARTICLES];
     
     // Send positions to shader by putting the xzy values in seperate GLfloats
     for(int i = 0; i < MAX_PARTICLES; i++){

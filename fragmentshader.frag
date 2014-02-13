@@ -9,15 +9,16 @@
 #version 150 core
 
 #define stiffness 30.0 // Blobbiness factor (higher = stiffer balls)
-#define cfalloff 30.0 // Glow factor (higher = sharper, shorter glow)
-#define MAX_PARTICLES 300
+//#define cfalloff 30.0 // Glow factor (higher = sharper, shorter glow)
 #define width 800
 #define height 600
+#define MAX_PARTICLES 100
 
-#define globes 250.
-#define globesize .13
-#define dist 1.2
-#define persp .8
+//#define globes 250.
+//#define globesize .13
+//#define dist 1.2
+//#define persp .8
+
 
 uniform vec3[MAX_PARTICLES] positions;
 
@@ -26,6 +27,7 @@ out vec4 outColor;
 
 void main()
 {
+	vec3 final = vec3(0.0,0.0,0.0);
     vec2 uv = gl_FragCoord.xy / vec2(width, height);
 	
 	uv -= 0.5;  //center it
@@ -44,11 +46,8 @@ void main()
     
     float threshold = 4000;
 	// calculate colour
-	vec3 final;
-    if(sum <= threshold)
-        final = vec3(0.0,0.0,0.0);
     if(sum >= threshold)
-        final = vec3(sum,sum,sum)/1000;
+        final = vec3(1.0,1.0,1.0);
 	
 	outColor = vec4(final,1.0);
 }
