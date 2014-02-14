@@ -14,7 +14,7 @@
 glm::vec3 positions[MAX_PARTICLES];
 
 // Constant parameters
-const float TIME_STEP = 0.01;
+const float TIME_STEP = 0.005;
 const float DISTANCE = 0.03;
 const float PARTICLE_MASS = 0.05;
 const float IDEAL_DENSITY = 1000;
@@ -56,6 +56,11 @@ void ParticleSystem::updateParticles(float deltaTime)
 	glm::vec3 presGradVec;
 	glm::vec3 viscVec;
 
+	// for debugging
+	viscVec = calcViscosity(Particles[1]);
+	float coordX = viscVec.x;
+	float coordY = viscVec.y;
+
     for(int i = 0; i < MAX_PARTICLES; ++i ){
 
         glm::vec3 force;
@@ -74,19 +79,14 @@ void ParticleSystem::updateParticles(float deltaTime)
         //                       (Particles[j].pos.z - Particles[i].pos.z))*distance*(deltaTime/1000);
         //}
 
-		presGradVec = calcPressureGradient(Particles[i]);
-		viscVec = calcViscosity(Particles[i]);
-		accelerationVec = presGradVec + viscVec;
-		//std::cout << "density at Particles[i]: " << Particles[i].density << std::endl;
-		//std::cout << "presGrad.x: " << calcPressureGradient(Particles[i]).x << ", presGrad.y: " << calcPressureGradient(Particles[i]).y << std::endl;
-		//std::cout << "visc.x: " << calcViscosity(Particles[i]).x << ", visc.y: " << calcViscosity(Particles[i]).y << std::endl;
-		//std::cout << "acc.x: " << accelerationVec.x << ", acc.y: " << accelerationVec.y << std::endl;
-
-        Particles[i].vel = Particles[i].vel + TIME_STEP*accelerationVec;
-        Particles[i].pos = Particles[i].pos + TIME_STEP*Particles[i].vel;
-
 		// Save particle positions in seperate variable
         positions[i] = Particles[i].pos;
+
+		presGradVec = calcPressureGradient(Particles[i]);
+		viscVec = calcViscosity(Particles[i]);
+		accelerationVec = (-presGradVec) + viscVec;
+        Particles[i].vel = Particles[i].vel + TIME_STEP*accelerationVec;
+        Particles[i].pos = Particles[i].pos + (TIME_STEP*Particles[i].vel);
     }
 }
 
@@ -95,8 +95,6 @@ void ParticleSystem::updateDensity(){
 		float temp_density_sum = 0;
 		for(int i = 0; i < MAX_PARTICLES; i++){
 			glm::vec3 temp_dist = Particles[j].pos - Particles[i].pos;
-			//std::cout << "temp_dist_length: " << glm::length(temp_dist) << std::endl;
-			//std::cout << "smoothing kernal dist: " << std::powf((std::powf(H,2) - glm::length(temp_dist)),3) << std::endl;
 			if(glm::length(temp_dist)<H)
 			{
 				float dist = glm::length(temp_dist);
@@ -125,7 +123,7 @@ glm::vec3 ParticleSystem::calcPressureGradient(Particle &particle){
 			temp_pressure_vec += pressureMag*glm::normalize(temp_dist);
 		}
 	}
-	temp_pressure_vec *= -SMOOTHING_GRADIENT_CONST;
+	temp_pressure_vec *= (-SMOOTHING_GRADIENT_CONST);
 	return temp_pressure_vec;
 }
 
@@ -133,13 +131,14 @@ glm::vec3 ParticleSystem::calcViscosity(Particle &particle){
 	glm::vec3 temp_viscosity_vec = glm::vec3(0);
 	float temp_dist_abs;
 	for(int i = 0; i < MAX_PARTICLES; i++){
-		temp_dist_abs = glm::distance(particle.pos,Particles[i].pos);
-		if(temp_dist_abs < H && glm::length(temp_dist_abs) != 0){
+		temp_dist_abs = glm::length(particle.pos - Particles[i].pos);
+		//std::cout << temp_dist_abs << std::endl;
+		if(temp_dist_abs < H){
 			//std::cout << "velocity.x: " << (Particles[i].vel - particle.vel).x << ", velocity.y: " << (Particles[i].vel - particle.vel).y << std::endl;
 			temp_viscosity_vec += ((Particles[i].vel - particle.vel)/Particles[i].density)*(H - temp_dist_abs);
 		}
 	}
-	temp_viscosity_vec = (VISCOSITY_CONST*SMOOTHING_GRADIENT_CONST/particle.density)*temp_viscosity_vec;
+	temp_viscosity_vec = ((VISCOSITY_CONST*SMOOTHING_GRADIENT_CONST)/particle.density)*temp_viscosity_vec;
 	return temp_viscosity_vec;
 }
 

@@ -46,7 +46,12 @@ void update()
 {
     // Update the particle system
     float time = (float)glfwGetTime();
-    particleSystem.updateParticles(time-previousTime);
+	float deltaTime = time-previousTime;
+
+	if(deltaTime > 1/60)	{
+		particleSystem.updateParticles(time-previousTime);
+		previousTime = time;
+	}
     
     // -----------------------------------
     // Model Matrix - currently ignored
@@ -78,8 +83,6 @@ void update()
     glm::mat4 proj = glm::perspective(45.0f, width / height, 0.1f, 20.0f);
     GLint uniProj = glGetUniformLocation(shaderProgram, "P");
     glUniformMatrix4fv(uniProj, 1, GL_FALSE, glm::value_ptr(proj));
-    
-    previousTime = time;
 }
 
 // Draw to the buffer and give vertices colors

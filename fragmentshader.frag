@@ -10,7 +10,7 @@
 
 #define width 800
 #define height 600
-#define MAX_PARTICLES 200
+#define MAX_PARTICLES 100
 
 
 uniform vec3[MAX_PARTICLES] positions;
@@ -51,7 +51,7 @@ if not, decrease z value for a reasonable stepSize until we find a value bigger 
 
 void main()
 {
-    vec2 uv = (gl_FragCoord.xy / vec2(width, height) -0.5)*2*(width/height);
+    vec2 uv = (gl_FragCoord.xy / vec2(width, height) -0.5)*2*(width/height)*0.5;
     float sum = 0;
     bool found = false;
     float z = 1;
@@ -62,7 +62,7 @@ void main()
         sum += 1/((uv.x-positions[i].x)*(uv.x-positions[i].x) + (uv.y-positions[i].y)*(uv.y-positions[i].y));
     }
     
-    float threshold = 6000;
+    float threshold = 50000;
     
     if(sum >= threshold){
         sum = 0;
