@@ -149,14 +149,14 @@ int main(int argc, char* argv[])
     // Vertex buffer object
     GLuint vbo;
     glGenBuffers(1, &vbo); // Generate buffer
-    
+
     GLfloat vertices[] = {
         -1.0f,  1.0f, 1.0f, 0.0f, 0.0f, // Top-left
         1.0f,  1.0f, 0.0f, 1.0f, 0.0f, // Top-right
         1.0f, -1.0f, 0.0f, 0.0f, 1.0f, // Bottom-right
         -1.0f, -1.0f, 1.0f, 1.0f, 1.0f  // Bottom-left
     };
-    
+
     glBindBuffer(GL_ARRAY_BUFFER, vbo); // Upload data
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW); // Upload data
     

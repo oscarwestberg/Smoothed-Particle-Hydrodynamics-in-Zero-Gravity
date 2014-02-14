@@ -13,13 +13,15 @@
 #include <glm/glm.hpp>
 #include <iostream>
 
-#define MAX_PARTICLES 100
+#define SIZE 10
+#define MAX_PARTICLES SIZE*SIZE
 
 struct Particle
 {
     glm::vec3 pos;
     glm::vec3 vel;
 	float density;
+	float pressure;
 };
 
 class ParticleSystem
@@ -32,8 +34,9 @@ public:
     
 private:
 	void updateDensity();
-	float calcPressureGradient(Particle &particle);
-	float calcViscosity(Particle &particle);
+	void updatePressure();
+	glm::vec3 calcPressureGradient(Particle &particle);
+	glm::vec3 calcViscosity(Particle &particle);
 };
 
 #endif /* defined(__Smoothed_Particle_Hydrodynamics_in_Zero_Gravity__Particles__) */

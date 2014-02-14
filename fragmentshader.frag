@@ -30,8 +30,10 @@ void main()
 	vec3 final = vec3(0.0,0.0,0.0);
     vec2 uv = gl_FragCoord.xy / vec2(width, height);
 	
+	float scale = 0.5;
+
 	uv -= 0.5;  //center it
-	uv *= 2.0;  //screen domain is now -1 to 1
+	uv *= 2.0*scale;  //screen domain is now -1 to 1 (times scale)
 	uv.x *= width/height; //correct for aspect ratio by varying length of horizontal axis
     
     float sum = 0;
