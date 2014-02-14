@@ -49,7 +49,7 @@ void update()
 	float deltaTime = time-previousTime;
 
 	if(deltaTime > 1/60)	{
-		particleSystem.updateParticles(time-previousTime);
+		particleSystem.updateParticles(deltaTime);
 		previousTime = time;
 	}
     
