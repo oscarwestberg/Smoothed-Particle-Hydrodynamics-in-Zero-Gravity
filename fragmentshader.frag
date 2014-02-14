@@ -8,76 +8,187 @@
 
 #version 150 core
 
-#define stiffness 30.0 // Blobbiness factor (higher = stiffer balls)
-//#define cfalloff 30.0 // Glow factor (higher = sharper, shorter glow)
 #define width 800
 #define height 600
-#define MAX_PARTICLES 100
-
-//#define globes 250.
-//#define globesize .13
-//#define dist 1.2
-//#define persp .8
+#define MAX_PARTICLES 200
 
 
 uniform vec3[MAX_PARTICLES] positions;
 
 out vec4 outColor;
 
+/*
+For each pixel, cast a ray out
+    Determine the intersection of the ray with all point charges' bounding spheres
+    Sort the intersections (both entries & exits!)
+    For each intersection (from nearest to farthest)
+        If 'entry' (into bounding sphere): add that charge to 'active' list;
+        Else ('exit' from bounding sphere): remove that charge from 'active' list.
+        Now trace along the ray from this intersection to the next intersection,
+        using the 'active' list as the point charges contributing to the field.
+
+  -----------------------------
+ 
+For each fragment, check bounding sphere tex.
+if pixel is inside one of the spheres(in screen space),
+use that value as z starting point for ray.
+
+calc density for that pixel.
+f density > threshold, we hit a blob and can calc normals and lighting for it.
+
+if not, decrease z value for a reasonable stepSize until we find a value bigger >threshold, or reach a certain max depth.
+
+ -----------------------------
+ 
+ Ray Casting
+ 1. Shoot a ray through each pixel on the
+ screen.
+ 2. Step through that ray until you reach a pixel
+ that is "inside" the isosurface.
+ 3. Calculate normal and color the pixel
+*/
+
 
 void main()
 {
-	vec3 final = vec3(0.0,0.0,0.0);
-    vec2 uv = gl_FragCoord.xy / vec2(width, height);
-	
-	uv -= 0.5;  //center it
-	uv *= 2.0;  //screen domain is now -1 to 1
-	uv.x *= width/height; //correct for aspect ratio by varying length of horizontal axis
-    
+    vec2 uv = (gl_FragCoord.xy / vec2(width, height) -0.5)*2*(width/height);
     float sum = 0;
+    bool found = false;
+    float z = 1;
+    float steps = 50;
+    
     
     for(int i = 0; i < MAX_PARTICLES; i++){
-        float temp = (uv.x-positions[i].x)*(uv.x-positions[i].x) + (uv.y-positions[i].y)*(uv.y-positions[i].y);
-        if(temp == 0)
-            sum += 1;
-        if(temp != 0)
-            sum += 1/temp;
+        sum += 1/((uv.x-positions[i].x)*(uv.x-positions[i].x) + (uv.y-positions[i].y)*(uv.y-positions[i].y));
     }
     
-    float threshold = 4000;
-	// calculate colour
-    if(sum >= threshold)
-        final = vec3(1.0,1.0,1.0);
-	
-	outColor = vec4(final,1.0);
+    float threshold = 6000;
+    
+    if(sum >= threshold){
+        sum = 0;
+        // Check depth
+        for(int ray = 0; ray < steps; ray++){ // Cast ray
+            z = 1 - ray/(steps*0.5);
+            if(!found){
+                for(int i = 0; i < MAX_PARTICLES; i++){
+                    if(!found){
+                        sum += 1/((uv.x-positions[i].x)*(uv.x-positions[i].x) + (uv.y-positions[i].y)*(uv.y-positions[i].y) + (z-positions[i].z)*(z-positions[i].z));
+                        if(sum >= threshold){
+                            found = true;
+                            float temp = 0;
+                            z = z*0.5 + 0.5;
+                            
+                            outColor = vec4(z*0.6,z*0.6,z*1.2,1.0);
+                        }
+                    }
+                }
+            }
+        }
+        
+        
+    }
+    
+    else{
+        outColor = vec4(0.0,0.0,0.0,1.0);
+    }
 }
+
+/*
+void main(void)
+{
+    vec2 uv = (gl_FragCoord.xy / vec2(width, height) -0.5)*2*(width/height);
+    float sum = 0;
+    float threshold = 4;
+    int stepSize = 20;
+    float z = -1;
+    bool found = false;
+    
+    for(int ray = 0; ray < stepSize; ++ray){ // Cast ray
+        if(!found){
+            z = ray/(stepSize/2) -1;
+            
+            for(int i = 0; i < MAX_PARTICLES; i++){
+                if(!found){
+                    sum += 1/((uv.x-positions[i].x)*(uv.x-positions[i].x) + (uv.y-positions[i].y)*(uv.y-positions[i].y) + (z-positions[i].z)*(z-positions[i].z));
+                    
+                    if(sum > threshold){ // Found blob
+                        // Calculate normals etc
+                        sum *= 0.0009;
+                        outColor = vec4(sum,sum,sum,1.0);
+                        found = true;
+                        break;
+                    }
+                }
+            }
+            sum = 0;
+        }
+    }
+    
+    if(!found)
+        outColor = vec4(0,0,0,1);
+    
+}
+*/
+
 
 /*
 void main()
 {
-    vec2 uv = gl_FragCoord.xy / vec2(width, height);
-	
-	uv -= 0.5;  //center it
-	uv *= 2.0;  //screen domain is now -1 to 1
-	uv.x *= width/height; //correct for aspect ratio by varying length of horizontal axis
+    vec2 uv = (gl_FragCoord.xy / vec2(width, height) -0.5)*2*(width/height);
+    float sum = 0;
+    float threshold = 0.2;
+    
+    for(int ray = 0; ray < 10; ++ray){
+        float z = ray/5 -1;
+        int outsideInside[3];
+        outsideInside[0] = 0;
+        outsideInside[1] = 0;
+        outsideInside[2] = 0;
+        
+        for(int i = 0; i < MAX_PARTICLES; i++){
+            
+            // vec3(uv, z) - At the end of the ray
+            float r = distance(vec3(uv,z), positions[i]);
+            //float temp = r * r * r * (r * (r * 6 - 15) + 10); // Bounding sphere
+            
+            if((r >= threshold) && (outsideInside[1] == 0)){ // Before blob
+                outsideInside[0] = i;
+            }
+            if(r < threshold){ // Inside blob
+                outsideInside[1] = i;
+            }
+            if((outsideInside[0] != 0) && (outsideInside[1] != 0)){ // Found an entry
+                sum += r;
+                outsideInside[0] = 0;
+                outsideInside[1] = 0;
+            }
+        }
+    }
+    
+    outColor = vec4(sum,sum,sum,1.0);
+}
 
-	// calc range-based per-pixel values
-	// subtract from length to make the ball bigger (every pixel closer)
-	// clamp to avoid negative distances and fucky values
-	// invert it so it's "closeness" to the ball
-	// raise to power to "sharpen" the edge of the ball (more sudden falloff from 1.0)
+*/
+/*
+void main()
+{
+    vec2 uv = (gl_FragCoord.xy / vec2(width, height) -0.5)*2*(width/height);
     float sum = 0;
     
     for(int i = 0; i < MAX_PARTICLES; i++){
-        sum += pow(1.0-clamp(length(uv-positions[i].xy)-0.02,0.0,1.5),stiffness);
+        // Replace with more efficient function?
+        sum += 1/((uv.x-positions[i].x)*(uv.x-positions[i].x) + (uv.y-positions[i].y)*(uv.y-positions[i].y));
     }
+    
+    float threshold = 4000;
 
-	// calculate colour
-	vec3 final = vec3(sum,sum,sum);
-	final.x = pow(sum,cfalloff);
-	final.y = pow(sum,cfalloff);
-	final.z = pow(sum,cfalloff);
-	
-	outColor = vec4(final,1.0);
+    if(sum >= threshold)
+        outColor = vec4(1.0,1.0,1.0,1.0);
+    else{
+        sum /= threshold;
+        //outColor = vec4(0.0,0.0,0.0,1.0);
+        outColor = vec4(sum,sum,sum,1.0);
+    }
+    
 }
 */
