@@ -78,7 +78,7 @@ void main()
                             float temp = 0;
                             z = z*0.5 + 0.5;
                             
-                            outColor = vec4(z*0.6,z*0.6,z*1.2,1.0);
+                            outColor = vec4(z*3.0,z*1.8,z*1.8,1.0);
                         }
                     }
                 }

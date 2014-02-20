@@ -20,9 +20,10 @@
 #include "Shader.h"
 #include "ParticleSystem.h"
 
+
 /*
     TODO:
-	* Send coordinates to shader using texture (Teodor)
+	* Send coordinates to shader using texture (Teodor) - NOPE! Chuck Testa
 	* Port code from MATLAB to ParticleSystem.cpp
     * Rotation from input affecting the view matrix
     * XML to load settings? Particle amount, resolution etc?
@@ -129,6 +130,7 @@ int main(int argc, char* argv[])
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     GLFWwindow* window = glfwCreateWindow(width, height, "OpenGL", NULL, NULL);
+
     glfwMakeContextCurrent(window);
     
     // Initialize GLEW
@@ -137,7 +139,7 @@ int main(int argc, char* argv[])
     
     // Initialize the particle system and have it load into buffers
     particleSystem.initParticleSystem();
-    
+
     // -----------------------------------
     // Create buffers
     // -----------------------------------

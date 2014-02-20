@@ -43,15 +43,20 @@ void ParticleSystem::initParticleSystem()
     //    Particles[i].pos.y = static_cast <float> (rand() % 1000) / static_cast <float> (500) -1;
     //    Particles[i].pos.z = static_cast <float> (rand() % 1000) / static_cast <float> (500) -1;
     //}
-
+	
 	int i = 0;
 	for(int xPos = 0; xPos < SIZE; xPos++){
 		for(int yPos = 0; yPos < SIZE; yPos++){
-			Particles[i].pos.x = xPos*DISTANCE - DISTANCE*SIZE/2;
-			Particles[i].pos.y = yPos*DISTANCE - DISTANCE*SIZE/2;
+			Particle tempParticle;
+			tempParticle.pos.x = xPos*DISTANCE - DISTANCE*SIZE/2;
+			tempParticle.pos.y = yPos*DISTANCE - DISTANCE*SIZE/2;
+			Particles.push_back(tempParticle);
 			i++;
 		} 
 	}
+
+	VoxelGrid::initVoxelGrid(this, 0.07);
+
 }
 
 void ParticleSystem::updateParticles(float deltaTime)

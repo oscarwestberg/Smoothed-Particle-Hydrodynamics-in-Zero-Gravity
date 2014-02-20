@@ -12,28 +12,21 @@
 #include <GL/glew.h>
 #include <glm/glm.hpp>
 #include <iostream>
+#include <vector>
+#include "Particle.h"
+#include "VoxelGrid.h"
 
 #define SIZE 12
 #define MAX_PARTICLES SIZE*SIZE
-
-struct Particle
-{
-    glm::vec3 pos;
-    glm::vec3 vel;
-	glm::vec3 pressureGradient;
-	glm::vec3 viscosity;
-	float density;
-	float pressure;
-};
 
 class ParticleSystem
 {   
 public:
     void initParticleSystem();
     void updateParticles(float DeltaTimeMillis);
-    
-    Particle Particles[MAX_PARTICLES];
-    
+    std::vector<Particle> Particles;
+    VoxelGrid voxelGrid;
+
 private:
 	void updateDensity();
 	void updatePressure();
