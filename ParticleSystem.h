@@ -22,10 +22,11 @@
 class ParticleSystem
 {   
 public:
+	std::vector<Particle> Particles;
+	VoxelGrid voxelGrid;
+
     void initParticleSystem();
     void updateParticles(float DeltaTimeMillis);
-    std::vector<Particle> Particles;
-    VoxelGrid voxelGrid;
 
 private:
 	void updateDensity();

@@ -33,8 +33,6 @@ const float	boxRight = 0.3;
 const float	boxTop = 0.3;
 const float	boxBottom = -0.3;
 
-
-
 void ParticleSystem::initParticleSystem()
 {
     // Give all the particles an initial value
@@ -55,7 +53,7 @@ void ParticleSystem::initParticleSystem()
 		} 
 	}
 
-	VoxelGrid::initVoxelGrid(this, 0.07);
+	voxelGrid.initVoxelGrid(Particles, 0.07);
 
 }
 

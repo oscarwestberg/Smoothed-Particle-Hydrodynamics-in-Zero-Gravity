@@ -12,7 +12,9 @@ struct Voxel{
 };*/
 
 // IMPLEMENTATION
-int getHash(const Particle& particle, float voxel_width);
+int getHash(const Particle& particle, float voxel_width){
+	return 0;
+}
 
 void VoxelGrid::initVoxelGrid(const std::vector<Particle> &Particles, float H) {
 	// Every voxel is 2H*2H*2H
@@ -23,7 +25,7 @@ void VoxelGrid::initVoxelGrid(const std::vector<Particle> &Particles, float H) {
 	// Ta in positions dela med storleken på voxeln, (2*H)
 	int voxelIndex;
 	for(int i = 0; i < Particles.size(); i++) {
-		voxelIndex = getHash(Particles[i], voxel_width);
+		//voxelIndex = getHash(Particles[i], voxel_width);
 		Voxel[voxelIndex].push_back(Particles[i]);
 	}
 
