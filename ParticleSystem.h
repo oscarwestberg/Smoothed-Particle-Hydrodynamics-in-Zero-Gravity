@@ -13,7 +13,6 @@
 #include <glm/glm.hpp>
 #include <iostream>
 #include <vector>
-#include "Particle.h"
 #include "VoxelGrid.h"
 
 #define SIZE 12

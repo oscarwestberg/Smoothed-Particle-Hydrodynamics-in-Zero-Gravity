@@ -3,41 +3,13 @@
 #include <vector>
 #include <map>
 
-/*
-struct Voxel{
-	// En voxel
-	int VOXEL_SIZE;
-	std::vector<glm::vec3> contents;
-
-};*/
-
-// IMPLEMENTATION
-int getHash(const Particle& particle, float voxel_width){
-	return 0;
-}
-
-void VoxelGrid::initVoxelGrid(const std::vector<Particle> &Particles, float H) {
-	// Every voxel is 2H*2H*2H
-	// Create a ID for every voxel 
-	
-	// Hasha skiten 
-	// Om voxeln inte finns så gör en ny
-	// Ta in positions dela med storleken på voxeln, (2*H)
-	int voxelIndex;
-	for(int i = 0; i < Particles.size(); i++) {
-		//voxelIndex = getHash(Particles[i], voxel_width);
-		Voxel[voxelIndex].push_back(Particles[i]);
-	}
-
-}
-
-int getHash(const Particle& particle , float voxel_width) {
+int getHash(const Particle& particle , float voxelwidth) {
 	// http://stackoverflow.com/questions/20286179/voxel-unique-id-in-3d-space
 		
 	// Fick feeling, nu kör vi!
-	int x = floor(particle.pos.x/voxel_width);
-	int y = floor(particle.pos.y/voxel_width);
-	int z = floor(particle.pos.z/voxel_width);
+	int x = ceil(particle.pos.x/voxelwidth);
+	int y = ceil(particle.pos.y/voxelwidth);
+	int z = ceil(particle.pos.z/voxelwidth);
 	// z * width * height + y * width + x
 		
 	int rx = x;
@@ -48,6 +20,27 @@ int getHash(const Particle& particle , float voxel_width) {
 
 	return hashed;
 	//return glm::vec3(floor(position.x/voxel_width), floor(position.y/voxel_width), floor(position.z/voxel_width));
+}
+
+void VoxelGrid::initVoxelGrid(const std::vector<Particle> &Particles, float H) {
+	VOXEL_WIDTH = 0.07*2.0;
+	// Every voxel is 2H*2H*2H
+	// Create a ID for every voxel 
+	
+	// Hasha skiten 
+	// Om voxeln inte finns så gör en ny
+	// Ta in positions dela med storleken på voxeln, (2*H)
+	int voxelIndex;
+	int particlesUsed = 0;
+
+	for(int i = 0; i < Particles.size(); i++) {
+		voxelIndex = getHash(Particles[i], VOXEL_WIDTH);
+		Voxel[voxelIndex].push_back(Particles[i]);
+		indexCounter[voxelIndex] = indexCounter[voxelIndex] + 1;
+	}
+
+
+	std::cout << "hej" << std::endl;
 }
 /*
 void changeVoxel() {

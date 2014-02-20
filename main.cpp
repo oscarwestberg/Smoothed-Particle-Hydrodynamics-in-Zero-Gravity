@@ -19,6 +19,7 @@
 #include <glm/gtc/type_ptr.hpp>
 #include "Shader.h"
 #include "ParticleSystem.h"
+//#include "VoxelGrid.h"
 
 
 /*
@@ -86,6 +87,36 @@ void update()
     glUniformMatrix4fv(uniProj, 1, GL_FALSE, glm::value_ptr(proj));
 }
 
+/*
+void renderVoxels(){
+	int MAX = 50;
+	VoxelGrid vg;
+	vg.indexCounter;
+			
+	for(std::map<int, int>::iterator iter = vg.indexCounter.begin(); iter != vg.indexCounter.end(); iter++){
+       // cout << (*iter).first << " is " << (*iter).second << endl;
+    
+		glBegin(GL_QUADS);
+			// UNHASHA
+			// Punkt ett i x: (unhashedx - 1)*voxelwidth; 
+			// Punkt två i x: unhashedx*voxelwidth;
+			// Samma med y (och z)
+			int hashed = (*iter).first;
+			
+			float x1 = (*iter).second;
+			float x2 = 2;
+			float y1 = 1;
+			float y2 = 2;
+
+			glVertex3f(x1, y1, 0.0);
+			glVertex3f(x2, y1, 0.0);
+			glVertex3f(x1, y2, 0.0);
+			glVertex3f(x2, y2, 0.0);
+
+			glColor3d((GLdouble)(*iter).second/MAX, (GLdouble)0.2, (GLdouble)(1.0 - (*iter).second/MAX));
+		glEnd();
+	}
+}*/
 // Draw to the buffer and give vertices colors
 void render()
 {
