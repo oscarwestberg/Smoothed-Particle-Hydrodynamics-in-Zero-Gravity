@@ -1,0 +1,149 @@
+\documentclass[a4paper,12pt,twoside]{report}
+
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+
+\usepackage{times}  
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{theorem}
+\usepackage{latexsym}
+\usepackage{url}
+\usepackage{babel}
+
+\headsep          0.25in
+\headheight       12pt
+\setlength{\topmargin}{-\headsep}
+\addtolength{\topmargin}{-\headheight}
+\oddsidemargin      0in
+\evensidemargin     0in
+\setlength{\textwidth}{\paperwidth}
+\addtolength{\textwidth}{-2.0in}
+\setlength{\textheight}{\paperheight}
+\addtolength{\textheight}{-2.0in}
+\addtolength{\textheight}{-1\topskip}
+\divide\textheight  by \baselineskip
+\multiply\textheight  by \baselineskip
+\addtolength{\textheight}{\topskip}
+
+\renewcommand{\contentsname}
+{Table of contents}
+
+\begin{document}
+
+\pagestyle{plain}
+
+%----------------------------- Front matter of the document
+
+\title{Smoothed Particle Hydrodynamics in Zero Gravity}
+\author{Oscar Westberg, Teodor Vik, Mikael Zackrisson, Anton Österblad}
+%\date{February 27, 2014}
+\maketitle
+
+\tableofcontents  % chapter with the table of contents
+\addtocontents{toc}{\protect\thispagestyle{empty}}
+\listoffigures    % chapter with the list of figures
+\addtocontents{lof}{\protect\thispagestyle{empty}}
+\listoftables     % chapter with the list of tables
+\addtocontents{lot}{\protect\thispagestyle{empty}}
+
+
+%----------------------------- Body of the document
+
+\chapter{Introduction}
+\setcounter{page}{1}
+
+
+%----------------------------- Background
+\section{Background}
+
+SOS!
+The tiger took my family!
+
+\begin{itemize}
+\item 1
+\item 2
+\end{itemize}
+
+% \cite{AbTaRu:54},  \cite{Abl:56}, \cite{Keo:58} \cite{Pow:85}
+
+
+%----------------------------- Purpose
+\section{Purpose}
+
+...
+
+
+\chapter{Method}
+
+Fin tabell!
+\begin{table}[htbp]
+  \caption{Heading centred.}
+  \label{table_example}
+  \begin{tabular*}{\hsize}{lllll}
+\hline
+Xxxxx & Xxxxx & Xxxx & Xxxxx & Xxxxx \\
+      &       &      &       & xxxx  \\
+\hline
+X     & X     &      & XXX   &       \\
+XX    & XXX   & XX   & X     & XX    \\
+XXX   & X     & X    & XXX   & XXX   \\
+XXXX  & XX    &      & XX    & X     \\
+X XX  & XXX   & XX   & XXX   & XXXXX \\
+\hline
+  \end{tabular*}
+\end{table}
+
+%----------------------------- Research
+\section{Research}
+
+...
+
+
+%----------------------------- Mathematical models
+\section{Mathematical models}
+
+...
+
+%----------------------------- Physical formulas
+\section{Physical formulas}
+
+Navier-Stokes, typ
+
+\begin{equation}
+\frac{\partial \overrightarrow v}{\partial t} + ({\overrightarrow v}\cdot{\overrightarrow \nabla}){\overrightarrow v} = \frac{-\overrightarrow \nabla \rho}{\rho_m} + \frac{\mu}{\rho_m}{ \nabla^2}{\overrightarrow v} + \frac{\overrightarrow f_{ext}}{\rho_m} \end{equation}
+
+Lite låtsas ekvationer
+
+\begin{equation}
+\frac{\partial(\rho \overrightarrow{u})}{\partial t} + \overrightarrow{\nabla}\cdot[\rho\overline{\overline{u\otimes u}}] = -\overrightarrow{\nabla p} + \overrightarrow{\nabla}\cdot\overline{\overline{\tau}} + \rho\overrightarrow{f} \end{equation}
+\begin{equation}
+\frac{\partial(\rho e)}{\partial t} + \overrightarrow{\nabla}\cdot((\rho e + p)\overrightarrow{u}) = \overrightarrow{\nabla}\cdot(\overline{\overline{\tau}}\cdot\overrightarrow{u}) + \rho\overrightarrow{f}\overrightarrow{u} + \overrightarrow{\nabla}\cdot(\overrightarrow{\dot{q}})+r \end{equation}
+
+\newpage{}
+
+%----------------------------- Implementation
+\section{Implementation}
+
+Matlab und C++ mit OpenGL
+
+\subsection{Extra}
+
+%----------------------------- Result
+\chapter{Result}
+
+...
+
+
+%----------------------------- Conclusion and discussion
+\chapter{Conclusion and discussion}
+
+...
+
+%Attachments
+%Description of software and hardware requirements
+%Manual, how to run the program
+
+
+\end{document}
