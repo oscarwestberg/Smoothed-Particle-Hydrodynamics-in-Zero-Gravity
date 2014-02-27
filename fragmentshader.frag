@@ -10,7 +10,7 @@
 
 #define width 800
 #define height 600
-#define MAX_PARTICLES 10*10
+#define MAX_PARTICLES 12*12
 
 
 uniform vec3[MAX_PARTICLES] positions;

@@ -31,7 +31,7 @@ const float SMOOTHING_KERNAL_CONST = PARTICLE_MASS*1.5675/std::powf(H,9);
 const float SMOOTHING_GRADIENT_CONST = PARTICLE_MASS*14.3312/std::powf(H,6);
 
 // Bounding box
-const float BOX_SIZE = 0.4;
+const float BOX_SIZE = 0.3;
 
 
 
@@ -115,8 +115,8 @@ void ParticleSystem::updateDensityWithBuckets() {
 	for(int j = 0; j < MAX_PARTICLES; j++) {
 		float temp_density_sum = 0;
 		std::vector<int> listOfParticleIds = voxelGrid.GetNearby(Particles[j]); 
-		for(std::vector<int>::iterator it = listOfParticleIds.begin(); it != listOfParticleIds.end(); it++) {
-			glm::vec3 temp_dist = Particles[j].pos - Particles[*it].pos;
+		for(int it = 0; it < listOfParticleIds.size(); it++) {
+			glm::vec3 temp_dist = Particles[j].pos - Particles[listOfParticleIds[it]].pos;
 			if(glm::length(temp_dist)<H){
 				float dist = glm::length(temp_dist);
 				temp_density_sum += SMOOTHING_KERNAL_CONST*std::powf((std::powf(H,2) - std::powf(dist,2)),3);
