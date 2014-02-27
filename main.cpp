@@ -39,6 +39,7 @@
 GLuint shaderProgram;
 glm::vec2 velocity;
 float previousTime = 0;
+float mouseTimer = 0;
 const float width = 800, height = 600;
 ParticleSystem particleSystem;
 
@@ -84,6 +85,18 @@ void update()
     glm::mat4 proj = glm::perspective(45.0f, width / height, 0.1f, 20.0f);
     GLint uniProj = glGetUniformLocation(shaderProgram, "P");
     glUniformMatrix4fv(uniProj, 1, GL_FALSE, glm::value_ptr(proj));
+}
+
+void mousePressed(GLFWwindow* window){
+    double x = 0, y = 0;
+    float time = (float)glfwGetTime();
+	float deltaTime = time-mouseTimer;
+    
+	if(deltaTime > 1/10){
+        glfwGetCursorPos(window, &x,&y);
+		particleSystem.mouseInput(x,y, width, height);
+		mouseTimer = time;
+	}
 }
 
 /*
@@ -240,6 +253,8 @@ int main(int argc, char* argv[])
             velocity.x += 1;
         if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
             velocity.x -= 1;
+        if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)
+            mousePressed(window);
         
         glfwPollEvents();
         update();
