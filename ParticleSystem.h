@@ -15,7 +15,7 @@
 #include <vector>
 #include "VoxelGrid.h"
 
-#define SIZE 12
+#define SIZE 10
 #define MAX_PARTICLES SIZE*SIZE
 
 class ParticleSystem

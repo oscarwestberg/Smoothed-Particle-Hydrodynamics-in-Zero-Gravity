@@ -10,7 +10,7 @@
 
 #define width 800
 #define height 600
-#define MAX_PARTICLES 12*12
+#define MAX_PARTICLES 10*10
 
 
 uniform vec3[MAX_PARTICLES] positions;
@@ -51,7 +51,7 @@ if not, decrease z value for a reasonable stepSize until we find a value bigger 
 
 void main()
 {
-    vec2 uv = (gl_FragCoord.xy / vec2(width, height) -0.5)*2*(width/height)*0.5;
+    vec2 uv = (gl_FragCoord.xy / vec2(width, height) -0.5)*2*(width/height)*0.4;
     float sum = 0;
     bool found = false;
     float z = 1;
@@ -92,6 +92,7 @@ void main()
         outColor = vec4(0.0,0.0,0.0,1.0);
     }
 }
+
 
 /*
 void main(void)

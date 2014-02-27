@@ -60,13 +60,9 @@ void VoxelGrid::Setup(float scenewidth, float sceneheight, float particleH) {
 
 void VoxelGrid::RegisterObject(const Particle& particle, int particleId)
 {
- /*   std::list<int> cellIds = GetIdForObj(particle);
-
-	for(std::list<int>::iterator it = cellIds.begin(); it != cellIds.end(); it++){
-		Buckets[*it].push_back(particle);
-	}*/
 		int cellId = (int)(floor((particle.pos.x + (sceneWidth/2))/ (cellSize)) + (floor((particle.pos.y + (sceneHeight/2))/ (cellSize) ) * columns )); 
 		Buckets[cellId].push_back(particleId);
+
 }
 
 void VoxelGrid::ClearBuckets() {
