@@ -57,22 +57,21 @@ void ParticleSystem::initParticleSystem()
 		} 
 	}
 		
-	voxelGrid.Setup(0.6, 0.6, H);
+	voxelGrid.Setup(BOX_SIZE*2, BOX_SIZE*2, H);
 }
 
 void ParticleSystem::updateParticles(float deltaTime)
 {
 	for(int i = 0; i < MAX_PARTICLES; i++){
 		voxelGrid.RegisterObject(Particles[i]);
-
 	}	
 	
-	updateDensityWithBuckets();
+	//updateDensityWithBuckets();
 	//updatePressureWithBuckets();
 	//updatePressureGradientWithBuckets();
 	//updateViscosityWithBuckets();
 	
-	//updateDensity();
+	updateDensity();
 	updatePressure();	
 	updatePressureGradient();
 	updateViscosity();
