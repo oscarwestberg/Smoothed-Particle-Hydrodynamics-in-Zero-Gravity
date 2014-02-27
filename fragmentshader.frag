@@ -10,14 +10,14 @@
 
 #define width 800
 #define height 600
-#define MAX_PARTICLES 12*12
+#define MAX_PARTICLES 20*20
 
 uniform vec3[MAX_PARTICLES] positions;
 
 out vec4 outColor;
 void main()
 {
-    vec2 uv = (gl_FragCoord.xy / vec2(width, height) -0.5)*2*(width/height);
+    vec2 uv = (gl_FragCoord.xy / vec2(width, height) -0.5)*2*(width/height)*0.5;
     float sum = 0;
     vec4 color = vec4(0.0,0.0,0.9, 1.0);
     vec4 ambientColor = vec4(0.3,0.3,0.3,1.0);

@@ -47,7 +47,8 @@ std::list<int> VoxelGrid::AddBucket(glm::vec2 vector,float w,std::list<int> buck
 void VoxelGrid::Setup(float scenewidth, float sceneheight, float particleH) {
 	H = particleH;
 	//columns = (int)ceil(scenewidth / (H*2));
-   // rows = (int)ceil(sceneheight / (H*2));
+    //rows = (int)ceil(sceneheight / (H*2));
+	std::cout << (int)floor(sceneheight / (H*2)) << std::endl;
 	sceneWidth = scenewidth;
     sceneHeight = sceneheight;
 	cellSize = sceneHeight/rows;
@@ -57,19 +58,23 @@ void VoxelGrid::Setup(float scenewidth, float sceneheight, float particleH) {
 	}
 
 	for(int buckets = 0; buckets < rows*columns; buckets++)
-		for(int particleIds = 0; particleIds < 32; particleIds++)
-			Buckets[buckets][particleIds] = -1;
+		for(int particles = 0; particles < maxParticlesInCell; particles++)
+			Buckets[buckets][particles] = -1;
 }
 
 void VoxelGrid::RegisterObject(const Particle& particle, int particleId)
 {
 		int cellId = (int)(floor((particle.pos.x + (sceneWidth/2))/ (cellSize)) + (floor((particle.pos.y + (sceneHeight/2))/ (cellSize) ) * columns )); 
-		
-		if(particleCounter[cellId] < 50){
-			Buckets[cellId][particleCounter[cellId]] = particleId;
-			particleCounter[cellId]++;
-		}
 
+
+		if(cellId >= 0 && cellId < rows*columns){
+				Buckets[cellId][particleCounter[cellId]] = particleId;
+				particleCounter[cellId]++;
+		}
+		else
+		{
+			std::cout << "Particle outside of cellGrid. wtf to do?" << std::endl;
+		}
 }
 
 void VoxelGrid::ClearBuckets() {
@@ -79,11 +84,11 @@ void VoxelGrid::ClearBuckets() {
 	}
 
 	for(int buckets = 0; buckets < rows*columns; buckets++)
-		for(int particleIds = 0; particleIds < 32; particleIds++)
-			Buckets[buckets][particleIds] = -1;
+		for(int particles = 0; particles < maxParticlesInCell; particles++)
+			Buckets[buckets][particles] = -1;
 }
 
-std::vector<int> VoxelGrid::GetNearby(const Particle& particle) {
+int* VoxelGrid::GetNearby(const Particle& particle) {
 	
 	int bucketIds[4];
 
@@ -92,16 +97,29 @@ std::vector<int> VoxelGrid::GetNearby(const Particle& particle) {
 	bucketIds[2] = (int)( (floor((particle.pos.x - cellSize/2 + sceneWidth/2)/ (cellSize))) + (floor((particle.pos.y - cellSize/2 + sceneWidth/2) / (cellSize))) * columns );
 	bucketIds[3] = (int)( (floor((particle.pos.x - cellSize/2 + sceneWidth/2)/ (cellSize))) + (floor((particle.pos.y + cellSize/2 + sceneWidth/2) / (cellSize))) * columns );
 
-	std::vector<int> particleIds;
+	for(int i = 0; i < kernelParticles; i++){
+		particleIds[i] = -1;
+	}
+
+	int *pointer;
+	pointer = particleIds;
+	int counter = 0;
 
 	for(int i = 0; i < 4; i++){
-		if(bucketIds[i] >= 0 && bucketIds[i] < rows*columns){
+		if(bucketIds[i] >= 0 && bucketIds[i] <= rows*columns){
 			for(int j = 0; j < particleCounter[bucketIds[i]]; j++){
-				particleIds.push_back(Buckets[bucketIds[i]][j]);
+				particleIds[counter] = Buckets[bucketIds[i]][j];
+				counter++;
+				if(counter >= kernelParticles){
+					//std::cout << "counter exceeded " << kernelParticles << std::endl;
+					//std::cout << counter << std::endl;
+					return pointer;
+				}
+				//particleIds.push_back(Buckets[bucketIds[i]][j]);
 			}
 		}
 		//objects.insert(objects.end(), Buckets[bucketIds[i]].begin(), Buckets[bucketIds[i]].end());
 	}
-
-	return particleIds;   
+	//std::cout << counter << std::endl;
+	return pointer; 
 }

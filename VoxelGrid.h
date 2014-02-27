@@ -12,10 +12,12 @@ class VoxelGrid
 		float cellSize;
 		float sceneWidth;
 		float sceneHeight;
-		static const int rows = 4;
-		static const int columns = 4;
+		static const int rows = 10;
+		static const int columns = 10;
 		int particleCounter[rows*columns];
 		float H;
+		static const int maxParticlesInCell = 100;
+		static const int kernelParticles = 70;
 
 		void getNeighbors();
 		void Setup(float scenewidth, float sceneheight, float cellsize);
@@ -47,13 +49,14 @@ class VoxelGrid
 		};
 		*/
 
-		std::vector<int> GetNearby(const Particle& particle);
+		int* GetNearby(const Particle& particle);
 		
 		// std::map<int, std::vector<Particle>> Voxel;
 		std::map<int, int> indexCounter;
 		//std::map<int  , std::vector<int>> Buckets;
 
-		int Buckets[rows*columns][50];
+		int Buckets[rows*columns][maxParticlesInCell];
+		int particleIds[kernelParticles];
 
 	//	std::vector<int> Buckets[9];
 		
