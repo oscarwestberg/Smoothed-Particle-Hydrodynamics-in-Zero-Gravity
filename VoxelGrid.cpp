@@ -51,10 +51,6 @@ void VoxelGrid::Setup(float scenewidth, float sceneheight, float particleH) {
 	sceneWidth = scenewidth;
     sceneHeight = sceneheight;
 	cellSize = sceneHeight/rows;
-
-	for(int i = 0; i < rows*columns; i++){
-		Buckets[i] = std::vector<int>(0);	
-	}
 }
 
 void VoxelGrid::RegisterObject(const Particle& particle, int particleId)
@@ -66,41 +62,8 @@ void VoxelGrid::RegisterObject(const Particle& particle, int particleId)
 
 void VoxelGrid::ClearBuckets() {
 	Buckets.clear();
-
-	for (int i = 0; i < columns*rows; i++) {
-		Buckets[i];
-	}
 }
 
-/*
-std::list<int> VoxelGrid::GetIdForObj(const Particle& particle){
-	std::list<int> bucketsObjIsIn;
-    H = 0.07;
-	glm::vec2 min = glm::vec2(
-		particle.pos.x - H,
-		particle.pos.y - H);   
-	glm::vec2 max = glm::vec2(
-		particle.pos.x + H,
-		particle.pos.y + H);
-
-	//	float width = sceneWidth / cellSize;
-	float width = 0.8/0.07;  
-	
-	//TopLeft
-	bucketsObjIsIn = AddBucket(min, width, bucketsObjIsIn);
-
-	//TopRight
-	bucketsObjIsIn = AddBucket(glm::vec2(max.x, min.y), width, bucketsObjIsIn);
-
-	//BottomRight
-	bucketsObjIsIn = AddBucket(glm::vec2(max.x, max.y), width, bucketsObjIsIn);
-	
-	//BottomLeft
-	bucketsObjIsIn = AddBucket(glm::vec2(min.x, max.y), width, bucketsObjIsIn);
-	
-	return bucketsObjIsIn;    
-}
-*/
 std::vector<int> VoxelGrid::GetNearby(const Particle& particle) {
 	std::vector<int> objects;
 	
@@ -112,9 +75,7 @@ std::vector<int> VoxelGrid::GetNearby(const Particle& particle) {
 	bucketIds[3] = (int)( (floor((particle.pos.x - cellSize/2 + sceneWidth/2)/ (cellSize))) + (floor((particle.pos.y + cellSize/2 + sceneWidth/2) / (cellSize))) * columns );
 
 	for(int i = 0; i < 4; i++){
-		for(std::vector<int>::iterator itBucket = Buckets[bucketIds[i]].begin(); itBucket != Buckets[bucketIds[i]].end(); itBucket++){
-			objects.push_back((*itBucket));
-		}				
+		objects.insert(objects.end(), Buckets[bucketIds[i]].begin(), Buckets[bucketIds[i]].end());
 	}
 
 	return objects;   
