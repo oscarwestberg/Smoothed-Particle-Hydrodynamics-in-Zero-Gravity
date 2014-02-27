@@ -19,11 +19,11 @@ const float DISTANCE = 0.03;
 const float PARTICLE_MASS = 0.05;
 const float IDEAL_DENSITY = 1000;
 const float GRAVITY = -9.82;
-const float VISCOSITY_CONST = 20;
+const float VISCOSITY_CONST = 5;
 const float SURFACE_TENSION = 0.003;
 const float TENSION_THRESHOLD = 12;
-const float STIFFNESS = 4;
-const float H = 0.09;
+const float STIFFNESS = 3.5;
+const float H = 0.07;
 const bool ZEROGRAVITY = false;
 
 // Pre calculated stuff
@@ -31,7 +31,7 @@ const float SMOOTHING_KERNAL_CONST = PARTICLE_MASS*1.5675/std::powf(H,9);
 const float SMOOTHING_GRADIENT_CONST = PARTICLE_MASS*14.3312/std::powf(H,6);
 
 // Bounding box
-const float BOX_SIZE = 0.3;
+const float BOX_SIZE = 0.2;
 
 
 
