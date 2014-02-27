@@ -2,36 +2,55 @@
 #include <glm/glm.hpp>
 #include <iostream>
 #include <vector>
+#include <list>
 #include <map>
 #include "Particle.h"
 
-//#define MAX_PARTICLES 100
 class VoxelGrid
 {   
-	public:
-		
-		float VOXEL_WIDTH;
-		
-		friend void renderVoxels();
+	public:		
+		float cellSize;
+		float sceneWidth;
+		float sceneHeight;
+		int rows;
+		int columns;
+		float H;
 
-		void initVoxelGrid(const std::vector<Particle> &Particles, float H);		
-		int getHash(const Particle& particle, float voxelwidth){
-			int x = floor(particle.pos.x/voxelwidth);
-			int y = floor(particle.pos.y/voxelwidth);
-			int z = floor(particle.pos.z/voxelwidth);
+		void getNeighbors();
+		void Setup(float scenewidth, float sceneheight, float cellsize);
+		std::list<int> AddBucket(glm::vec2 vector,float width, std::list<int> buckettoaddto); //,std::list<int> buckettoaddto
+		void RegisterObject(const Particle& particle);
+		void ClearBuckets();
+
+		std::list<int> GetIdForObj(const Particle& particle);
+
+		/*
+		int getHash(const Particle& particle){
+			int gridShift = 50;
+			int height = 100;
+			// Fick feeling, nu kör vi!
+			int x = ceil(particle.pos.x/cellSize) + gridShift;
+			int y = ceil(particle.pos.y/cellSize) * 100 + gridShift;
+			int z = ceil((particle.pos.z/cellSize) * 100 * 100 + gridShift);
 			// z * width * height + y * width + x
-		
+			
+			/*
 			int rx = x;
 			int ry = y << 10;
 			int rz = z << 20;
-	
-			int hashed = rx + ry + rz;
+			*/
+		/*		int hashed = x + y;// + z;
+			//int hashed = rx + ry + rz;
 
 			return hashed;
 		};
+		*/
+
+		std::list<Particle> GetNearby(const Particle& particle);
 		
-		std::map<int, std::vector<Particle>> Voxel;
+		// std::map<int, std::vector<Particle>> Voxel;
 		std::map<int, int> indexCounter;
+		std::map<int  , std::list<Particle>> Buckets;
 		
 	private:
 

@@ -2,28 +2,9 @@
 #include "VoxelGrid.h"
 #include <vector>
 #include <map>
-
-int getHash(const Particle& particle , float voxelwidth) {
-	// http://stackoverflow.com/questions/20286179/voxel-unique-id-in-3d-space
-		
-	// Fick feeling, nu kör vi!
-	int x = ceil(particle.pos.x/voxelwidth);
-	int y = ceil(particle.pos.y/voxelwidth);
-	int z = ceil(particle.pos.z/voxelwidth);
-	// z * width * height + y * width + x
-		
-	int rx = x;
-	int ry = y << 10;
-	int rz = z << 20;
-	
-	int hashed = rx + ry + rz;
-
-	return hashed;
-	//return glm::vec3(floor(position.x/voxel_width), floor(position.y/voxel_width), floor(position.z/voxel_width));
-}
-
+#include <cmath>
+/*
 void VoxelGrid::initVoxelGrid(const std::vector<Particle> &Particles, float H) {
-	VOXEL_WIDTH = 0.07*2.0;
 	// Every voxel is 2H*2H*2H
 	// Create a ID for every voxel 
 	
@@ -34,40 +15,112 @@ void VoxelGrid::initVoxelGrid(const std::vector<Particle> &Particles, float H) {
 	int particlesUsed = 0;
 
 	for(int i = 0; i < Particles.size(); i++) {
-		voxelIndex = getHash(Particles[i], VOXEL_WIDTH);
+		voxelIndex = getHash(Particles[i]);
 		Voxel[voxelIndex].push_back(Particles[i]);
 		indexCounter[voxelIndex] = indexCounter[voxelIndex] + 1;
 	}
 
 
 	std::cout << "hej" << std::endl;
-}
-/*
-void changeVoxel() {
-	
-	int voxelIndex = getHash(position, voxel_width);
-	addParticleInVoxel(voxelIndex);
-	removeParticleInVoxel(voxelIndex);
-
-}
-
-// Add a particle to a voxel
-void addParticleInVoxel(int voxelIndex) {
-	Voxel[voxelIndex].push_back(particle);  
-}
-
-// Remove a particle from a voxel
-void removeParticleInVoxel(int voxelIndex) {
-	std::map<int, std::vector<glm::Particles>>::iterator tempVoxel;
-
-	tempVoxel = Voxel.find(voxelIndex);
-	if (tempVoxel != Voxel.end()) {
-		vector<Particles> tempVec = Voxel[voxelIndex];
-		
-		item = particle;
-		
-		tempVec.erase(std::find(vector.begin(), vector.end(), item)!=vector.end());
-
-		Voxel[voxelIndex] = tempVec;
-	}
 }*/
+
+
+/*void clearVoxelGrid(){}*/
+
+std::list<int> VoxelGrid::AddBucket(glm::vec2 vector,float w,std::list<int> buckettoaddto)
+{  
+	//double cellSize = 0.07;
+	//float width = 2;
+
+	// Här måste det fixaS! Dela med cellsize ist för 0.07
+    int cellPosition = (int)( (floor(vector.x / 0.07)) + (floor(vector.y / 0.07)) * w );
+
+	std::list<int>::iterator it = std::find(buckettoaddto.begin(), buckettoaddto.end(), cellPosition);
+
+	if(it == buckettoaddto.end()){
+		buckettoaddto.insert(buckettoaddto.end(), cellPosition);
+	}
+	
+	return buckettoaddto;
+}
+
+void VoxelGrid::Setup(float scenewidth, float sceneheight, float particleH) {
+	H = particleH;
+	columns = (int)floor(scenewidth / (H*2));
+    rows = (int)floor(sceneheight / (H*2));
+	sceneWidth = scenewidth;
+    sceneHeight = sceneheight;
+
+	cellSize = sceneHeight/rows;
+	
+    for (int i = 0; i < columns*rows; i++) {
+        Buckets[i];
+    }
+}
+
+void VoxelGrid::RegisterObject(const Particle& particle)
+{
+ /*   std::list<int> cellIds = GetIdForObj(particle);
+
+	for(std::list<int>::iterator it = cellIds.begin(); it != cellIds.end(); it++){
+		Buckets[*it].push_back(particle);
+	}*/
+		int cellId = (int)(floor((particle.pos.x + (sceneWidth/2))/ (cellSize)) + (floor((particle.pos.y + (sceneHeight/2))/ (cellSize) ) * columns )); 
+		Buckets[cellId].push_back(particle);
+}
+
+void VoxelGrid::ClearBuckets() {
+	Buckets.clear();
+
+	for (int i = 0; i < columns*rows; i++) {
+		Buckets[i];
+	}
+}
+
+/*
+std::list<int> VoxelGrid::GetIdForObj(const Particle& particle){
+	std::list<int> bucketsObjIsIn;
+    H = 0.07;
+	glm::vec2 min = glm::vec2(
+		particle.pos.x - H,
+		particle.pos.y - H);   
+	glm::vec2 max = glm::vec2(
+		particle.pos.x + H,
+		particle.pos.y + H);
+
+	//	float width = sceneWidth / cellSize;
+	float width = 0.8/0.07;  
+	
+	//TopLeft
+	bucketsObjIsIn = AddBucket(min, width, bucketsObjIsIn);
+
+	//TopRight
+	bucketsObjIsIn = AddBucket(glm::vec2(max.x, min.y), width, bucketsObjIsIn);
+
+	//BottomRight
+	bucketsObjIsIn = AddBucket(glm::vec2(max.x, max.y), width, bucketsObjIsIn);
+	
+	//BottomLeft
+	bucketsObjIsIn = AddBucket(glm::vec2(min.x, max.y), width, bucketsObjIsIn);
+	
+	return bucketsObjIsIn;    
+}
+*/
+std::list<Particle> VoxelGrid::GetNearby(const Particle& particle) {
+	std::list<Particle> objects;
+	
+	int bucketIds[4];
+
+	bucketIds[0] = (int)( (floor((particle.pos.x + cellSize/2 + sceneWidth/2)/ (cellSize))) + (floor((particle.pos.y + cellSize/2 + sceneWidth/2) / (cellSize))) * columns );
+	bucketIds[1] = (int)( (floor((particle.pos.x + cellSize/2 + sceneWidth/2)/ (cellSize))) + (floor((particle.pos.y - cellSize/2 + sceneWidth/2) / (cellSize))) * columns );
+	bucketIds[2] = (int)( (floor((particle.pos.x - cellSize/2 + sceneWidth/2)/ (cellSize))) + (floor((particle.pos.y - cellSize/2 + sceneWidth/2) / (cellSize))) * columns );
+	bucketIds[3] = (int)( (floor((particle.pos.x - cellSize/2 + sceneWidth/2)/ (cellSize))) + (floor((particle.pos.y + cellSize/2 + sceneWidth/2) / (cellSize))) * columns );
+
+	for(int i = 0; i < 4; i++){
+		for(std::list<Particle>::iterator itBucket = Buckets[bucketIds[i]].begin(); itBucket != Buckets[bucketIds[i]].end(); itBucket++){
+			objects.push_back((*itBucket));
+		}				
+	}
+
+	return objects;   
+}
