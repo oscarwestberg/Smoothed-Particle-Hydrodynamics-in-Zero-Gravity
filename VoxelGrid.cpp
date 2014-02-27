@@ -58,7 +58,7 @@ void VoxelGrid::Setup(float scenewidth, float sceneheight, float particleH) {
     }
 }
 
-void VoxelGrid::RegisterObject(const Particle& particle)
+void VoxelGrid::RegisterObject(const Particle& particle, int particleId)
 {
  /*   std::list<int> cellIds = GetIdForObj(particle);
 
@@ -66,7 +66,7 @@ void VoxelGrid::RegisterObject(const Particle& particle)
 		Buckets[*it].push_back(particle);
 	}*/
 		int cellId = (int)(floor((particle.pos.x + (sceneWidth/2))/ (cellSize)) + (floor((particle.pos.y + (sceneHeight/2))/ (cellSize) ) * columns )); 
-		Buckets[cellId].push_back(particle);
+		Buckets[cellId].push_back(particleId);
 }
 
 void VoxelGrid::ClearBuckets() {
@@ -106,8 +106,8 @@ std::list<int> VoxelGrid::GetIdForObj(const Particle& particle){
 	return bucketsObjIsIn;    
 }
 */
-std::list<Particle> VoxelGrid::GetNearby(const Particle& particle) {
-	std::list<Particle> objects;
+std::list<int> VoxelGrid::GetNearby(const Particle& particle) {
+	std::list<int> objects;
 	
 	int bucketIds[4];
 
@@ -117,7 +117,7 @@ std::list<Particle> VoxelGrid::GetNearby(const Particle& particle) {
 	bucketIds[3] = (int)( (floor((particle.pos.x - cellSize/2 + sceneWidth/2)/ (cellSize))) + (floor((particle.pos.y + cellSize/2 + sceneWidth/2) / (cellSize))) * columns );
 
 	for(int i = 0; i < 4; i++){
-		for(std::list<Particle>::iterator itBucket = Buckets[bucketIds[i]].begin(); itBucket != Buckets[bucketIds[i]].end(); itBucket++){
+		for(std::list<int>::iterator itBucket = Buckets[bucketIds[i]].begin(); itBucket != Buckets[bucketIds[i]].end(); itBucket++){
 			objects.push_back((*itBucket));
 		}				
 	}

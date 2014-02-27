@@ -19,7 +19,7 @@ class VoxelGrid
 		void getNeighbors();
 		void Setup(float scenewidth, float sceneheight, float cellsize);
 		std::list<int> AddBucket(glm::vec2 vector,float width, std::list<int> buckettoaddto); //,std::list<int> buckettoaddto
-		void RegisterObject(const Particle& particle);
+		void RegisterObject(const Particle& particle, int particleId);
 		void ClearBuckets();
 
 		std::list<int> GetIdForObj(const Particle& particle);
@@ -46,11 +46,11 @@ class VoxelGrid
 		};
 		*/
 
-		std::list<Particle> GetNearby(const Particle& particle);
+		std::list<int> GetNearby(const Particle& particle);
 		
 		// std::map<int, std::vector<Particle>> Voxel;
 		std::map<int, int> indexCounter;
-		std::map<int  , std::list<Particle>> Buckets;
+		std::map<int  , std::list<int>> Buckets;
 		
 	private:
 
