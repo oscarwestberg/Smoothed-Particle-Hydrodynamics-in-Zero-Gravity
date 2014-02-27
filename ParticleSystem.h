@@ -17,6 +17,7 @@
 
 #define SIZE 12
 #define MAX_PARTICLES SIZE*SIZE
+// Should also change MAX_PARTICLES in the fragment shader
 
 class ParticleSystem
 {   
@@ -26,6 +27,7 @@ public:
 
     void initParticleSystem();
     void updateParticles(float DeltaTimeMillis);
+    void mouseInput(float x, float y, int width, int height);
 
 private:
 	void updateDensityWithBuckets();

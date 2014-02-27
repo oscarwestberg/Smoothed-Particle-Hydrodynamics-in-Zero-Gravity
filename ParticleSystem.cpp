@@ -97,6 +97,26 @@ void ParticleSystem::updateParticles(float deltaTime)
 	updateBoundingConditions();
 }
 
+void ParticleSystem::mouseInput(float x, float y, int width, int height){
+    x = ((x/width)*2)-1;
+    y = ((y/height)*2)-1;
+    
+    for(int j = 0; j < MAX_PARTICLES; j++) {
+        float distance = glm::distance(glm::vec3(x,y,0),glm::vec3(Particles[j].pos.x,Particles[j].pos.y, 0));
+        float xForce = glm::length(Particles[j].pos.x + x);
+        float yForce = glm::length(Particles[j].pos.y + y);
+        
+        if(x >= Particles[j].pos.x)
+            Particles[j].vel.x -= (xForce / distance)*0.09;
+        else
+            Particles[j].vel.x += (xForce / distance)*0.09;
+        if(y >= Particles[j].pos.y)
+            Particles[j].vel.y += (yForce / distance)*0.09;
+        else
+            Particles[j].vel.y -= (yForce / distance)*0.09;
+    }
+}
+
 void ParticleSystem::updateDensity() {
 	for(int j = 0; j < MAX_PARTICLES; j++) {
 		float temp_density_sum = 0;
@@ -207,44 +227,24 @@ void ParticleSystem::updateViscosityWithBuckets(){
 }
 
 void ParticleSystem::updateBoundingConditions(){
-	for(int i = 0; i < MAX_PARTICLES; i++){		
-		bool outsideX = false;
-		bool outsideY = false;
-		glm::vec2 normalX;
-		glm::vec2 normalY;
-		float contactPointX;
-		float contactPointY;
-
+    float energyLoss = 0.8;
+    
+	for(int i = 0; i < MAX_PARTICLES; i++){
 		if(Particles[i].pos.x < -BOX_SIZE){
-			outsideX = true;
-			normalX = glm::vec2(1,0);
-			contactPointX = -BOX_SIZE;
+			Particles[i].pos.x = -BOX_SIZE;
+            Particles[i].vel.x = -Particles[i].vel.x*energyLoss;
 		}
 		else if(Particles[i].pos.x > BOX_SIZE){
-			outsideX = true;
-			normalX = glm::vec2(-1,0);
-			contactPointX = BOX_SIZE;
+			Particles[i].pos.x = BOX_SIZE;
+            Particles[i].vel.x = -Particles[i].vel.x*energyLoss;
 		}
 		if(Particles[i].pos.y < -BOX_SIZE){
-			outsideY = true;
-			normalY = glm::vec2(0,1);
-			contactPointY = -BOX_SIZE;
+			Particles[i].pos.y = -BOX_SIZE;
+            Particles[i].vel.y = -Particles[i].vel.y*energyLoss;
 		}
 		else if(Particles[i].pos.y > BOX_SIZE){
-			outsideY = true;
-			normalY = glm::vec2(0,-1);
-			contactPointY = BOX_SIZE;
-		}
-       
-		if(outsideX){
-			float penDepth = abs(contactPointX - Particles[i].pos.x);
-			Particles[i].vel = Particles[i].vel - glm::vec3((1+1)*(glm::dot(glm::vec2(Particles[i].vel.x,Particles[i].vel.y),normalX))*normalX,0);
-			Particles[i].pos = Particles[i].pos + glm::vec3(penDepth*normalX,0);
-		}
-		if(outsideY){
-			float penDepth = abs(contactPointY - Particles[i].pos.y);
-			Particles[i].vel = Particles[i].vel - glm::vec3((1+1)*(glm::dot(glm::vec2(Particles[i].vel.x,Particles[i].vel.y),normalY))*normalY,0);
-			Particles[i].pos = Particles[i].pos + glm::vec3(penDepth*normalY,0);
+			Particles[i].pos.y = BOX_SIZE;
+            Particles[i].vel.y = -Particles[i].vel.y*energyLoss;
 		}
 	}
 }

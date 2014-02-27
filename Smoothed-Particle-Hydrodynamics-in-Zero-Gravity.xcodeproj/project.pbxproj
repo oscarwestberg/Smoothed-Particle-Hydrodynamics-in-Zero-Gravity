@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		23107D8518994C9800CFC1BD /* ParticleSystem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23107D8318994C9800CFC1BD /* ParticleSystem.cpp */; };
+		2344BEF718BF9A0D00A1320C /* VoxelGrid.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2344BEF518BF9A0D00A1320C /* VoxelGrid.cpp */; };
 		2348F66B1896B35D0084F516 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2348F66A1896B35D0084F516 /* OpenGL.framework */; };
 		2348F66E1896B5890084F516 /* libglfw.3.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 2348F66C1896B3F00084F516 /* libglfw.3.0.dylib */; };
 		2348F6701896B5B80084F516 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2348F66F1896B5B80084F516 /* main.cpp */; };
@@ -31,6 +32,9 @@
 /* Begin PBXFileReference section */
 		23107D8318994C9800CFC1BD /* ParticleSystem.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ParticleSystem.cpp; sourceTree = SOURCE_ROOT; };
 		23107D8418994C9800CFC1BD /* ParticleSystem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ParticleSystem.h; sourceTree = SOURCE_ROOT; };
+		2344BEF418BF9A0D00A1320C /* Particle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Particle.h; sourceTree = SOURCE_ROOT; };
+		2344BEF518BF9A0D00A1320C /* VoxelGrid.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = VoxelGrid.cpp; sourceTree = SOURCE_ROOT; };
+		2344BEF618BF9A0D00A1320C /* VoxelGrid.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VoxelGrid.h; sourceTree = SOURCE_ROOT; };
 		2348F65E1896B3340084F516 /* Smoothed-Particle-Hydrodynamics-in-Zero-Gravity */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "Smoothed-Particle-Hydrodynamics-in-Zero-Gravity"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2348F66A1896B35D0084F516 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 		2348F66C1896B3F00084F516 /* libglfw.3.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libglfw.3.0.dylib; path = ../../../../../../usr/local/lib/libglfw.3.0.dylib; sourceTree = "<group>"; };
@@ -76,6 +80,9 @@
 			isa = PBXGroup;
 			children = (
 				2348F66F1896B5B80084F516 /* main.cpp */,
+				2344BEF418BF9A0D00A1320C /* Particle.h */,
+				2344BEF518BF9A0D00A1320C /* VoxelGrid.cpp */,
+				2344BEF618BF9A0D00A1320C /* VoxelGrid.h */,
 				23DF8E9D1897B265003E946D /* fragmentshader.frag */,
 				23DF8E9E1897B265003E946D /* vertexshader.vert */,
 				23DF8E9A1897A121003E946D /* Shader.cpp */,
@@ -137,6 +144,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2344BEF718BF9A0D00A1320C /* VoxelGrid.cpp in Sources */,
 				23DF8E9C1897A121003E946D /* Shader.cpp in Sources */,
 				23107D8518994C9800CFC1BD /* ParticleSystem.cpp in Sources */,
 				23DF8EA01897B265003E946D /* vertexshader.vert in Sources */,
