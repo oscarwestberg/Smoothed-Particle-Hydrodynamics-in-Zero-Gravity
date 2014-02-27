@@ -21,7 +21,6 @@
 #include "ParticleSystem.h"
 //#include "VoxelGrid.h"
 
-
 /*
     TODO:
 	* Send coordinates to shader using texture (Teodor) - NOPE! Chuck Testa
@@ -167,10 +166,10 @@ int main(int argc, char* argv[])
     // Initialize GLEW
     glewExperimental = GL_TRUE;
     glewInit();
-    
+    std::cout << "precis innan initParticle" << std::endl;
     // Initialize the particle system and have it load into buffers
     particleSystem.initParticleSystem();
-
+	
     // -----------------------------------
     // Create buffers
     // -----------------------------------
