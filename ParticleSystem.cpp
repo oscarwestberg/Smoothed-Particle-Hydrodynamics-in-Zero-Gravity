@@ -24,14 +24,16 @@ const float SURFACE_TENSION = 0.003;
 const float TENSION_THRESHOLD = 12;
 const float STIFFNESS = 4;
 const float H = 0.09;
+const bool ZEROGRAVITY = false;
 
+// Pre calculated stuff
 const float SMOOTHING_KERNAL_CONST = PARTICLE_MASS*1.5675/std::powf(H,9);
 const float SMOOTHING_GRADIENT_CONST = PARTICLE_MASS*14.3312/std::powf(H,6);
 
-const float	boxLeft = -0.3;
-const float	boxRight = 0.3;
-const float	boxTop = 0.3;
-const float	boxBottom = -0.3;
+// Bounding box
+const float BOX_SIZE = 0.3;
+
+
 
 VoxelGrid voxelGrid;
 
@@ -84,6 +86,9 @@ void ParticleSystem::updateParticles(float deltaTime)
 		// Save particle positions in seperate variable
         positions[i] = Particles[i].pos;
 		accelerationVec = (-Particles[i].pressureGradient) + Particles[i].viscosity;
+		if(!ZEROGRAVITY){
+			accelerationVec += glm::vec3(0,-9.8, 0);
+		}
         Particles[i].vel = Particles[i].vel + TIME_STEP*accelerationVec;
         Particles[i].pos = Particles[i].pos + (TIME_STEP*Particles[i].vel);
     }
@@ -202,23 +207,46 @@ void ParticleSystem::updateViscosityWithBuckets(){
 }
 
 void ParticleSystem::updateBoundingConditions(){
-	//for(int i = 0; i < MAX_PARTICLES; i++){
-	//	[isOutsideX, xNormal, xCP] = outsideBox(particlePos(j,:),axisY1, axisY2);
-	//	[isOutsideY, yNormal, yCP] = outsideBox(particlePos(j,:),axisX1, axisX2);
- //      
-	//	if(isOutsideX ~= 1){
-	//		contactPointX = xCP;
-	//		penDepth = abs(contactPointX - particlePos(j,2));
-	//		particleVelocity(j,:) = particleVelocity(j,:) - (1+1)*(dot(particleVelocity(j,:),xNormal))*xNormal;
-	//		particlePos(j,:) = particlePos(j,:) + penDepth*xNormal;
-	//	}
-	//	if(isOutsideY ~= 1){
-	//		contactPointY = yCP;
-	//		penDepth = abs(contactPointY - particlePos(j,1));
-	//		particleVelocity(j,:) = particleVelocity(j,:) - (1+1)*(dot(particleVelocity(j,:),yNormal))*yNormal;
-	//		particlePos(j,:) = particlePos(j,:) + penDepth*yNormal;
-	//	}
-	//}
+	for(int i = 0; i < MAX_PARTICLES; i++){		
+		bool outsideX = false;
+		bool outsideY = false;
+		glm::vec2 normalX;
+		glm::vec2 normalY;
+		float contactPointX;
+		float contactPointY;
+
+		if(Particles[i].pos.x < -BOX_SIZE){
+			outsideX = true;
+			normalX = glm::vec2(1,0);
+			contactPointX = -BOX_SIZE;
+		}
+		else if(Particles[i].pos.x > BOX_SIZE){
+			outsideX = true;
+			normalX = glm::vec2(-1,0);
+			contactPointX = BOX_SIZE;
+		}
+		if(Particles[i].pos.y < -BOX_SIZE){
+			outsideY = true;
+			normalY = glm::vec2(0,1);
+			contactPointY = -BOX_SIZE;
+		}
+		else if(Particles[i].pos.y > BOX_SIZE){
+			outsideY = true;
+			normalY = glm::vec2(0,-1);
+			contactPointY = BOX_SIZE;
+		}
+       
+		if(outsideX){
+			float penDepth = abs(contactPointX - Particles[i].pos.x);
+			Particles[i].vel = Particles[i].vel - glm::vec3((1+1)*(glm::dot(glm::vec2(Particles[i].vel.x,Particles[i].vel.y),normalX))*normalX,0);
+			Particles[i].pos = Particles[i].pos + glm::vec3(penDepth*normalX,0);
+		}
+		if(outsideY){
+			float penDepth = abs(contactPointY - Particles[i].pos.y);
+			Particles[i].vel = Particles[i].vel - glm::vec3((1+1)*(glm::dot(glm::vec2(Particles[i].vel.x,Particles[i].vel.y),normalY))*normalY,0);
+			Particles[i].pos = Particles[i].pos + glm::vec3(penDepth*normalY,0);
+		}
+	}
 }
 
 
