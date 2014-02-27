@@ -67,12 +67,12 @@ void ParticleSystem::updateParticles(float deltaTime)
 
 	}	
 	
-	//updateDensityWithBuckets();
+	updateDensityWithBuckets();
 	//updatePressureWithBuckets();
 	//updatePressureGradientWithBuckets();
 	//updateViscosityWithBuckets();
 	
-	updateDensity();
+	//updateDensity();
 	updatePressure();	
 	updatePressureGradient();
 	updateViscosity();
@@ -114,8 +114,8 @@ void ParticleSystem::updateDensity() {
 void ParticleSystem::updateDensityWithBuckets() {
 	for(int j = 0; j < MAX_PARTICLES; j++) {
 		float temp_density_sum = 0;
-		std::list<int> listOfParticleIds = voxelGrid.GetNearby(Particles[j]); 
-		for(std::list<int>::iterator it = listOfParticleIds.begin(); it != listOfParticleIds.end(); it++) {
+		std::vector<int> listOfParticleIds = voxelGrid.GetNearby(Particles[j]); 
+		for(std::vector<int>::iterator it = listOfParticleIds.begin(); it != listOfParticleIds.end(); it++) {
 			glm::vec3 temp_dist = Particles[j].pos - Particles[*it].pos;
 			if(glm::length(temp_dist)<H){
 				float dist = glm::length(temp_dist);
@@ -154,8 +154,8 @@ void ParticleSystem::updatePressureGradientWithBuckets(){
 		glm::vec3 temp_pressure_vec = glm::vec3(0);
 		glm::vec3 temp_dist;
 
-		std::list<int> listOfParticleIds = voxelGrid.GetNearby(Particles[j]); 
-		for(std::list<int>::iterator it = listOfParticleIds.begin(); it != listOfParticleIds.end(); it++) {
+		std::vector<int> listOfParticleIds = voxelGrid.GetNearby(Particles[j]); 
+		for(std::vector<int>::iterator it = listOfParticleIds.begin(); it != listOfParticleIds.end(); it++) {
 			temp_dist = Particles[j].pos - Particles[*it].pos;
 			if(glm::length(temp_dist)<H){
 				float pressureMag = ((Particles[j].pressure/std::powf(Particles[j].density,2))+(Particles[*it].pressure/std::powf(Particles[*it].density,2)))*std::powf((H - glm::length(temp_dist)),2);
@@ -191,8 +191,8 @@ void ParticleSystem::updateViscosityWithBuckets(){
 		glm::vec3 temp_viscosity_vec = glm::vec3(0);
 		float temp_dist_abs;
 
-		std::list<int> listOfParticleIds = voxelGrid.GetNearby(Particles[j]); 
-		for(std::list<int>::iterator it = listOfParticleIds.begin(); it != listOfParticleIds.end(); it++) {
+		std::vector<int> listOfParticleIds = voxelGrid.GetNearby(Particles[j]); 
+		for(std::vector<int>::iterator it = listOfParticleIds.begin(); it != listOfParticleIds.end(); it++) {
 			temp_dist_abs = glm::length(Particles[j].pos - Particles[*it].pos);
 			//std::cout << temp_dist_abs << std::endl;
 			if(temp_dist_abs < H){

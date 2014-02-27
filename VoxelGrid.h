@@ -46,11 +46,13 @@ class VoxelGrid
 		};
 		*/
 
-		std::list<int> GetNearby(const Particle& particle);
+		std::vector<int> GetNearby(const Particle& particle);
 		
 		// std::map<int, std::vector<Particle>> Voxel;
 		std::map<int, int> indexCounter;
-		std::map<int  , std::list<int>> Buckets;
+		std::map<int  , std::vector<int>> Buckets;
+
+	//	std::vector<int> Buckets[9];
 		
 	private:
 
