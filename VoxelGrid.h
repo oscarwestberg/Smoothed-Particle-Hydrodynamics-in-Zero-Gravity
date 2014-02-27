@@ -12,13 +12,14 @@ class VoxelGrid
 		float cellSize;
 		float sceneWidth;
 		float sceneHeight;
-		int rows;
-		int columns;
+		static const int rows = 4;
+		static const int columns = 4;
+		int particleCounter[rows*columns];
 		float H;
 
 		void getNeighbors();
 		void Setup(float scenewidth, float sceneheight, float cellsize);
-		std::list<int> AddBucket(glm::vec2 vector,float width, std::list<int> buckettoaddto); //,std::list<int> buckettoaddto
+		std::list<int> AddBucket(glm::vec2 vector,float width, std::list<int> buckettoaddto);
 		void RegisterObject(const Particle& particle, int particleId);
 		void ClearBuckets();
 
@@ -50,7 +51,9 @@ class VoxelGrid
 		
 		// std::map<int, std::vector<Particle>> Voxel;
 		std::map<int, int> indexCounter;
-		std::map<int  , std::vector<int>> Buckets;
+		//std::map<int  , std::vector<int>> Buckets;
+
+		int Buckets[rows*columns][50];
 
 	//	std::vector<int> Buckets[9];
 		

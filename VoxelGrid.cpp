@@ -46,26 +46,44 @@ std::list<int> VoxelGrid::AddBucket(glm::vec2 vector,float w,std::list<int> buck
 
 void VoxelGrid::Setup(float scenewidth, float sceneheight, float particleH) {
 	H = particleH;
-	columns = (int)floor(scenewidth / (H*2));
-    rows = (int)floor(sceneheight / (H*2));
+	//columns = (int)ceil(scenewidth / (H*2));
+   // rows = (int)ceil(sceneheight / (H*2));
 	sceneWidth = scenewidth;
     sceneHeight = sceneheight;
 	cellSize = sceneHeight/rows;
+
+	for(int i = 0; i < rows*columns; i++){
+		particleCounter[i] = 0;
+	}
+
+	for(int buckets = 0; buckets < rows*columns; buckets++)
+		for(int particleIds = 0; particleIds < 32; particleIds++)
+			Buckets[buckets][particleIds] = -1;
 }
 
 void VoxelGrid::RegisterObject(const Particle& particle, int particleId)
 {
 		int cellId = (int)(floor((particle.pos.x + (sceneWidth/2))/ (cellSize)) + (floor((particle.pos.y + (sceneHeight/2))/ (cellSize) ) * columns )); 
-		Buckets[cellId].push_back(particleId);
+		
+		if(particleCounter[cellId] < 50){
+			Buckets[cellId][particleCounter[cellId]] = particleId;
+			particleCounter[cellId]++;
+		}
 
 }
 
 void VoxelGrid::ClearBuckets() {
-	Buckets.clear();
+
+	for(int i = 0; i < rows*columns; i++){
+		particleCounter[i] = 0;
+	}
+
+	for(int buckets = 0; buckets < rows*columns; buckets++)
+		for(int particleIds = 0; particleIds < 32; particleIds++)
+			Buckets[buckets][particleIds] = -1;
 }
 
 std::vector<int> VoxelGrid::GetNearby(const Particle& particle) {
-	std::vector<int> objects;
 	
 	int bucketIds[4];
 
@@ -74,9 +92,16 @@ std::vector<int> VoxelGrid::GetNearby(const Particle& particle) {
 	bucketIds[2] = (int)( (floor((particle.pos.x - cellSize/2 + sceneWidth/2)/ (cellSize))) + (floor((particle.pos.y - cellSize/2 + sceneWidth/2) / (cellSize))) * columns );
 	bucketIds[3] = (int)( (floor((particle.pos.x - cellSize/2 + sceneWidth/2)/ (cellSize))) + (floor((particle.pos.y + cellSize/2 + sceneWidth/2) / (cellSize))) * columns );
 
+	std::vector<int> particleIds;
+
 	for(int i = 0; i < 4; i++){
-		objects.insert(objects.end(), Buckets[bucketIds[i]].begin(), Buckets[bucketIds[i]].end());
+		if(bucketIds[i] >= 0 && bucketIds[i] < rows*columns){
+			for(int j = 0; j < particleCounter[bucketIds[i]]; j++){
+				particleIds.push_back(Buckets[bucketIds[i]][j]);
+			}
+		}
+		//objects.insert(objects.end(), Buckets[bucketIds[i]].begin(), Buckets[bucketIds[i]].end());
 	}
 
-	return objects;   
+	return particleIds;   
 }

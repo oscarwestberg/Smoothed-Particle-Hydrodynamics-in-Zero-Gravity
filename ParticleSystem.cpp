@@ -31,7 +31,7 @@ const float SMOOTHING_KERNAL_CONST = PARTICLE_MASS*1.5675/std::powf(H,9);
 const float SMOOTHING_GRADIENT_CONST = PARTICLE_MASS*14.3312/std::powf(H,6);
 
 // Bounding box
-const float BOX_SIZE = 0.3;
+const float BOX_SIZE = 0.4;
 
 
 
