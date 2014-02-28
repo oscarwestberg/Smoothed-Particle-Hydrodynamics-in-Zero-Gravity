@@ -34,6 +34,7 @@ private:
 	void updatePressureWithBuckets();
 	void updatePressureGradientWithBuckets();
 	void updateViscosityWithBuckets();
+	void updatePressureGradientAndViscosityWithBuckets();
 	
 	void updateDensity();
 	void updatePressure();

@@ -21,7 +21,7 @@ void main()
     float sum = 0;
     vec4 color = vec4(0.0,0.0,0.9, 1.0);
     vec4 ambientColor = vec4(0.3,0.3,0.3,1.0);
-    float threshold = 19000;
+    float threshold = 70000;
     
     for(int i = 0; i < MAX_PARTICLES; i++){
         float dist = (uv.x-positions[i].x)*(uv.x-positions[i].x) + (uv.y-positions[i].y)*(uv.y-positions[i].y);

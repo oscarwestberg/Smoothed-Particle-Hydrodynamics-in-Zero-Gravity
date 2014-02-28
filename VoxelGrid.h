@@ -12,12 +12,12 @@ class VoxelGrid
 		float cellSize;
 		float sceneWidth;
 		float sceneHeight;
-		static const int rows = 7;
-		static const int columns = 7;
+		static const int rows = 14;
+		static const int columns = 14;
 		int particleCounter[rows*columns];
 		float H;
-		static const int maxParticlesInCell = 100;
-		static const int kernelParticles = 100;
+		static const int maxParticlesInCell = 400;
+		static const int kernelParticles = 40;
 
 		void getNeighbors();
 		void Setup(float scenewidth, float sceneheight, float cellsize);
@@ -35,6 +35,7 @@ class VoxelGrid
 
 		int Buckets[rows*columns][maxParticlesInCell];
 		int particleIds[kernelParticles];
+		int tempParticleIds[maxParticlesInCell];
 
 	//	std::vector<int> Buckets[9];
 		

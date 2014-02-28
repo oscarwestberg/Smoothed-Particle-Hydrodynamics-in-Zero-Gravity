@@ -1,7 +1,7 @@
-
 #include "VoxelGrid.h"
 #include <vector>
 #include <map>
+#include <algorithm>    // std::random_shuffle
 #include <cmath>
 /*
 void VoxelGrid::initVoxelGrid(const std::vector<Particle> &Particles, float H) {
@@ -48,10 +48,11 @@ void VoxelGrid::Setup(float scenewidth, float sceneheight, float particleH) {
 	H = particleH;
 	//columns = (int)ceil(scenewidth / (H*2));
     //rows = (int)ceil(sceneheight / (H*2));
-	std::cout << "rows and columns should be: " << (int)floor(sceneheight / (H*2)) << std::endl;
+	std::cout << "rows and columns should be: " << (sceneheight / (H*2)) << std::endl;
 	sceneWidth = scenewidth;
     sceneHeight = sceneheight;
-	cellSize = sceneHeight/rows;
+	cellSize = sceneHeight/(rows-2);
+	std::cout << "cellSize: " << cellSize << ", H: " << H << std::endl;
 
 	for(int i = 0; i < rows*columns; i++){
 		particleCounter[i] = 0;
@@ -100,26 +101,39 @@ int* VoxelGrid::GetNearby(const Particle& particle) {
 	for(int i = 0; i < kernelParticles; i++){
 		particleIds[i] = -1;
 	}
+	for(int i = 0; i < kernelParticles; i++){
+		tempParticleIds[i] = -1;
+	}
 
 	int *pointer;
-	pointer = particleIds;
+	pointer = tempParticleIds;
+
 	int counter = 0;
+	int numberOfParticlesNearby = 0;
+
+	for(int i = 0; i < 4; i++){
+		if(bucketIds[i] >= 0 && bucketIds[i] <= rows*columns){
+			numberOfParticlesNearby += particleCounter[bucketIds[i]];
+		}
+	}
 
 	for(int i = 0; i < 4; i++){
 		if(bucketIds[i] >= 0 && bucketIds[i] <= rows*columns){
 			for(int j = 0; j < particleCounter[bucketIds[i]]; j++){
-				particleIds[counter] = Buckets[bucketIds[i]][j];
-				counter++;
-				if(counter >= kernelParticles){
-					//std::cout << "counter exceeded " << kernelParticles << std::endl;
-					//std::cout << counter << std::endl;
-					return pointer;
-				}
-				//particleIds.push_back(Buckets[bucketIds[i]][j]);
+					tempParticleIds[counter] = Buckets[bucketIds[i]][j];
+					counter++;
 			}
 		}
-		//objects.insert(objects.end(), Buckets[bucketIds[i]].begin(), Buckets[bucketIds[i]].end());
 	}
-	//std::cout << counter << std::endl;
+
+	//std::random_shuffle(tempParticleIds, tempParticleIds + counter);
+	if(counter > kernelParticles){
+		for(int i = 0; i < kernelParticles; i++){
+			int randomIndex = rand() % counter;
+			particleIds[i] = tempParticleIds[randomIndex];
+		}
+		//std::cout << counter << std::endl;
+	}
+	//std::cout << "particles nearby: " << counter << std::endl;
 	return pointer; 
 }
