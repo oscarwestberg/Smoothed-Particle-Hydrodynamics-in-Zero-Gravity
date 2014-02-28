@@ -11,8 +11,11 @@
 #define width 800
 #define height 600
 #define MAX_PARTICLES 20*20
+#define MAX_BRICK 10*20
 
-uniform vec3[MAX_PARTICLES] positions;
+//uniform vec3[MAX_PARTICLES] positions;
+
+uniform float colorOfBrick[MAX_BRICK];
 
 out vec4 outColor;
 void main()
@@ -21,21 +24,40 @@ void main()
     float sum = 0;
     vec4 color = vec4(0.0,0.0,0.9, 1.0);
     vec4 ambientColor = vec4(0.3,0.3,0.3,1.0);
-    float threshold = 19000;
+    float threshold = 1000;
     
+	/*
     for(int i = 0; i < MAX_PARTICLES; i++){
-        float dist = (uv.x-positions[i].x)*(uv.x-positions[i].x) + (uv.y-positions[i].y)*(uv.y-positions[i].y);
-        if(!(dist == 0))
+        //float dist = (uv.x-positions[i].x)*(uv.x-positions[i].x) + (uv.y-positions[i].y)*(uv.y-positions[i].y);
+        
+		if(!(dist == 0))
             sum += 1/dist;
-    }
-    
-    if(sum >= threshold){ // Normal color
-        outColor = ambientColor + color*0.6;
-    }
-    else if((sum < threshold) && (sum > threshold*0.8)){ // Borders
-        outColor = ambientColor + color*0.9;
-    }
-    else{
+    }*/
+
+    int bricksWide = 10;
+	float sceneWidth = 0.8;
+	float sceneHeight = 0.8;
+	float legoHeight = 0.8/(bricksWide*2);
+	float legoWidth = 0.8/bricksWide;
+
+    int brickId1 = int(floor((uv.x + (sceneWidth/2)) / legoWidth));
+	int brickId2 = int(floor((uv.y + (sceneHeight/2)) / legoHeight ));
+	int brickId3 = brickId1 + brickId2 * bricksWide; 
+	
+	if(brickId3 >= 0 && brickId3 < MAX_BRICK){
+	
+		sum = colorOfBrick[brickId3];
+
+		if(sum >= threshold){ // Normal color
+			outColor = ambientColor + color*0.6;
+		}
+		else if((sum < threshold) && (sum > threshold*0.8)){ // Borders
+			outColor = ambientColor + color*0.9;
+		}
+		else{
+			outColor = ambientColor;
+		}
+	} else{
         outColor = ambientColor;
     }
 }

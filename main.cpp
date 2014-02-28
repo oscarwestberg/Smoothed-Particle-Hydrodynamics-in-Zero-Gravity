@@ -15,6 +15,7 @@
 #include <iostream>
 #include <cmath>
 #include <glm/glm.hpp>
+#include <string>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include "Shader.h"
@@ -39,10 +40,42 @@
 GLuint shaderProgram;
 glm::vec2 velocity;
 float previousTime = 0;
+const int MAX_BRICKS = 10*20;
 float mouseTimer = 0;
 const float width = 800, height = 600;
+float legobricks[MAX_BRICKS];
 ParticleSystem particleSystem;
 
+void createBricks(){
+	float bricksWide = 10;
+	int bricksTotal = bricksWide*bricksWide*2;
+	float sceneWidth = 0.8;
+	float sceneHeight = 0.8;
+	float legoHeight = 0.8/(bricksWide*2);
+	float legoWidth = 0.8/bricksWide;
+	float sum = 0.0;
+
+	for(int i = 0; i < bricksTotal; i++){
+		legobricks[i] = 0;
+		for(int j = 0; j < MAX_PARTICLES; j++){
+			float posX = particleSystem.Particles[j].pos.x;
+			float posY = particleSystem.Particles[j].pos.y;
+
+			int idX = (int) (floor(posX/legoWidth));
+			int idY = (int) (floor(posY/legoHeight)); // * bricksWide )); 
+
+			glm::vec2 centerOfBrick = glm::vec2(idX * legoWidth + (legoWidth/2), idY * legoHeight + (legoHeight/2));
+			
+			for(int i = 0; i < MAX_PARTICLES; i++){
+			float dist = abs((centerOfBrick.x-posX)*(centerOfBrick.x-posX) + (centerOfBrick.y-posY)*(centerOfBrick.y-posY));
+			if(!(dist == 0))
+				sum += 1/dist;
+			}
+
+			legobricks[i] = sum/100000;
+		}
+	}
+}
 // Updates all the views using user input
 void update()
 {
@@ -54,7 +87,11 @@ void update()
 		particleSystem.updateParticles(deltaTime);
 		previousTime = time;
 	}
-    
+
+	createBricks();
+    /*for(int i = 0; i < 30*60; i++){
+		std::cout << "legobricks[]" + std::to_string(legobricks[i]) + "\n" << std::endl;
+	}*/
     // -----------------------------------
     // Model Matrix - currently ignored
     // -----------------------------------
@@ -132,17 +169,7 @@ void renderVoxels(){
 // Draw to the buffer and give vertices colors
 void render()
 {
-    // Send positions to shader by putting the xzy values in seperate GLfloats
-    GLfloat v1[MAX_PARTICLES];
-    GLfloat v2[MAX_PARTICLES];
-    GLfloat v3[MAX_PARTICLES];
-    
-    for(int i = 0; i < MAX_PARTICLES; i++){
-        v1[i] = particleSystem.Particles[i].pos.x;
-        v2[i] = particleSystem.Particles[i].pos.y;
-        v3[i] = particleSystem.Particles[i].pos.z;
-    }
-
+	/*
     //glUniform3fv(glGetUniformLocation(shaderProgram, "positions"), MAX_PARTICLES, (v1,v2,v3));
     glm::vec3 particlePositions[MAX_PARTICLES];
     
@@ -150,10 +177,22 @@ void render()
     for(int i = 0; i < MAX_PARTICLES; i++){
         particlePositions[i] = glm::vec3(particleSystem.Particles[i].pos);
     }
+    */
+
+	float colorOfBrick[10*20];
+
+	for(int i = 0; i < 10*20; i++){
+        colorOfBrick[i] = legobricks[i];
+    }
+	std::cout << std::to_string(colorOfBrick[2]) + "\n" << std::endl;
     
+	GLint myLoc = glGetUniformLocation(shaderProgram, "colorOfBrick");
+    glUniform3fv(myLoc, MAX_BRICKS, &colorOfBrick[0]);
+
+	/*
 	GLint myLoc = glGetUniformLocation(shaderProgram, "positions");
     glUniform3fv(myLoc, MAX_PARTICLES, &particlePositions[0][0]);
-
+	*/
     // Clear the screen
     // Entire system is drawn to a square that covers the screen
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
@@ -179,7 +218,7 @@ int main(int argc, char* argv[])
     // Initialize GLEW
     glewExperimental = GL_TRUE;
     glewInit();
-    std::cout << "precis innan initParticle" << std::endl;
+    //std::cout << "precis innan initParticle" << std::endl;
     // Initialize the particle system and have it load into buffers
     particleSystem.initParticleSystem();
 	
@@ -270,3 +309,4 @@ int main(int argc, char* argv[])
     glDeleteBuffers(1, &vbo);
     glDeleteVertexArrays(1, &vao);
 }
+

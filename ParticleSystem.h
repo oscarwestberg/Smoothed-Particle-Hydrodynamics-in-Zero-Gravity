@@ -15,7 +15,7 @@
 #include <vector>
 #include "VoxelGrid.h"
 
-#define SIZE 20
+#define SIZE 10
 #define MAX_PARTICLES SIZE*SIZE
 // Should also change MAX_PARTICLES in the fragment shader
 
