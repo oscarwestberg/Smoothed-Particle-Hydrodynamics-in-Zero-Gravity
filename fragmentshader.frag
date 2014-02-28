@@ -12,6 +12,7 @@
 #define height 600
 #define MAX_PARTICLES 20*20
 
+const float BOX_SIZE = 0.4;
 uniform vec3[MAX_PARTICLES] positions;
 
 out vec4 outColor;
@@ -21,7 +22,7 @@ void main()
     float sum = 0;
     vec4 color = vec4(0.0,0.0,0.9, 1.0);
     vec4 ambientColor = vec4(0.3,0.3,0.3,1.0);
-    float threshold = 19000;
+    float threshold = 10000;
     
     for(int i = 0; i < MAX_PARTICLES; i++){
         float dist = (uv.x-positions[i].x)*(uv.x-positions[i].x) + (uv.y-positions[i].y)*(uv.y-positions[i].y);
@@ -38,6 +39,17 @@ void main()
     else{
         outColor = ambientColor;
     }
+    
+    // Make sure nothing blue is drawn outside the bounding box
+    if((uv.x > BOX_SIZE) || (uv.x < -BOX_SIZE) || (uv.y > BOX_SIZE) || (uv.y < -BOX_SIZE))
+        outColor = ambientColor;
+    
+    // Draw bounding box
+    if(((uv.x >= BOX_SIZE-0.001) && (uv.x <= BOX_SIZE+0.001)) && ((uv.y <= BOX_SIZE) && (uv.y >= -BOX_SIZE)) ||
+       ((uv.x >= -BOX_SIZE-0.001) && (uv.x <= -BOX_SIZE+0.001)) && ((uv.y <= BOX_SIZE) && (uv.y >= -BOX_SIZE)) ||
+       ((uv.y >= BOX_SIZE-0.001) && (uv.y <= BOX_SIZE+0.001)) && ((uv.x <= BOX_SIZE) && (uv.x >= -BOX_SIZE)) ||
+       ((uv.y >= -BOX_SIZE-0.001) && (uv.y <= -BOX_SIZE+0.001)) && ((uv.x <= BOX_SIZE) && (uv.x >= -BOX_SIZE)))
+        outColor = vec4(1,1,1,1);
 }
 
 

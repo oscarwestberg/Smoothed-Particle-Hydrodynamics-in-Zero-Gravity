@@ -257,7 +257,7 @@ void ParticleSystem::updateViscosityWithBuckets(){
 }
 
 void ParticleSystem::updateBoundingConditions(){
-    float energyLoss = 0.8;
+    float energyLoss = 1;
     
 	for(int i = 0; i < MAX_PARTICLES; i++){
 		if(Particles[i].pos.x < -BOX_SIZE){
