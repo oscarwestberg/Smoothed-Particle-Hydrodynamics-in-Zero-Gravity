@@ -19,22 +19,6 @@
 #include <glm/gtc/type_ptr.hpp>
 #include "Shader.h"
 #include "ParticleSystem.h"
-//#include "VoxelGrid.h"
-
-/*
-    TODO:
-	* Send coordinates to shader using texture (Teodor) - NOPE! Chuck Testa
-	* Port code from MATLAB to ParticleSystem.cpp
-    * Rotation from input affecting the view matrix
-    * XML to load settings? Particle amount, resolution etc?
-    -II- in 3D 
-    * Find a way to use the MVP matrix in the shader
- 
-    RULES:
-    Keep it simple
-    Keep it consistent
-	Rösta vänster
-*/
 
 GLuint shaderProgram;
 glm::vec2 velocity;
@@ -42,6 +26,7 @@ float previousTime = 0;
 float mouseTimer = 0;
 const float width = 800, height = 600;
 ParticleSystem particleSystem;
+
 
 // Updates all the views using user input
 void update()
@@ -54,7 +39,7 @@ void update()
 		particleSystem.updateParticles(deltaTime);
 		previousTime = time;
 	}
-    
+    /*
     // -----------------------------------
     // Model Matrix - currently ignored
     // -----------------------------------
@@ -85,6 +70,7 @@ void update()
     glm::mat4 proj = glm::perspective(45.0f, width / height, 0.1f, 20.0f);
     GLint uniProj = glGetUniformLocation(shaderProgram, "P");
     glUniformMatrix4fv(uniProj, 1, GL_FALSE, glm::value_ptr(proj));
+    */
 }
 
 void mousePressed(GLFWwindow* window){
@@ -99,50 +85,9 @@ void mousePressed(GLFWwindow* window){
 	}
 }
 
-/*
-void renderVoxels(){
-	int MAX = 50;
-	VoxelGrid vg;
-	vg.indexCounter;
-			
-	for(std::map<int, int>::iterator iter = vg.indexCounter.begin(); iter != vg.indexCounter.end(); iter++){
-       // cout << (*iter).first << " is " << (*iter).second << endl;
-    
-		glBegin(GL_QUADS);
-			// UNHASHA
-			// Punkt ett i x: (unhashedx - 1)*voxelwidth; 
-			// Punkt två i x: unhashedx*voxelwidth;
-			// Samma med y (och z)
-			int hashed = (*iter).first;
-			
-			float x1 = (*iter).second;
-			float x2 = 2;
-			float y1 = 1;
-			float y2 = 2;
-
-			glVertex3f(x1, y1, 0.0);
-			glVertex3f(x2, y1, 0.0);
-			glVertex3f(x1, y2, 0.0);
-			glVertex3f(x2, y2, 0.0);
-
-			glColor3d((GLdouble)(*iter).second/MAX, (GLdouble)0.2, (GLdouble)(1.0 - (*iter).second/MAX));
-		glEnd();
-	}
-}*/
 // Draw to the buffer and give vertices colors
 void render()
 {
-    // Send positions to shader by putting the xzy values in seperate GLfloats
-    GLfloat v1[MAX_PARTICLES];
-    GLfloat v2[MAX_PARTICLES];
-    GLfloat v3[MAX_PARTICLES];
-    
-    for(int i = 0; i < MAX_PARTICLES; i++){
-        v1[i] = particleSystem.Particles[i].pos.x;
-        v2[i] = particleSystem.Particles[i].pos.y;
-        v3[i] = particleSystem.Particles[i].pos.z;
-    }
-
     //glUniform3fv(glGetUniformLocation(shaderProgram, "positions"), MAX_PARTICLES, (v1,v2,v3));
     glm::vec3 particlePositions[MAX_PARTICLES];
     
@@ -247,6 +192,7 @@ int main(int argc, char* argv[])
     // --------------------------------------------
     
     while(!glfwWindowShouldClose(window)){
+        // Handle input
         if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
             glfwSetWindowShouldClose(window, GL_TRUE);
         if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
