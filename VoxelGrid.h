@@ -12,12 +12,12 @@ class VoxelGrid
 		float cellSize;
 		float sceneWidth;
 		float sceneHeight;
-		static const int rows = 10;
-		static const int columns = 10;
+		static const int rows = 7;
+		static const int columns = 7;
 		int particleCounter[rows*columns];
 		float H;
 		static const int maxParticlesInCell = 100;
-		static const int kernelParticles = 70;
+		static const int kernelParticles = 100;
 
 		void getNeighbors();
 		void Setup(float scenewidth, float sceneheight, float cellsize);
@@ -26,28 +26,6 @@ class VoxelGrid
 		void ClearBuckets();
 
 		std::list<int> GetIdForObj(const Particle& particle);
-
-		/*
-		int getHash(const Particle& particle){
-			int gridShift = 50;
-			int height = 100;
-			// Fick feeling, nu kör vi!
-			int x = ceil(particle.pos.x/cellSize) + gridShift;
-			int y = ceil(particle.pos.y/cellSize) * 100 + gridShift;
-			int z = ceil((particle.pos.z/cellSize) * 100 * 100 + gridShift);
-			// z * width * height + y * width + x
-			
-			/*
-			int rx = x;
-			int ry = y << 10;
-			int rz = z << 20;
-			*/
-		/*		int hashed = x + y;// + z;
-			//int hashed = rx + ry + rz;
-
-			return hashed;
-		};
-		*/
 
 		int* GetNearby(const Particle& particle);
 		

@@ -48,7 +48,7 @@ void VoxelGrid::Setup(float scenewidth, float sceneheight, float particleH) {
 	H = particleH;
 	//columns = (int)ceil(scenewidth / (H*2));
     //rows = (int)ceil(sceneheight / (H*2));
-	std::cout << (int)floor(sceneheight / (H*2)) << std::endl;
+	std::cout << "rows and columns should be: " << (int)floor(sceneheight / (H*2)) << std::endl;
 	sceneWidth = scenewidth;
     sceneHeight = sceneheight;
 	cellSize = sceneHeight/rows;
@@ -67,7 +67,7 @@ void VoxelGrid::RegisterObject(const Particle& particle, int particleId)
 		int cellId = (int)(floor((particle.pos.x + (sceneWidth/2))/ (cellSize)) + (floor((particle.pos.y + (sceneHeight/2))/ (cellSize) ) * columns )); 
 
 
-		if(cellId >= 0 && cellId < rows*columns){
+		if(cellId >= 0 && cellId <= rows*columns){
 				Buckets[cellId][particleCounter[cellId]] = particleId;
 				particleCounter[cellId]++;
 		}
