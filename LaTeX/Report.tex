@@ -68,25 +68,16 @@ This project was part of the course TNM085, Modeling project at Linköping Unive
 
 %----------------------------- Background
 \section{Background}
-
 Fluid simulation is a popular tool in computer graphics and it is often used to simulate liquid, smoke and explosions. Depending on the quality requirements fluid simulations can be extremely time-consuming animations or simple real-time particle systems. Since particle system is a good way to simulate a complex effect it is very popular amongst developers and thus there are a lot of information to find about the subject. The report is based on Smoothed Particle Hydrodynamics, which is one of the most popular techniques when creating a fluid.
 
-%\begin{itemize}
-%\item 1
-%\item 2
-%\end{itemize}
-
-% \cite{AbTaRu:54},  \cite{Abl:56}, \cite{Keo:58} \cite{Pow:85}
 
 
 %----------------------------- Purpose
 \section{Purpose}
-
 The purpose of this project is to, based on mathematical models and physical formulas, perform a simulation of water in both earth like conditions and in zero gravity. The simulation shall be displayed graphically in real-time.
 
 %----------------------------- Method
 \chapter{Method}
-
 There are several techniques for simulating a fluid. The most common techniques are based on the Navier-Stokes equations which describes the flow of fluids. To practically use the Navier-Stokes equations it is common to make some simplifications in which some properties are assumed to be constant. There are two fundamental approaches on how to implement the Navier-Stokes equations; the Eulerian method and the Lagrangian method. Both are widely used in computer graphics. \\
 
 \noindent The Eulerian method uses a grid-based system, in which each grid point has fluid properties, like velocity, density, pressure, etc., but the points never move.
@@ -104,17 +95,10 @@ Navier-Stokes
 
 \noindent Navier-Stokes equations describe the motion of fluid substances as a result of forces. The forces are based on the physical quantities of the fluid (velocity v, mass density p and pressure) and also viscosity and external forces. Equation (1) describes the conservation of momentum, and basically it is Newton’s second law for a fluid.
 
-%Lite låtsasekvationer
-
-%\begin{equation}
-%\frac{\partial(\rho \overrightarrow{u})}{\partial t} + \overrightarrow{\nabla}\cdot[\rho\overline{\overline{u\otimes u}}] = -\overrightarrow{\nabla p} + \overrightarrow{\nabla}\cdot\overline{\overline{\tau}} + \rho\overrightarrow{f} \end{equation}
-%\begin{equation}
-%\frac{\partial(\rho e)}{\partial t} + \overrightarrow{\nabla}\cdot((\rho e + p)\overrightarrow{u}) = \overrightarrow{\nabla}\cdot(\overline{\overline{\tau}}\cdot\overrightarrow{u}) + \rho\overrightarrow{f}\overrightarrow{u} + \overrightarrow{\nabla}\cdot(\overrightarrow{\dot{q}})+r \end{equation}
 
 
 %----------------------------- Mathematical models
 \section{Smoothed Particle Hydrodynamics}
-
 Smoothed Particle Hydrodynamics (SPH) is a Lagrangian method that divides the fluid into a set of particles. Mass-density, pressure, etc. are estimated using SPH approximations. The properties of a SPH-particle is affected by other particles that lie within a certain “smoothing” distance, thus affected only by its neighbours. Any desired scalar quantity can be determined for each particle by weighting that quantity from neighboring particles with a “kernel function”. \\
 
 SPH
@@ -160,12 +144,12 @@ The particle system’s functionality was tested in MATLAB, however the final pr
 
 %----------------------------- Result
 \chapter{Result}
-
+The end product is an interactive program simulating a customizable amount of particles in either zero gravity or with gravity. The particle system is rendered in 2D in a window.
 
 
 %----------------------------- Conclusion and discussion
 \chapter{Conclusion and Discussion}
-
+...
 
 %Attachments
 %Description of software and hardware requirements
