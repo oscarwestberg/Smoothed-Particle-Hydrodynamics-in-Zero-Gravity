@@ -12,6 +12,8 @@
 		2348F66B1896B35D0084F516 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2348F66A1896B35D0084F516 /* OpenGL.framework */; };
 		2348F66E1896B5890084F516 /* libglfw.3.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 2348F66C1896B3F00084F516 /* libglfw.3.0.dylib */; };
 		2348F6701896B5B80084F516 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2348F66F1896B5B80084F516 /* main.cpp */; };
+		23BC4E7E18C8AEBB0009E677 /* fragmentshader.frag in CopyFiles */ = {isa = PBXBuildFile; fileRef = 23DF8E9D1897B265003E946D /* fragmentshader.frag */; };
+		23BC4E7F18C8AEBD0009E677 /* vertexshader.vert in CopyFiles */ = {isa = PBXBuildFile; fileRef = 23DF8E9E1897B265003E946D /* vertexshader.vert */; };
 		23DF8E9C1897A121003E946D /* Shader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23DF8E9A1897A121003E946D /* Shader.cpp */; };
 		23DF8E9F1897B265003E946D /* fragmentshader.frag in Sources */ = {isa = PBXBuildFile; fileRef = 23DF8E9D1897B265003E946D /* fragmentshader.frag */; };
 		23DF8EA01897B265003E946D /* vertexshader.vert in Sources */ = {isa = PBXBuildFile; fileRef = 23DF8E9E1897B265003E946D /* vertexshader.vert */; };
@@ -24,6 +26,8 @@
 			dstPath = /usr/share/man/man1/;
 			dstSubfolderSpec = 0;
 			files = (
+				23BC4E7F18C8AEBD0009E677 /* vertexshader.vert in CopyFiles */,
+				23BC4E7E18C8AEBB0009E677 /* fragmentshader.frag in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 1;
 		};
