@@ -93,7 +93,7 @@ Navier-Stokes
 \frac{\partial \overrightarrow v}{\partial t} + ({\overrightarrow v}\cdot{\overrightarrow \nabla}){\overrightarrow v} = \frac{-\overrightarrow \nabla \rho}{\rho_m} + \frac{\mu}{\rho_m}{ \nabla^2}{\overrightarrow v} + \frac{\overrightarrow f_{ext}}{\rho_m}
 \end{equation} \\
 
-\noindent Navier-Stokes equations describe the motion of fluid substances as a result of forces. The forces are based on the physical quantities of the fluid (velocity v, mass density p and pressure) and also viscosity and external forces. Equation (1) describes the conservation of momentum, and basically it is Newton’s second law for a fluid.
+\noindent Navier-Stokes equations describe the motion of fluid substances as a result of forces. The forces are based on the physical quantities of the fluid (velocity v, mass density p and pressure) and also viscosity and external forces. Equation (2.1) describes the conservation of momentum, and basically it is Newton’s second law for a fluid.
 
 
 
@@ -138,7 +138,7 @@ The particle system’s functionality was tested in MATLAB, however the final pr
 
 \noindent Since only the closest neighbors of each particle will have an effect on its behavior it’s unnecessary to calculate the effect on every particle for each particle. This gives \(N^2\) calculations. The performance was improved by using spatial subdivision. A uniform grid subdivides the simulation space into a grid of uniformly sized cells. This means that the the force for a given particle can be calculated by only comparing it with all its neighbors within a certain radius. \\
 
-\noindent To ensure the rendered scene looks like water instead of a collections of dots the technique metaballs was implemented. A metaball emits an electric field according to the formula: (formula) \\
+\noindent To ensure the rendered scene looks like water instead of a collections of dots the technique metaballs was implemented. A metaball emits an electric field according to the formula: (insert formula) \\
 
 \noindent  If the accumulated contribution of several metaball fields reaches a certain threshold, the shader renders the color blue. The metaball technique makes the entire particle system look like a fluid.
 
@@ -146,14 +146,30 @@ The particle system’s functionality was tested in MATLAB, however the final pr
 \chapter{Result}
 The end product is an interactive program simulating a customizable amount of particles in either zero gravity or with gravity. The particle system is rendered in 2D in a window.
 
+\begin{figure}[here]
+\begin{center}
+    \includegraphics[width=11cm]{Figures/image_2.png} 
+\end{center}
+\caption{Running the program without metaballs activated}
+\label{model_block}
+\end{figure}
+
+\begin{figure}[here]
+\begin{center}
+    \includegraphics[width=11cm]{Figures/image_1.png} 
+\end{center}
+\caption{Running the program with metaballs}
+\label{model_block}
+\end{figure}
+
 
 %----------------------------- Conclusion and discussion
 \chapter{Conclusion and Discussion}
-...
-
-%Attachments
-%Description of software and hardware requirements
-%Manual, how to run the program
+...\\* \\*
+Also include:\\*
+Attachments\\*
+Description of software and hardware requirements\\*
+Manual of how to run the program
 
 
 \end{document}
