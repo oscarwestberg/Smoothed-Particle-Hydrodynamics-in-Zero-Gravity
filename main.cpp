@@ -47,35 +47,43 @@ float legobricks[MAX_BRICKS];
 ParticleSystem particleSystem;
 
 void createBricks(){
-	float bricksWide = 10;
+	int bricksWide = 10;
 	int bricksTotal = bricksWide*bricksWide*2;
 	float sceneWidth = 0.8;
 	float sceneHeight = 0.8;
 	float legoHeight = 0.8/(bricksWide*2);
 	float legoWidth = 0.8/bricksWide;
 	float sum = 0.0;
+	float BOX_SIZE = 0.4;
 
 	for(int i = 0; i < bricksTotal; i++){
 		legobricks[i] = 0;
+		sum = 0.0;
+		
+		int idX = (int) (i % bricksWide + 1);
+		int idY = (int) (floor( i / bricksWide + 1));
+		
+		glm::vec2 centerOfBrick = glm::vec2(idX * (legoWidth) - sceneWidth/2, sceneHeight/2 - idY * (legoHeight));
+
 		for(int j = 0; j < MAX_PARTICLES; j++){
 			float posX = particleSystem.Particles[j].pos.x;
 			float posY = particleSystem.Particles[j].pos.y;
 
-			int idX = (int) (floor(posX/legoWidth));
-			int idY = (int) (floor(posY/legoHeight)); // * bricksWide )); 
+//			int idX = (int) (floor(posX/legoWidth));
+//			int idY = (int) (floor(posY/legoHeight)); // * bricksWide )); 
 
-			glm::vec2 centerOfBrick = glm::vec2(idX * legoWidth + (legoWidth/2), idY * legoHeight + (legoHeight/2));
-			
-			for(int i = 0; i < MAX_PARTICLES; i++){
-			float dist = abs((centerOfBrick.x-posX)*(centerOfBrick.x-posX) + (centerOfBrick.y-posY)*(centerOfBrick.y-posY));
+		//	glm::vec2 centerOfBrick = glm::vec2(idX * legoWidth + (legoWidth/2), idY * legoHeight + (legoHeight/2));
+		
+			float dist = (centerOfBrick.x-posX)*(centerOfBrick.x-posX) + (centerOfBrick.y-posY)*(centerOfBrick.y-posY);
 			if(!(dist == 0))
 				sum += 1/dist;
-			}
-
-			legobricks[i] = sum/100000;
 		}
+		
+		legobricks[i] = sum;
 	}
+		
 }
+
 // Updates all the views using user input
 void update()
 {
@@ -179,7 +187,7 @@ void render()
     }
     */
 
-	float colorOfBrick[10*20];
+	GLfloat colorOfBrick[10*20];
 
 	for(int i = 0; i < 10*20; i++){
         colorOfBrick[i] = legobricks[i];
@@ -187,7 +195,7 @@ void render()
 	std::cout << std::to_string(colorOfBrick[2]) + "\n" << std::endl;
     
 	GLint myLoc = glGetUniformLocation(shaderProgram, "colorOfBrick");
-    glUniform3fv(myLoc, MAX_BRICKS, &colorOfBrick[0]);
+    glUniform1fv(myLoc, MAX_BRICKS, &colorOfBrick[0]);
 
 	/*
 	GLint myLoc = glGetUniformLocation(shaderProgram, "positions");
