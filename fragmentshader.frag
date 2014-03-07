@@ -27,7 +27,9 @@ void main()
     // Calculates the electrical field contribution from all particles
     for(int i = 0; i < MAX_PARTICLES; i++){
         float dist = (uv.x-positions[i].x)*(uv.x-positions[i].x) + (uv.y-positions[i].y)*(uv.y-positions[i].y);
-        sum += 1/dist;
+		if(dist < 0.00002){
+			sum += 1/dist;
+		}
     }
     
     // Normal color
