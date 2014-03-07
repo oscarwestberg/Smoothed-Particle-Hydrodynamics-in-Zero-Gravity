@@ -23,6 +23,8 @@ void main()
     vec4 ambientColor = vec4(0.3,0.3,0.3,1.0);
     float pressureSum = 0;
     float boundingSize = 0.02;
+    float calculateSize = 0.2;
+
 
     // Decrease to increase the size of the metaballs, increase to decrease the size
     float threshold = 12000;
@@ -31,6 +33,7 @@ void main()
     for(int i = 0; i < MAX_PARTICLES; i++){
         float dist = (uv.x-positions[i].x)*(uv.x-positions[i].x) + (uv.y-positions[i].y)*(uv.y-positions[i].y);
         sum += 1/dist;
+        
         // Check if particle is near current uv coordinate
         if(((positions[i].x <= uv.x+boundingSize) && (positions[i].x >= uv.x-boundingSize)) &&
            ((positions[i].y <= uv.y+boundingSize) && (positions[i].y >= uv.y-boundingSize)))
@@ -39,7 +42,7 @@ void main()
     
     // Normal color
     if(sum >= threshold){
-        outColor = color*(pressureSum/10000);
+        outColor = color*(pressureSum*0.00004);
     }
     // Background color
     else{
