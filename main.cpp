@@ -40,14 +40,14 @@
 GLuint shaderProgram;
 glm::vec2 velocity;
 float previousTime = 0;
-const int MAX_BRICKS = 10*20;
+const int MAX_BRICKS = 15*30;
 float mouseTimer = 0;
 const float width = 800, height = 600;
 float legobricks[MAX_BRICKS];
 ParticleSystem particleSystem;
 
 void createBricks(){
-	int bricksWide = 10;
+	int bricksWide = 15;
 	int bricksTotal = bricksWide*bricksWide*2;
 	float sceneWidth = 0.8;
 	float sceneHeight = 0.8;
@@ -187,9 +187,9 @@ void render()
     }
     */
 
-	GLfloat colorOfBrick[10*20];
+	GLfloat colorOfBrick[15*30];
 
-	for(int i = 0; i < 10*20; i++){
+	for(int i = 0; i < 15*30; i++){
         colorOfBrick[i] = legobricks[i];
     }
 	std::cout << std::to_string(colorOfBrick[2]) + "\n" << std::endl;
