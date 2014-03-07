@@ -24,15 +24,7 @@ void main()
     float sum = 0;
     vec4 color = vec4(0.0,0.0,0.9, 1.0);
     vec4 ambientColor = vec4(0.2,0.2,0.2,1.0);
-    float threshold = 8000;
-    
-	/*
-    for(int i = 0; i < MAX_PARTICLES; i++){
-        //float dist = (uv.x-positions[i].x)*(uv.x-positions[i].x) + (uv.y-positions[i].y)*(uv.y-positions[i].y);
-        
-		if(!(dist == 0))
-            sum += 1/dist;
-    }*/
+    float threshold = 600;
 
     int bricksWide = 10;
 	float sceneWidth = 0.8;
@@ -40,23 +32,23 @@ void main()
 	float legoHeight = 0.8/(bricksWide*2);
 	float legoWidth = 0.8/bricksWide;
 
-    int brickId1 = int(floor(uv.x / legoWidth + sceneWidth/2));
-	int brickId2 = int(floor(uv.y / legoHeight + sceneHeight/2));
-	int brickId3 = brickId1 + brickId2 * bricksWide; 
+    int brickId1 = int(floor(uv.x / legoWidth + bricksWide/2));
+	int brickId2 = int(floor(uv.y / legoHeight + (bricksWide*2)/2));
+	int brickId3 = brickId1 + brickId2*bricksWide; 
 
 	if(brickId3 > 0 && brickId3 < MAX_BRICK){
 	
 		sum = colorOfBrick[brickId3];
-		outColor = color * (brickId3/MAX_BRICK);
-		/*if(sum >= threshold){ // Normal color
+		//outColor = color;
+		if(sum >= threshold){ // Normal color
 			outColor = ambientColor + color*0.9;
 		}
-		else if((sum < threshold) && (sum > threshold*0.5)){ // Borders
-			outColor = ambientColor + color*0.5;
+		else if((sum < threshold) && (sum > threshold*0.8)){ // Borders
+			outColor = ambientColor + color*0.7;
 		}
 		else{
 			outColor = ambientColor;
-		}*/
+		}
 	} else{
         outColor = ambientColor;
     }
