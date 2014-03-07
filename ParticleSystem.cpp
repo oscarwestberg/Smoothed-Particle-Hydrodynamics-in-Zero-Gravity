@@ -25,11 +25,11 @@ int listOfParticleIds[MAX_PARTICLES][Settings::KERNELPARTICLES];
 void ParticleSystem::initParticleSystem()
 {
 	int i = 0;
-	for(int xPos = 0; xPos < SIZE; xPos++){
-		for(int yPos = 0; yPos < SIZE; yPos++){
+	for(int xPos = 0; xPos < 16; xPos++){
+		for(int yPos = 0; yPos < 25; yPos++){
 			Particle tempParticle;
-			tempParticle.pos.x = xPos*Settings::DISTANCE - Settings::DISTANCE*SIZE/2;
-			tempParticle.pos.y = yPos*Settings::DISTANCE - Settings::DISTANCE*SIZE/2;
+			tempParticle.pos.x = xPos*Settings::DISTANCE - Settings::DISTANCE*SIZE;
+			tempParticle.pos.y = yPos*Settings::DISTANCE - Settings::DISTANCE*SIZE;
 			Particles.push_back(tempParticle);
 			i++;
 		} 
@@ -81,7 +81,7 @@ void ParticleSystem::updateParticles(float deltaTime)
 void ParticleSystem::mouseInput(float x, float y, int width, int height){
     x = ((x/width)*2)-1;
     y = ((y/height)*2)-1;
-    float forceStrength = 0.9;
+    float forceStrength = Settings::INPUTFORCE;
 
     for(int j = 0; j < MAX_PARTICLES; j++) {
 			float distance = glm::distance(glm::vec2(x,y),glm::vec2(Particles[j].pos.x,Particles[j].pos.y));

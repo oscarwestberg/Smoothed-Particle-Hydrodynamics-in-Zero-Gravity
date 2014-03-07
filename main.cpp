@@ -102,7 +102,7 @@ void mousePressed(GLFWwindow* window){
     float time = (float)glfwGetTime();
 	float deltaTime = time-mouseTimer;
     
-	if(deltaTime > 1.5){
+	if(deltaTime > 0.5){
 		printf("TRYCK!");
         glfwGetCursorPos(window, &x,&y);
 		particleSystem.mouseInput(x,y, width, height);

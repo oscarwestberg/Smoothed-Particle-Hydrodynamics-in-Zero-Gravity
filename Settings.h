@@ -6,8 +6,8 @@ public:
 	static const int SIZE = 20;
 	static const int MAXPARTICLESINCELL = SIZE*SIZE;
 	static const int KERNELPARTICLES = 32;
-	static const int ROWS = 12;
-	static const int COLUMNS = 12;
+	static const int ROWS = 13;
+	static const int COLUMNS = 13;
 	
 	// SPH parameters
 	static const float TIME_STEP;
@@ -21,6 +21,7 @@ public:
 	static const float H;
 
 	// External forces
+	static const float INPUTFORCE;
 	static const bool ZEROGRAVITY;
 	static const float GRAVITY;
 
