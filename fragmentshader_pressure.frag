@@ -7,7 +7,7 @@
 
 #define width 800
 #define height 600
-#define MAX_PARTICLES 20*20
+#define MAX_PARTICLES 400
 
 const float BOX_SIZE = 0.4;
 uniform vec2[MAX_PARTICLES] positions;
