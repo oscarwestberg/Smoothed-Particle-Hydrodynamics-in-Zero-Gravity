@@ -1,9 +1,9 @@
 struct Particle
 {
-	glm::vec3 pos;
-	glm::vec3 vel;
-	glm::vec3 pressureGradient;
-	glm::vec3 viscosity;
+	glm::vec2 pos;
+	glm::vec2 vel;
+	glm::vec2 pressureGradient;
+	glm::vec2 viscosity;
 	float density;
 	float pressure;
 };

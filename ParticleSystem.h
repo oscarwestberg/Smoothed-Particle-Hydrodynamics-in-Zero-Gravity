@@ -30,17 +30,21 @@ public:
     void mouseInput(float x, float y, int width, int height);
 
 private:
+	void updateNeighbouringParticles();
 	void updateDensityWithBuckets();
 	void updatePressureWithBuckets();
 	void updatePressureGradientWithBuckets();
 	void updateViscosityWithBuckets();
+	void updatePressureGradientAndViscosityWithBuckets();
 	
 	void updateDensity();
 	void updatePressure();
 	void updatePressureGradient();
 	void updateViscosity();
 	void updateBoundingConditions();
-	
+
+
+
 };
 
 #endif /* defined(__Smoothed_Particle_Hydrodynamics_in_Zero_Gravity__Particles__) */

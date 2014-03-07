@@ -1,7 +1,7 @@
-
 #include "VoxelGrid.h"
 #include <vector>
 #include <map>
+#include <algorithm>    // std::random_shuffle
 #include <cmath>
 /*
 void VoxelGrid::initVoxelGrid(const std::vector<Particle> &Particles, float H) {
@@ -48,10 +48,11 @@ void VoxelGrid::Setup(float scenewidth, float sceneheight, float particleH) {
 	H = particleH;
 	//columns = (int)ceil(scenewidth / (H*2));
     //rows = (int)ceil(sceneheight / (H*2));
-	std::cout << (int)floor(sceneheight / (H*2)) << std::endl;
+	std::cout << "rows and columns should be: " << (sceneheight / (H*2)) << std::endl;
 	sceneWidth = scenewidth;
     sceneHeight = sceneheight;
-	cellSize = sceneHeight/rows;
+	cellSize = sceneHeight/(rows-2);
+	std::cout << "cellSize: " << cellSize << ", H: " << H << std::endl;
 
 	for(int i = 0; i < rows*columns; i++){
 		particleCounter[i] = 0;
@@ -67,7 +68,7 @@ void VoxelGrid::RegisterObject(const Particle& particle, int particleId)
 		int cellId = (int)(floor((particle.pos.x + (sceneWidth/2))/ (cellSize)) + (floor((particle.pos.y + (sceneHeight/2))/ (cellSize) ) * columns )); 
 
 
-		if(cellId >= 0 && cellId < rows*columns){
+		if(cellId >= 0 && cellId <= rows*columns){
 				Buckets[cellId][particleCounter[cellId]] = particleId;
 				particleCounter[cellId]++;
 		}
@@ -91,6 +92,8 @@ void VoxelGrid::ClearBuckets() {
 int* VoxelGrid::GetNearby(const Particle& particle) {
 	
 	int bucketIds[4];
+	counter = 0;
+	int *pointer;
 
 	bucketIds[0] = (int)( (floor((particle.pos.x + cellSize/2 + sceneWidth/2)/ (cellSize))) + (floor((particle.pos.y + cellSize/2 + sceneWidth/2) / (cellSize))) * columns );
 	bucketIds[1] = (int)( (floor((particle.pos.x + cellSize/2 + sceneWidth/2)/ (cellSize))) + (floor((particle.pos.y - cellSize/2 + sceneWidth/2) / (cellSize))) * columns );
@@ -100,26 +103,27 @@ int* VoxelGrid::GetNearby(const Particle& particle) {
 	for(int i = 0; i < kernelParticles; i++){
 		particleIds[i] = -1;
 	}
+	for(int i = 0; i < maxParticlesInCell; i++){
+		tempParticleIds[i] = -1;
+	}
 
-	int *pointer;
-	pointer = particleIds;
-	int counter = 0;
+	//std::cout << "VOXELGRID" << std::endl;
 
 	for(int i = 0; i < 4; i++){
 		if(bucketIds[i] >= 0 && bucketIds[i] <= rows*columns){
 			for(int j = 0; j < particleCounter[bucketIds[i]]; j++){
-				particleIds[counter] = Buckets[bucketIds[i]][j];
-				counter++;
-				if(counter >= kernelParticles){
-					//std::cout << "counter exceeded " << kernelParticles << std::endl;
-					//std::cout << counter << std::endl;
-					return pointer;
-				}
-				//particleIds.push_back(Buckets[bucketIds[i]][j]);
+					tempParticleIds[counter] = Buckets[bucketIds[i]][j];
+					//std::cout << tempParticleIds[counter] << std::endl;
+					counter++;
 			}
 		}
-		//objects.insert(objects.end(), Buckets[bucketIds[i]].begin(), Buckets[bucketIds[i]].end());
 	}
-	//std::cout << counter << std::endl;
+
+	pointer = tempParticleIds;
+
 	return pointer; 
+}
+
+int VoxelGrid::getNumberOfNeighbouringParticles(){
+	return counter;
 }

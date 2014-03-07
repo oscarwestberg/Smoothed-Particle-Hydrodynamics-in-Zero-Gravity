@@ -2,9 +2,6 @@
 //  main.cpp
 //  Smoothed Particle Hydrodynamics in Zero Gravity
 //
-//  Created by Oscar Westberg on 2014-01-24.
-//  Copyright (c) 2014 Group 7 @ Linköpings University, course TNM085. All rights reserved.
-//
 
 // Link statically with GLEW
 //#define GLEW_STATIC
@@ -20,22 +17,6 @@
 #include <glm/gtc/type_ptr.hpp>
 #include "Shader.h"
 #include "ParticleSystem.h"
-//#include "VoxelGrid.h"
-
-/*
-    TODO:
-	* Send coordinates to shader using texture (Teodor) - NOPE! Chuck Testa
-	* Port code from MATLAB to ParticleSystem.cpp
-    * Rotation from input affecting the view matrix
-    * XML to load settings? Particle amount, resolution etc?
-    -II- in 3D 
-    * Find a way to use the MVP matrix in the shader
- 
-    RULES:
-    Keep it simple
-    Keep it consistent
-	Rösta vänster
-*/
 
 GLuint shaderProgram;
 glm::vec2 velocity;
@@ -45,6 +26,8 @@ float mouseTimer = 0;
 const float width = 800, height = 600;
 float legobricks[MAX_BRICKS];
 ParticleSystem particleSystem;
+bool usePressureShader = false;
+
 
 void createBricks(){
 	int bricksWide = 15;
@@ -97,9 +80,7 @@ void update()
 	}
 
 	createBricks();
-    /*for(int i = 0; i < 30*60; i++){
-		std::cout << "legobricks[]" + std::to_string(legobricks[i]) + "\n" << std::endl;
-	}*/
+    /*
     // -----------------------------------
     // Model Matrix - currently ignored
     // -----------------------------------
@@ -115,9 +96,9 @@ void update()
     
     // Position of the camera, Point centered on-screen and the Up axis.
     glm::mat4 view = glm::lookAt(
-                                 glm::vec3(1.2f, 1.2f, 1.2f),
-                                 glm::vec3(0.0f, 0.0f, 0.0f),
-                                 glm::vec3(0.0f, 0.0f, 1.0f)
+                                 glm::vec2(1.2f, 1.2f, 1.2f),
+                                 glm::vec2(0.0f, 0.0f, 0.0f),
+                                 glm::vec2(0.0f, 0.0f, 1.0f)
                                  );
     GLint uniView = glGetUniformLocation(shaderProgram, "V");
     glUniformMatrix4fv(uniView, 1, GL_FALSE, glm::value_ptr(view));
@@ -130,6 +111,33 @@ void update()
     glm::mat4 proj = glm::perspective(45.0f, width / height, 0.1f, 20.0f);
     GLint uniProj = glGetUniformLocation(shaderProgram, "P");
     glUniformMatrix4fv(uniProj, 1, GL_FALSE, glm::value_ptr(proj));
+    */
+}
+
+// Compile and link shaders
+void switchShaders(){
+    
+    // Load and compile shaders
+    glEnable(GL_BLEND);
+    
+    if(!usePressureShader)
+        shaderProgram = LoadShaders( "vertexshader.vert", "fragmentshader.frag" );
+    else
+        shaderProgram = LoadShaders( "vertexshader.vert", "fragmentshader_pressure.frag" );
+    
+    // Fragment shaders can have several outputs, so we have to define which one we're looking for
+    glBindFragDataLocation(shaderProgram, 0, "outColor");
+    
+    // Actually use our shader program
+    glLinkProgram(shaderProgram);
+    glUseProgram(shaderProgram);
+    
+    // Tell OpenGL how our vertices are ordered
+    GLint posAttrib = glGetAttribLocation(shaderProgram, "position");
+    
+    // Specify how the data is gathered from the vertex array
+    glEnableVertexAttribArray(posAttrib);
+    glVertexAttribPointer(posAttrib, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), 0);
 }
 
 void mousePressed(GLFWwindow* window){
@@ -137,62 +145,32 @@ void mousePressed(GLFWwindow* window){
     float time = (float)glfwGetTime();
 	float deltaTime = time-mouseTimer;
     
-	if(deltaTime > 1/10){
+	if(deltaTime > 1.5){
+		printf("TRYCK!");
         glfwGetCursorPos(window, &x,&y);
 		particleSystem.mouseInput(x,y, width, height);
 		mouseTimer = time;
 	}
 }
 
-/*
-void renderVoxels(){
-	int MAX = 50;
-	VoxelGrid vg;
-	vg.indexCounter;
-			
-	for(std::map<int, int>::iterator iter = vg.indexCounter.begin(); iter != vg.indexCounter.end(); iter++){
-       // cout << (*iter).first << " is " << (*iter).second << endl;
-    
-		glBegin(GL_QUADS);
-			// UNHASHA
-			// Punkt ett i x: (unhashedx - 1)*voxelwidth; 
-			// Punkt två i x: unhashedx*voxelwidth;
-			// Samma med y (och z)
-			int hashed = (*iter).first;
-			
-			float x1 = (*iter).second;
-			float x2 = 2;
-			float y1 = 1;
-			float y2 = 2;
-
-			glVertex3f(x1, y1, 0.0);
-			glVertex3f(x2, y1, 0.0);
-			glVertex3f(x1, y2, 0.0);
-			glVertex3f(x2, y2, 0.0);
-
-			glColor3d((GLdouble)(*iter).second/MAX, (GLdouble)0.2, (GLdouble)(1.0 - (*iter).second/MAX));
-		glEnd();
-	}
-}*/
 // Draw to the buffer and give vertices colors
 void render()
 {
-	/*
-    //glUniform3fv(glGetUniformLocation(shaderProgram, "positions"), MAX_PARTICLES, (v1,v2,v3));
-    glm::vec3 particlePositions[MAX_PARTICLES];
+	
+	//glUniform3fv(glGetUniformLocation(shaderProgram, "positions"), MAX_PARTICLES, (v1,v2,v3));
+    glm::vec2 particlePositions[MAX_PARTICLES];
     
     // Send positions to shader by putting the xzy values in seperate GLfloats
     for(int i = 0; i < MAX_PARTICLES; i++){
-        particlePositions[i] = glm::vec3(particleSystem.Particles[i].pos);
+        particlePositions[i] = glm::vec2(particleSystem.Particles[i].pos);
     }
-    */
+
 
 	GLfloat colorOfBrick[15*30];
 
 	for(int i = 0; i < 15*30; i++){
         colorOfBrick[i] = legobricks[i];
     }
-	std::cout << std::to_string(colorOfBrick[2]) + "\n" << std::endl;
     
 	GLint myLoc = glGetUniformLocation(shaderProgram, "colorOfBrick");
     glUniform1fv(myLoc, MAX_BRICKS, &colorOfBrick[0]);
@@ -201,6 +179,22 @@ void render()
 	GLint myLoc = glGetUniformLocation(shaderProgram, "positions");
     glUniform3fv(myLoc, MAX_PARTICLES, &particlePositions[0][0]);
 	*/
+
+	if(usePressureShader){
+    glUniform2fv(myLoc, MAX_PARTICLES, &particlePositions[0][0]);
+    
+    // If we are using the pressure shader, send pressure information to shader program
+    
+        float particlePressures[MAX_PARTICLES];
+        
+        for(int i = 0; i < MAX_PARTICLES; i++){
+            particlePressures[i] = particleSystem.Particles[i].pressure;
+        }
+        
+        GLint myLoc2 = glGetUniformLocation(shaderProgram, "pressures");
+        glUniform1fv(myLoc2, MAX_PARTICLES, &particlePressures[0]);
+    }
+
     // Clear the screen
     // Entire system is drawn to a square that covers the screen
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
@@ -268,32 +262,20 @@ int main(int argc, char* argv[])
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(elements), elements, GL_STATIC_DRAW);
     
     // --------------------------------------------
-    // Compile and link shaders
-    // --------------------------------------------
-    
-    // Load and compile shaders
-    glEnable(GL_BLEND);
-    shaderProgram = LoadShaders( "vertexshader.vert", "fragmentshader.frag" );
-    
-    // Fragment shaders can have several outputs, so we have to define which one we're looking for
-    glBindFragDataLocation(shaderProgram, 0, "outColor");
-    
-    // Actually use our shader program
-    glLinkProgram(shaderProgram);
-    glUseProgram(shaderProgram);
-    
-    // Tell OpenGL how our vertices are ordered
-    GLint posAttrib = glGetAttribLocation(shaderProgram, "position");
-    
-    // Specify how the data is gathered from the vertex array
-    glEnableVertexAttribArray(posAttrib);
-    glVertexAttribPointer(posAttrib, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), 0);
-    
-    // --------------------------------------------
     // Main loop
     // --------------------------------------------
     
+    bool shaderChanged = true;
+	float previousTimePress = 0;
+    
     while(!glfwWindowShouldClose(window)){
+        
+        if(shaderChanged){
+            switchShaders();
+            shaderChanged = false;
+        }
+        
+        // Handle input
         if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
             glfwSetWindowShouldClose(window, GL_TRUE);
         if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
@@ -302,6 +284,18 @@ int main(int argc, char* argv[])
             velocity.x -= 1;
         if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)
             mousePressed(window);
+        if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS){
+            
+            float time = (float)glfwGetTime();
+            float pressTimer = time-previousTimePress;
+            if(pressTimer > 0.2)
+            {
+                usePressureShader = !usePressureShader;
+                shaderChanged = true;
+                previousTimePress = time;
+            }
+            
+        }
         
         glfwPollEvents();
         update();
