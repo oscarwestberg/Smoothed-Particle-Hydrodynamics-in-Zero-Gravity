@@ -81,7 +81,7 @@ void ParticleSystem::updateParticles(float deltaTime)
 void ParticleSystem::mouseInput(float x, float y, int width, int height){
     x = ((x/width)*2)-1;
     y = ((y/height)*2)-1;
-    float forceStrength = 0.5;
+    float forceStrength = 0.9;
 
     for(int j = 0; j < MAX_PARTICLES; j++) {
 			float distance = glm::distance(glm::vec2(x,y),glm::vec2(Particles[j].pos.x,Particles[j].pos.y));
