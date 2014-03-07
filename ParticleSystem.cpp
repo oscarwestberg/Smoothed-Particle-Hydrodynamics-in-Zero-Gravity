@@ -13,30 +13,14 @@
 
 glm::vec2 positions[MAX_PARTICLES];
 
-// Constant parameters
-const float TIME_STEP = 0.005;
-const float DISTANCE = 0.02;
-const float PARTICLE_MASS = 0.02;
-const float IDEAL_DENSITY = 1000;
-const float GRAVITY = -9.82;
-const float VISCOSITY_CONST = 5;
-//const float SURFACE_TENSION = 0.003;
-//const float TENSION_THRESHOLD = 12;
-const float STIFFNESS = 5;
-const float H = 0.04;
-const bool ZEROGRAVITY = false;
-
 // Pre calculated stuff
-const float SMOOTHING_KERNAL_CONST = PARTICLE_MASS*1.5675/std::powf(H,9);
-const float SMOOTHING_GRADIENT_CONST = PARTICLE_MASS*14.3312/std::powf(H,6);
-
-// Bounding box
-const float BOX_SIZE = 0.4;
+const float SMOOTHING_KERNAL_CONST = Settings::PARTICLE_MASS*1.5675/std::powf(Settings::H,9);
+const float SMOOTHING_GRADIENT_CONST = Settings::PARTICLE_MASS*14.3312/std::powf(Settings::H,6);
 
 VoxelGrid voxelGrid;
 
 // Save ID of neighbouring particles
-int listOfParticleIds[MAX_PARTICLES][voxelGrid.kernelParticles];
+int listOfParticleIds[MAX_PARTICLES][Settings::KERNELPARTICLES];
 
 void ParticleSystem::initParticleSystem()
 {
@@ -44,14 +28,14 @@ void ParticleSystem::initParticleSystem()
 	for(int xPos = 0; xPos < SIZE; xPos++){
 		for(int yPos = 0; yPos < SIZE; yPos++){
 			Particle tempParticle;
-			tempParticle.pos.x = xPos*DISTANCE - DISTANCE*SIZE/2;
-			tempParticle.pos.y = yPos*DISTANCE - DISTANCE*SIZE/2;
+			tempParticle.pos.x = xPos*Settings::DISTANCE - Settings::DISTANCE*SIZE/2;
+			tempParticle.pos.y = yPos*Settings::DISTANCE - Settings::DISTANCE*SIZE/2;
 			Particles.push_back(tempParticle);
 			i++;
 		} 
 	}
 
-	voxelGrid.Setup(BOX_SIZE*2, BOX_SIZE*2, H);
+	voxelGrid.Setup(Settings::BOX_SIZE*2, Settings::BOX_SIZE*2, Settings::H);
 }
 
 void ParticleSystem::updateParticles(float deltaTime)
@@ -60,7 +44,7 @@ void ParticleSystem::updateParticles(float deltaTime)
 	for(int i = 0; i < MAX_PARTICLES; i++){
 		voxelGrid.RegisterObject(Particles[i], i);
 		// reset list of all nearby particles
-		for(int j = 0; j < voxelGrid.kernelParticles; j++){
+		for(int j = 0; j < Settings::KERNELPARTICLES; j++){
 			listOfParticleIds[i][j] = -1;
 		}
 	}	
@@ -83,11 +67,11 @@ void ParticleSystem::updateParticles(float deltaTime)
     for(int i = 0; i < MAX_PARTICLES; i++ ){
         positions[i] = Particles[i].pos;
 		accelerationVec = (-Particles[i].pressureGradient) + Particles[i].viscosity;
-		if(!ZEROGRAVITY){
+		if(!Settings::ZEROGRAVITY){
 			accelerationVec += glm::vec2(0,-9.8);
 		}
-        Particles[i].vel = Particles[i].vel + TIME_STEP*accelerationVec;
-        Particles[i].pos = Particles[i].pos + (TIME_STEP*Particles[i].vel);
+        Particles[i].vel = Particles[i].vel + Settings::TIME_STEP*accelerationVec;
+        Particles[i].pos = Particles[i].pos + (Settings::TIME_STEP*Particles[i].vel);
     }
 
 	voxelGrid.ClearBuckets();
@@ -120,7 +104,7 @@ void ParticleSystem::updateNeighbouringParticles(){
 		int *listOfParticleIdsPointer = voxelGrid.GetNearby(Particles[j]);
 		int particleCount = voxelGrid.getNumberOfNeighbouringParticles();
 		std::vector<int> tempVec;
-		tempVec.reserve(voxelGrid.kernelParticles);
+		tempVec.reserve(Settings::KERNELPARTICLES);
 
 		//std::cout << "PARTICLESYSTEM" << std::endl;
 
@@ -128,13 +112,13 @@ void ParticleSystem::updateNeighbouringParticles(){
 			//std::cout << *(listOfParticleIdsPointer+i) << std::endl;
 			glm::vec2 tempDistVec = Particles[j].pos - Particles[*(listOfParticleIdsPointer+i)].pos;
 			float tempDist = glm::length(tempDistVec);
-			if(tempDist < H){
+			if(tempDist < Settings::H){
 				tempVec.push_back(*(listOfParticleIdsPointer+i));
 			}
 		}
 
-		if(tempVec.size() > voxelGrid.kernelParticles){
-			for(int i = 0; i < voxelGrid.kernelParticles; i++){
+		if(tempVec.size() > Settings::KERNELPARTICLES){
+			for(int i = 0; i < Settings::KERNELPARTICLES; i++){
 				int randomIndex = rand() % tempVec.size();
 				listOfParticleIds[j][i] = tempVec[randomIndex];
 				tempVec.erase(tempVec.begin() + randomIndex);
@@ -166,11 +150,11 @@ void ParticleSystem::updateNeighbouringParticles(){
 void ParticleSystem::updateDensityWithBuckets() {
 	for(int j = 0; j < MAX_PARTICLES; j++) {
 		float temp_density_sum = 0;
-		for(int it = 0; it < voxelGrid.kernelParticles; it++) {
+		for(int it = 0; it < Settings::KERNELPARTICLES; it++) {
 			if(listOfParticleIds[j][it] >= 0){
 				glm::vec2 temp_dist = Particles[j].pos - Particles[listOfParticleIds[j][it]].pos;
 				float dist = glm::length(temp_dist);
-				temp_density_sum += SMOOTHING_KERNAL_CONST*std::powf((std::powf(H,2) - std::powf(dist,2)),3);
+				temp_density_sum += SMOOTHING_KERNAL_CONST*std::powf((std::powf(Settings::H,2) - std::powf(dist,2)),3);
 			}
 			else
 			{
@@ -185,7 +169,7 @@ void ParticleSystem::updateDensityWithBuckets() {
 
 void ParticleSystem::updatePressure(){
 	for(int i = 0; i < MAX_PARTICLES; i++){
-		Particles[i].pressure = STIFFNESS*(Particles[i].density - IDEAL_DENSITY);
+		Particles[i].pressure = Settings::STIFFNESS*(Particles[i].density - Settings::IDEAL_DENSITY);
 	}
 }
 
@@ -274,12 +258,12 @@ void ParticleSystem::updatePressureGradientAndViscosityWithBuckets(){
 		glm::vec2 temp_viscosity_vec = glm::vec2(0);
 		glm::vec2 temp_dist;
 
-		for(int it = 0; it < voxelGrid.kernelParticles; it++) {
+		for(int it = 0; it < Settings::KERNELPARTICLES; it++) {
 			if(listOfParticleIds[j][it] >= 0){
 				temp_dist = (Particles[j].pos - Particles[listOfParticleIds[j][it]].pos);
 				if(glm::length(temp_dist) != 0){
-					temp_viscosity_vec += ((Particles[listOfParticleIds[j][it]].vel - Particles[j].vel)/Particles[listOfParticleIds[j][it]].density)*(H - glm::length(temp_dist));
-					float pressureMag = ((Particles[j].pressure/std::powf(Particles[j].density,2))+(Particles[listOfParticleIds[j][it]].pressure/std::powf(Particles[listOfParticleIds[j][it]].density,2)))*std::powf((H - glm::length(temp_dist)),2);
+					temp_viscosity_vec += ((Particles[listOfParticleIds[j][it]].vel - Particles[j].vel)/Particles[listOfParticleIds[j][it]].density)*(Settings::H - glm::length(temp_dist));
+					float pressureMag = ((Particles[j].pressure/std::powf(Particles[j].density,2))+(Particles[listOfParticleIds[j][it]].pressure/std::powf(Particles[listOfParticleIds[j][it]].density,2)))*std::powf((Settings::H - glm::length(temp_dist)),2);
 					temp_pressure_vec += pressureMag*glm::normalize(temp_dist);
 				}
 			}
@@ -289,7 +273,7 @@ void ParticleSystem::updatePressureGradientAndViscosityWithBuckets(){
 			}
 		}
 
-		temp_viscosity_vec = ((VISCOSITY_CONST*SMOOTHING_GRADIENT_CONST)/Particles[j].density)*temp_viscosity_vec;
+		temp_viscosity_vec = ((Settings::VISCOSITY_CONST*SMOOTHING_GRADIENT_CONST)/Particles[j].density)*temp_viscosity_vec;
 		Particles[j].viscosity = temp_viscosity_vec;
 
 		temp_pressure_vec *= (-SMOOTHING_GRADIENT_CONST);
@@ -298,23 +282,23 @@ void ParticleSystem::updatePressureGradientAndViscosityWithBuckets(){
 }
 
 void ParticleSystem::updateBoundingConditions(){
-    float energyLoss = 1.0;
+    float energyLoss = Settings::ENERGYLOSS;
     
 	for(int i = 0; i < MAX_PARTICLES; i++){
-		if(Particles[i].pos.x < -BOX_SIZE){
-			Particles[i].pos.x = -BOX_SIZE;
+		if(Particles[i].pos.x < -Settings::BOX_SIZE){
+			Particles[i].pos.x = -Settings::BOX_SIZE;
 			Particles[i].vel.x = -Particles[i].vel.x*energyLoss;
 		}
-		else if(Particles[i].pos.x > BOX_SIZE){
-			Particles[i].pos.x = BOX_SIZE;
+		else if(Particles[i].pos.x > Settings::BOX_SIZE){
+			Particles[i].pos.x = Settings::BOX_SIZE;
 			Particles[i].vel.x = -Particles[i].vel.x*energyLoss;
 		}
-		if(Particles[i].pos.y < -BOX_SIZE){
-			Particles[i].pos.y = -BOX_SIZE;
+		if(Particles[i].pos.y < -Settings::BOX_SIZE){
+			Particles[i].pos.y = -Settings::BOX_SIZE;
 			Particles[i].vel.y = -Particles[i].vel.y*energyLoss;
 		}
-		else if(Particles[i].pos.y > BOX_SIZE){
-			Particles[i].pos.y = BOX_SIZE;
+		else if(Particles[i].pos.y > Settings::BOX_SIZE){
+			Particles[i].pos.y = Settings::BOX_SIZE;
 			Particles[i].vel.y = -Particles[i].vel.y*energyLoss;
 		}
 	}

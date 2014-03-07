@@ -10,7 +10,7 @@
 #define MAX_PARTICLES 20*20
 
 const float BOX_SIZE = 0.4;
-uniform vec3[MAX_PARTICLES] positions;
+uniform vec2[MAX_PARTICLES] positions;
 uniform float[MAX_PARTICLES] pressures;
 
 out vec4 outColor;

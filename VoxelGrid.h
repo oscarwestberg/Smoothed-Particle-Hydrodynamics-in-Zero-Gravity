@@ -5,6 +5,7 @@
 #include <list>
 #include <map>
 #include "Particle.h"
+#include "Settings.h"
 
 class VoxelGrid
 {   
@@ -14,11 +15,7 @@ class VoxelGrid
 		float sceneWidth;
 		float sceneHeight;
 		float H;
-		static const int maxParticlesInCell = 400;
-		static const int kernelParticles = 32;
-		static const int rows = 12;
-		static const int columns = 12;
-		int particleCounter[rows*columns];
+		int particleCounter[Settings::ROWS*Settings::COLUMNS];
 
 		void getNeighbors();
 		void Setup(float scenewidth, float sceneheight, float cellsize);
@@ -35,9 +32,9 @@ class VoxelGrid
 		std::map<int, int> indexCounter;
 		//std::map<int  , std::vector<int>> Buckets;
 
-		int Buckets[rows*columns][maxParticlesInCell];
-		int particleIds[kernelParticles];
-		int tempParticleIds[maxParticlesInCell];
+		int Buckets[Settings::ROWS*Settings::COLUMNS][Settings::MAXPARTICLESINCELL];
+		int particleIds[Settings::KERNELPARTICLES];
+		int tempParticleIds[Settings::MAXPARTICLESINCELL];
 
 	//	std::vector<int> Buckets[9];
 		

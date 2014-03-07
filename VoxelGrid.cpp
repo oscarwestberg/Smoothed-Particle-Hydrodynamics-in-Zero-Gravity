@@ -51,24 +51,24 @@ void VoxelGrid::Setup(float scenewidth, float sceneheight, float particleH) {
 	std::cout << "rows and columns should be: " << (sceneheight / (H*2)) << std::endl;
 	sceneWidth = scenewidth;
     sceneHeight = sceneheight;
-	cellSize = sceneHeight/(rows-2);
+	cellSize = sceneHeight/(Settings::ROWS-2);
 	std::cout << "cellSize: " << cellSize << ", H: " << H << std::endl;
 
-	for(int i = 0; i < rows*columns; i++){
+	for(int i = 0; i < Settings::ROWS*Settings::COLUMNS; i++){
 		particleCounter[i] = 0;
 	}
 
-	for(int buckets = 0; buckets < rows*columns; buckets++)
-		for(int particles = 0; particles < maxParticlesInCell; particles++)
+	for(int buckets = 0; buckets < Settings::ROWS*Settings::COLUMNS; buckets++)
+		for(int particles = 0; particles < Settings::MAXPARTICLESINCELL; particles++)
 			Buckets[buckets][particles] = -1;
 }
 
 void VoxelGrid::RegisterObject(const Particle& particle, int particleId)
 {
-		int cellId = (int)(floor((particle.pos.x + (sceneWidth/2))/ (cellSize)) + (floor((particle.pos.y + (sceneHeight/2))/ (cellSize) ) * columns )); 
+		int cellId = (int)(floor((particle.pos.x + (sceneWidth/2))/ (cellSize)) + (floor((particle.pos.y + (sceneHeight/2))/ (cellSize) ) * Settings::COLUMNS )); 
 
 
-		if(cellId >= 0 && cellId <= rows*columns){
+		if(cellId >= 0 && cellId <= Settings::ROWS*Settings::COLUMNS){
 				Buckets[cellId][particleCounter[cellId]] = particleId;
 				particleCounter[cellId]++;
 		}
@@ -80,12 +80,12 @@ void VoxelGrid::RegisterObject(const Particle& particle, int particleId)
 
 void VoxelGrid::ClearBuckets() {
 
-	for(int i = 0; i < rows*columns; i++){
+	for(int i = 0; i < Settings::ROWS*Settings::COLUMNS; i++){
 		particleCounter[i] = 0;
 	}
 
-	for(int buckets = 0; buckets < rows*columns; buckets++)
-		for(int particles = 0; particles < maxParticlesInCell; particles++)
+	for(int buckets = 0; buckets < Settings::ROWS*Settings::COLUMNS; buckets++)
+		for(int particles = 0; particles < Settings::MAXPARTICLESINCELL; particles++)
 			Buckets[buckets][particles] = -1;
 }
 
@@ -95,22 +95,22 @@ int* VoxelGrid::GetNearby(const Particle& particle) {
 	counter = 0;
 	int *pointer;
 
-	bucketIds[0] = (int)( (floor((particle.pos.x + cellSize/2 + sceneWidth/2)/ (cellSize))) + (floor((particle.pos.y + cellSize/2 + sceneWidth/2) / (cellSize))) * columns );
-	bucketIds[1] = (int)( (floor((particle.pos.x + cellSize/2 + sceneWidth/2)/ (cellSize))) + (floor((particle.pos.y - cellSize/2 + sceneWidth/2) / (cellSize))) * columns );
-	bucketIds[2] = (int)( (floor((particle.pos.x - cellSize/2 + sceneWidth/2)/ (cellSize))) + (floor((particle.pos.y - cellSize/2 + sceneWidth/2) / (cellSize))) * columns );
-	bucketIds[3] = (int)( (floor((particle.pos.x - cellSize/2 + sceneWidth/2)/ (cellSize))) + (floor((particle.pos.y + cellSize/2 + sceneWidth/2) / (cellSize))) * columns );
+	bucketIds[0] = (int)( (floor((particle.pos.x + cellSize/2 + sceneWidth/2)/ (cellSize))) + (floor((particle.pos.y + cellSize/2 + sceneWidth/2) / (cellSize))) * Settings::COLUMNS );
+	bucketIds[1] = (int)( (floor((particle.pos.x + cellSize/2 + sceneWidth/2)/ (cellSize))) + (floor((particle.pos.y - cellSize/2 + sceneWidth/2) / (cellSize))) * Settings::COLUMNS );
+	bucketIds[2] = (int)( (floor((particle.pos.x - cellSize/2 + sceneWidth/2)/ (cellSize))) + (floor((particle.pos.y - cellSize/2 + sceneWidth/2) / (cellSize))) * Settings::COLUMNS );
+	bucketIds[3] = (int)( (floor((particle.pos.x - cellSize/2 + sceneWidth/2)/ (cellSize))) + (floor((particle.pos.y + cellSize/2 + sceneWidth/2) / (cellSize))) * Settings::COLUMNS );
 
-	for(int i = 0; i < kernelParticles; i++){
+	for(int i = 0; i < Settings::KERNELPARTICLES; i++){
 		particleIds[i] = -1;
 	}
-	for(int i = 0; i < maxParticlesInCell; i++){
+	for(int i = 0; i < Settings::MAXPARTICLESINCELL; i++){
 		tempParticleIds[i] = -1;
 	}
 
 	//std::cout << "VOXELGRID" << std::endl;
 
 	for(int i = 0; i < 4; i++){
-		if(bucketIds[i] >= 0 && bucketIds[i] <= rows*columns){
+		if(bucketIds[i] >= 0 && bucketIds[i] <= Settings::ROWS*Settings::COLUMNS){
 			for(int j = 0; j < particleCounter[bucketIds[i]]; j++){
 					tempParticleIds[counter] = Buckets[bucketIds[i]][j];
 					//std::cout << tempParticleIds[counter] << std::endl;
