@@ -10,7 +10,7 @@
 #define MAX_PARTICLES 20*20
 
 const float BOX_SIZE = 0.4;
-uniform vec3[MAX_PARTICLES] positions;
+uniform vec2[MAX_PARTICLES] positions;
 uniform float[MAX_PARTICLES] pressures;
 
 out vec4 outColor;
@@ -31,11 +31,8 @@ void main()
     
     // Calculates the electrical field contribution from all particles
     for(int i = 0; i < MAX_PARTICLES; i++){
-        if(((positions[i].x <= uv.x+calculateSize) && (positions[i].x >= uv.x-calculateSize)) &&
-           ((positions[i].y <= uv.y+calculateSize) && (positions[i].y >= uv.y-calculateSize))){
-            float dist = (uv.x-positions[i].x)*(uv.x-positions[i].x) + (uv.y-positions[i].y)*(uv.y-positions[i].y);
-            sum += 1/dist;
-        }
+        float dist = (uv.x-positions[i].x)*(uv.x-positions[i].x) + (uv.y-positions[i].y)*(uv.y-positions[i].y);
+        sum += 1/dist;
         
         // Check if particle is near current uv coordinate
         if(((positions[i].x <= uv.x+boundingSize) && (positions[i].x >= uv.x-boundingSize)) &&
