@@ -92,10 +92,8 @@ void VoxelGrid::ClearBuckets() {
 int* VoxelGrid::GetNearby(const Particle& particle) {
 	
 	int bucketIds[4];
-	int counter = 0;
+	counter = 0;
 	int *pointer;
-	pointer = tempParticleIds;
-
 
 	bucketIds[0] = (int)( (floor((particle.pos.x + cellSize/2 + sceneWidth/2)/ (cellSize))) + (floor((particle.pos.y + cellSize/2 + sceneWidth/2) / (cellSize))) * columns );
 	bucketIds[1] = (int)( (floor((particle.pos.x + cellSize/2 + sceneWidth/2)/ (cellSize))) + (floor((particle.pos.y - cellSize/2 + sceneWidth/2) / (cellSize))) * columns );
@@ -109,21 +107,23 @@ int* VoxelGrid::GetNearby(const Particle& particle) {
 		tempParticleIds[i] = -1;
 	}
 
+	//std::cout << "VOXELGRID" << std::endl;
+
 	for(int i = 0; i < 4; i++){
 		if(bucketIds[i] >= 0 && bucketIds[i] <= rows*columns){
 			for(int j = 0; j < particleCounter[bucketIds[i]]; j++){
 					tempParticleIds[counter] = Buckets[bucketIds[i]][j];
+					//std::cout << tempParticleIds[counter] << std::endl;
 					counter++;
 			}
 		}
 	}
 
-	if(counter > kernelParticles){
-		for(int i = 0; i < kernelParticles; i++){
-			int randomIndex = rand() % counter;
-			particleIds[i] = tempParticleIds[randomIndex];
-		}
-		pointer = particleIds;
-	}
+	pointer = tempParticleIds;
+
 	return pointer; 
+}
+
+int VoxelGrid::getNumberOfNeighbouringParticles(){
+	return counter;
 }

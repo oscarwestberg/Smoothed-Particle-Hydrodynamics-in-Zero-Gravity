@@ -91,9 +91,10 @@ Navier-Stokes
 
 \begin{equation}
 \frac{\partial \overrightarrow v}{\partial t} + ({\overrightarrow v}\cdot{\overrightarrow \nabla}){\overrightarrow v} = \frac{-\overrightarrow \nabla \rho}{\rho_m} + \frac{\mu}{\rho_m}{ \nabla^2}{\overrightarrow v} + \frac{\overrightarrow f_{ext}}{\rho_m}
+\label{e1}
 \end{equation} \\
 
-\noindent Navier-Stokes equations describe the motion of fluid substances as a result of forces. The forces are based on the physical quantities of the fluid (velocity v, mass density p and pressure) and also viscosity and external forces. Equation (2.1) describes the conservation of momentum, and basically it is Newton’s second law for a fluid.
+\noindent Navier-Stokes equations describe the motion of fluid substances as a result of forces. The forces are based on the physical quantities of the fluid (velocity v, mass density p and pressure) and also viscosity and external forces. Equation \ref{e1} describes the conservation of momentum, and basically it is Newton’s second law for a fluid.
 
 
 
@@ -104,16 +105,19 @@ Smoothed Particle Hydrodynamics (SPH) is a Lagrangian method that divides the fl
 SPH
 \begin{equation}
 {A_i} = {\sum_j A_j} \frac{m_j}{p_j} {W(r_{ij},h)}
+\label{e2}
 \end{equation}
 
 Pressure Gradient
 \begin{equation}
 {-\nabla p_i} =  {-\sum_j}{m_j}\frac{p_i + p_j}{2p_j}{\nabla W(r_{ij},h)}
+\label{e3}
 \end{equation}
 
 Viscosity
 \begin{equation}
 {\mu \nabla^2 \cdot v_i} = {\mu}{\sum_j}{m_j}\frac{v_j - v_i}{p_j}{\nabla^2 W(r_{ij},h)}
+\label{e4}
 \end{equation}
 
 
@@ -146,17 +150,19 @@ The particle system’s functionality was tested in MATLAB, however the final pr
 \chapter{Result}
 The end product is an interactive program simulating a customizable amount of particles in either zero gravity or with gravity. The particle system is rendered in 2D in a window.
 
-\begin{figure}[here]
+\begin{figure}[h]
 \begin{center}
-    \includegraphics[width=11cm]{Figures/image_2.png} 
+    \includegraphics[width=11cm]{figs/image_2.png} 
 \end{center}
 \caption{Running the program without metaballs activated}
 \label{model_block}
 \end{figure}
 
-\begin{figure}[here]
+\newpage{}
+
+\begin{figure}[t]
 \begin{center}
-    \includegraphics[width=11cm]{Figures/image_1.png} 
+    \includegraphics[width=11cm]{figs/image_1.png} 
 \end{center}
 \caption{Running the program with metaballs}
 \label{model_block}
@@ -170,6 +176,39 @@ Also include:\\*
 Attachments\\*
 Description of software and hardware requirements\\*
 Manual of how to run the program
+
+\cite{auer08}
+\cite{kelager06}
+
+
+%----------------------------- Back matter of the document
+
+\bibliographystyle{vancouver}
+\bibliography{refs/references}
+
+%\addcontentsline{toc}{chapter}{References}
+
+%\pagestyle{empty}
+
+%\appendix
+
+%\begin{thebibliography}{11}
+%
+%\bibitem{auer08}
+%  Auer, S.
+%  \emph{Realtime Particle-Based Fluid Simulation}.
+%  Computer Graphics and Visualization,
+%  October 4th,
+%  2008.
+%  
+%  \bibitem{kelager06}
+%  Kelager, M.
+%  \emph{Lagrangian Fluid Dynamics Using Smoothed Particle Hydrodynamics}.
+%  Department of Computer Science, University of Copenhagen,
+%  January 9th,
+%  2006.
+%
+%\end{thebibliography}
 
 
 \end{document}

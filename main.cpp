@@ -2,9 +2,6 @@
 //  main.cpp
 //  Smoothed Particle Hydrodynamics in Zero Gravity
 //
-//  Created by Oscar Westberg on 2014-01-24.
-//  Copyright (c) 2014 Group 7 @ Linköpings University, course TNM085. All rights reserved.
-//
 
 // Link statically with GLEW
 //#define GLEW_STATIC
@@ -26,6 +23,7 @@ float previousTime = 0;
 float mouseTimer = 0;
 const float width = 800, height = 600;
 ParticleSystem particleSystem;
+bool usePressureShader = false;
 
 
 // Updates all the views using user input
@@ -73,6 +71,32 @@ void update()
     */
 }
 
+// Compile and link shaders
+void switchShaders(){
+    
+    // Load and compile shaders
+    glEnable(GL_BLEND);
+    
+    if(!usePressureShader)
+        shaderProgram = LoadShaders( "vertexshader.vert", "fragmentshader.frag" );
+    else
+        shaderProgram = LoadShaders( "vertexshader.vert", "fragmentshader_pressure.frag" );
+    
+    // Fragment shaders can have several outputs, so we have to define which one we're looking for
+    glBindFragDataLocation(shaderProgram, 0, "outColor");
+    
+    // Actually use our shader program
+    glLinkProgram(shaderProgram);
+    glUseProgram(shaderProgram);
+    
+    // Tell OpenGL how our vertices are ordered
+    GLint posAttrib = glGetAttribLocation(shaderProgram, "position");
+    
+    // Specify how the data is gathered from the vertex array
+    glEnableVertexAttribArray(posAttrib);
+    glVertexAttribPointer(posAttrib, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), 0);
+}
+
 void mousePressed(GLFWwindow* window){
     double x = 0, y = 0;
     float time = (float)glfwGetTime();
@@ -98,7 +122,20 @@ void render()
     }
     
 	GLint myLoc = glGetUniformLocation(shaderProgram, "positions");
+
     glUniform2fv(myLoc, MAX_PARTICLES, &particlePositions[0][0]);
+    
+    // If we are using the pressure shader, send pressure information to shader program
+    if(usePressureShader){
+        float particlePressures[MAX_PARTICLES];
+        
+        for(int i = 0; i < MAX_PARTICLES; i++){
+            particlePressures[i] = particleSystem.Particles[i].pressure;
+        }
+        
+        GLint myLoc2 = glGetUniformLocation(shaderProgram, "pressures");
+        glUniform1fv(myLoc2, MAX_PARTICLES, &particlePressures[0]);
+    }
 
     // Clear the screen
     // Entire system is drawn to a square that covers the screen
@@ -167,32 +204,19 @@ int main(int argc, char* argv[])
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(elements), elements, GL_STATIC_DRAW);
     
     // --------------------------------------------
-    // Compile and link shaders
-    // --------------------------------------------
-    
-    // Load and compile shaders
-    glEnable(GL_BLEND);
-    shaderProgram = LoadShaders( "vertexshader.vert", "fragmentshader.frag" );
-    
-    // Fragment shaders can have several outputs, so we have to define which one we're looking for
-    glBindFragDataLocation(shaderProgram, 0, "outColor");
-    
-    // Actually use our shader program
-    glLinkProgram(shaderProgram);
-    glUseProgram(shaderProgram);
-    
-    // Tell OpenGL how our vertices are ordered
-    GLint posAttrib = glGetAttribLocation(shaderProgram, "position");
-    
-    // Specify how the data is gathered from the vertex array
-    glEnableVertexAttribArray(posAttrib);
-    glVertexAttribPointer(posAttrib, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), 0);
-    
-    // --------------------------------------------
     // Main loop
     // --------------------------------------------
     
+    bool shaderChanged = true;
+	float previousTimePress = 0;
+    
     while(!glfwWindowShouldClose(window)){
+        
+        if(shaderChanged){
+            switchShaders();
+            shaderChanged = false;
+        }
+        
         // Handle input
         if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
             glfwSetWindowShouldClose(window, GL_TRUE);
@@ -202,6 +226,18 @@ int main(int argc, char* argv[])
             velocity.x -= 1;
         if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)
             mousePressed(window);
+        if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS){
+            
+            float time = (float)glfwGetTime();
+            float pressTimer = time-previousTimePress;
+            if(pressTimer > 0.2)
+            {
+                usePressureShader = !usePressureShader;
+                shaderChanged = true;
+                previousTimePress = time;
+            }
+            
+        }
         
         glfwPollEvents();
         update();

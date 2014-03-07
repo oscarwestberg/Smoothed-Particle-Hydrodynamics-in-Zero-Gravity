@@ -43,6 +43,8 @@ private:
 	void updateViscosity();
 	void updateBoundingConditions();
 
+
+
 };
 
 #endif /* defined(__Smoothed_Particle_Hydrodynamics_in_Zero_Gravity__Particles__) */
