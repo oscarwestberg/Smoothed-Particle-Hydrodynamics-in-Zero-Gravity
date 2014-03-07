@@ -55,9 +55,9 @@ void update()
     
     // Position of the camera, Point centered on-screen and the Up axis.
     glm::mat4 view = glm::lookAt(
-                                 glm::vec3(1.2f, 1.2f, 1.2f),
-                                 glm::vec3(0.0f, 0.0f, 0.0f),
-                                 glm::vec3(0.0f, 0.0f, 1.0f)
+                                 glm::vec2(1.2f, 1.2f, 1.2f),
+                                 glm::vec2(0.0f, 0.0f, 0.0f),
+                                 glm::vec2(0.0f, 0.0f, 1.0f)
                                  );
     GLint uniView = glGetUniformLocation(shaderProgram, "V");
     glUniformMatrix4fv(uniView, 1, GL_FALSE, glm::value_ptr(view));
@@ -78,7 +78,8 @@ void mousePressed(GLFWwindow* window){
     float time = (float)glfwGetTime();
 	float deltaTime = time-mouseTimer;
     
-	if(deltaTime > 1/10){
+	if(deltaTime > 1.5){
+		printf("TRYCK!");
         glfwGetCursorPos(window, &x,&y);
 		particleSystem.mouseInput(x,y, width, height);
 		mouseTimer = time;
@@ -89,15 +90,15 @@ void mousePressed(GLFWwindow* window){
 void render()
 {
     //glUniform3fv(glGetUniformLocation(shaderProgram, "positions"), MAX_PARTICLES, (v1,v2,v3));
-    glm::vec3 particlePositions[MAX_PARTICLES];
+    glm::vec2 particlePositions[MAX_PARTICLES];
     
     // Send positions to shader by putting the xzy values in seperate GLfloats
     for(int i = 0; i < MAX_PARTICLES; i++){
-        particlePositions[i] = glm::vec3(particleSystem.Particles[i].pos);
+        particlePositions[i] = glm::vec2(particleSystem.Particles[i].pos);
     }
     
 	GLint myLoc = glGetUniformLocation(shaderProgram, "positions");
-    glUniform3fv(myLoc, MAX_PARTICLES, &particlePositions[0][0]);
+    glUniform2fv(myLoc, MAX_PARTICLES, &particlePositions[0][0]);
 
     // Clear the screen
     // Entire system is drawn to a square that covers the screen

@@ -13,7 +13,7 @@
 #define MAX_PARTICLES 20*20
 
 const float BOX_SIZE = 0.4;
-uniform vec3[MAX_PARTICLES] positions;
+uniform vec2[MAX_PARTICLES] positions;
 
 out vec4 outColor;
 void main()
@@ -23,7 +23,7 @@ void main()
     vec4 color = vec4(0.0,0.0,0.9, 1.0);
     vec4 ambientColor = vec4(0.3,0.3,0.3,1.0);
 
-    float threshold = 10000;
+    float threshold = 15000;
     
     for(int i = 0; i < MAX_PARTICLES; i++){
         float dist = (uv.x-positions[i].x)*(uv.x-positions[i].x) + (uv.y-positions[i].y)*(uv.y-positions[i].y);

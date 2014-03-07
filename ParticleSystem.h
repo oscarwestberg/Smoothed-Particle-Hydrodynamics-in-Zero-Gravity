@@ -30,6 +30,7 @@ public:
     void mouseInput(float x, float y, int width, int height);
 
 private:
+	void updateNeighbouringParticles();
 	void updateDensityWithBuckets();
 	void updatePressureWithBuckets();
 	void updatePressureGradientWithBuckets();
