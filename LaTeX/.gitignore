@@ -1,5 +1,10 @@
+ignore LaTeX-files from texmaker:
+
 Report.aux
 Report.lot
+Report.lof
 Report.log
 Report.toc
 Report.synctex.gz
+
+-------
