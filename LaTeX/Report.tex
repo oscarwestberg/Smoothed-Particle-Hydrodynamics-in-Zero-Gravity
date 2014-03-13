@@ -1,7 +1,7 @@
 \documentclass[a4paper,12pt,twoside,final]{report}
 
 \usepackage[utf8]{inputenc}
-\usepackage[english,swedish]{babel}
+\usepackage[english]{babel}
 \usepackage[T1]{fontenc}
 
 \usepackage{times}  
@@ -10,27 +10,31 @@
 \usepackage{graphicx}
 \usepackage{theorem}
 \usepackage{latexsym}
-\usepackage{url}
-\usepackage{babel}
+%\usepackage{url}
+%\usepackage{titling}
+\usepackage{geometry}
+\usepackage{float}
 
-\headsep          0.25in
-\headheight       12pt
-\setlength{\topmargin}{-\headsep}
-\addtolength{\topmargin}{-\headheight}
-\oddsidemargin      0in
-\evensidemargin     0in
-\setlength{\textwidth}{\paperwidth}
-\addtolength{\textwidth}{-2.0in}
-\setlength{\textheight}{\paperheight}
-\addtolength{\textheight}{-2.0in}
-\addtolength{\textheight}{-1\topskip}
-\divide\textheight  by \baselineskip
-\multiply\textheight  by \baselineskip
-\addtolength{\textheight}{\topskip}
+\geometry{
+ margin=20mm
+} 
 
-\renewcommand{\contentsname}
-{Table of contents}
+%\headsep          0.25in
+%\headheight       12pt
+%\setlength{\topmargin}{-\headsep}
+%\addtolength{\topmargin}{-\headheight}
+%\oddsidemargin      0in
+%\evensidemargin     0in
+%\setlength{\textwidth}{\paperwidth}
+%\addtolength{\textwidth}{-2.0in}
+%\setlength{\textheight}{\paperheight}
+%\addtolength{\textheight}{-2.0in}
+%\addtolength{\textheight}{-1\topskip}
+%\divide\textheight  by \baselineskip
+%\multiply\textheight  by \baselineskip
+%\addtolength{\textheight}{\topskip}
 
+\renewcommand{\contentsname}{Table of contents}
 \begin{document}
 
 \pagestyle{plain}
@@ -45,6 +49,7 @@
 \newpage{}
 
 \setcounter{page}{2}
+\renewcommand{\abstractname}{Summary}
 \begin{abstract}
 This project was part of the course TNM085, Modeling project at Linköping University. Groups were able to choose their own research topics and simulate a physical model. This report describes a simulation of a system using Smoothed Particle Hydrodynamics (SPH) in both zero gravity and under the effect of gravity. \\
 
@@ -57,13 +62,13 @@ This project was part of the course TNM085, Modeling project at Linköping Unive
 \addtocontents{toc}{\protect\thispagestyle{empty}}
 \listoffigures    % chapter with the list of figures
 \addtocontents{lof}{\protect\thispagestyle{empty}}
-%\listoftables     % chapter with the list of tables
-%\addtocontents{lot}{\protect\thispagestyle{empty}}
+\listoftables     % chapter with the list of tables
+\addtocontents{lot}{\protect\thispagestyle{empty}}
 
 
 %----------------------------- Body of the document
-
 \chapter{Introduction}
+
 
 %----------------------------- Background
 \section{Background}
@@ -91,7 +96,7 @@ Navier-Stokes equations describe the motion of fluid substances as a result of f
 \begin{equation}
 \frac{\partial \overrightarrow v}{\partial t} + ({\overrightarrow v}\cdot{\overrightarrow \nabla}){\overrightarrow v} = \frac{-\overrightarrow \nabla p}{\rho_m} + \frac{\mu}{\rho_m}{ \nabla^2}{\overrightarrow v} + \frac{\overrightarrow f_{ext}}{\rho_m}
 \label{e1}
-\end{equation} \\
+\end{equation}
 
 \noindent$\rho_m$ = mass density\\*
 $v$ = velocity\\*
@@ -101,6 +106,7 @@ $f_{ext}$ = external force\\*
 $\mu$ = viscosity\\*
 
 \noindent Navier-Stokes equations describe the motion of fluid substances as a result of forces. The forces are based on the physical quantities of the fluid (velocity v, mass density p and pressure) and also viscosity and external forces. Equation \ref{e1} describes the conservation of momentum, and basically it is Newton’s second law for a fluid.\\
+
 
 %----------------------------- SPH
 \section{Smoothed Particle Hydrodynamics}
@@ -123,7 +129,6 @@ Smoothed Particle Hydrodynamics (SPH) is a Lagrangian method that divides the fl
 {\rho_s}{(\overrightarrow r_j)} {\approx} {\sum_i}{w(\overrightarrow r_{ij})}
 \label{e3}
 \end{equation}
-
 
 \item Compute pressure from density. \\ \\
 \noindent The pressure can be approximately calculated using the density. k is a constant T.
@@ -161,31 +166,9 @@ Smoothed Particle Hydrodynamics (SPH) is a Lagrangian method that divides the fl
 {v} = {v + \Delta t \cdot a}
 \label{e8}
 \end{equation}
-%a = (-presGradVec + viscosity+g); 
-%v = v + TIME_STEP*a;
 %pos = pos + TIME_STEP*v;
 
 \end{enumerate}
-
-%\noindent SPH
-%\begin{equation}
-%{A_i} = {\sum_j A_j} \frac{m_j}{p_j} {W(r_{ij},h)}
-%\label{e}
-%\end{equation}\\
-%
-%\noindent Pressure Gradient
-%\begin{equation}
-%{-\nabla p_i} =  {-\sum_j}{m_j}\frac{p_i + p_j}{2p_j}{\nabla W(r_{ij},h)}
-%\label{e}
-%\end{equation}
-%
-%\noindent where $p_i$ and $p_j$ are pressure given by $p_i = k(p_i - p_0)$ with $p_0$ the ideal density of the fluid and $k$ a stiffness constant.\\
-%
-%\noindent Viscosity
-%\begin{equation}
-%{\mu \nabla^2 \cdot v_i} = {\mu}{\sum_j}{m_j}\frac{v_j - v_i}{p_j}{\nabla^2 W(r_{ij},h)}
-%\label{e}
-%\end{equation}\\
 
 
 %----------------------------- Implementation
@@ -205,7 +188,7 @@ The particle system’s functionality was tested in MATLAB, however the final pr
 
 \noindent  If the accumulated contribution of several metaball fields reaches a certain threshold, the shader renders the color blue. The metaball technique makes the entire particle system look like a fluid.
 
-\begin{figure}[h]
+\begin{figure}[H]
 \begin{center}
     \includegraphics[width=11cm]{figs/image_2.png} 
 \end{center}
@@ -219,7 +202,7 @@ The particle system’s functionality was tested in MATLAB, however the final pr
 \chapter{Result}
 The end product is an interactive program simulating a customizable amount of particles in either zero gravity or with gravity. The particle system is rendered in 2D in a window. Up to 900 particles run at full speed, it is also possible to change shader by pressing “s”. The shader with black water and red transparent squares displays the particles’ pressure. \\
 
-\begin{figure}[t]
+\begin{figure}[H]
 \begin{center}
     \includegraphics[width=11cm]{figs/image_1.png} 
 \end{center}
@@ -242,32 +225,26 @@ Matlab was a great tool to test if the implementation of the physics for the sys
 
 \noindent C++ is well known for being a fast programming language and was an obvious choice to start, in retrospect it was still a good choice to use C++. While the final product does not have 3D functionality, any other choice of programming language would most likely not reach the same level of speed with the team’s current programming proficiency. \\
 
-\noindent OpenGL is a vital part of drawing in 3D and was a must in the project’s initial phase. Since the final product only uses 2D rendering other drawing libraries such as SFML and SDL would have been viable. The group did however want to learn OpenGL. \\ \\ \\ \\ \\
-
-\noindent Also include:\\*
-Attachments\\*
-Description of software and hardware requirements\\*
-Manual of how to run the program
+\noindent OpenGL is a vital part of drawing in 3D and was a must in the project’s initial phase. Since the final product only uses 2D rendering other drawing libraries such as SFML and SDL would have been viable. The group did however want to learn OpenGL.
 
 
 
-%----------------------------- Back matter of the document
+%-----------------------------
 
-\bibliographystyle{vancouver}
-\bibliography{refs/references}
+%\bibliographystyle{vancouver}
+%\bibliography{refs/references}
 
 %\addcontentsline{toc}{chapter}{References}
-
 %\pagestyle{empty}
-
 %\appendix
-
 %\cite{auer08}
 %\cite{kelager06}
 
+%----------------------------- Bibliography
+
 \begin{thebibliography}{11}
 
-\bibitem{auer08}
+  \bibitem{auer08}
   Auer, S.
   \emph{Realtime Particle-Based Fluid Simulation}.
   Computer Graphics and Visualization,
@@ -285,9 +262,10 @@ Manual of how to run the program
 
 \newpage
 
-\appendix
 
-\section{Attachments}
+%----------------------------- Attachments
+\appendix
+\chapter{Manual}
 Manual, how to run the program and hardware requirements. \\
 \noindent The easiest way to run the program is to execute the runnable file included with this file. It is also possible to use the source code to create a new executable but that requires linking of glfw, glm and glew. Make sure all the shader files are included in the same folder as the runnable file, another requirement is hardware supporting OpenGL 3.3 and above.
 
