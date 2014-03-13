@@ -10,29 +10,23 @@
 \usepackage{graphicx}
 \usepackage{theorem}
 \usepackage{latexsym}
-%\usepackage{url}
-%\usepackage{titling}
 \usepackage{geometry}
 \usepackage{float}
+\usepackage{tabularx}
 
 \geometry{
  margin=20mm
 } 
 
-%\headsep          0.25in
-%\headheight       12pt
-%\setlength{\topmargin}{-\headsep}
-%\addtolength{\topmargin}{-\headheight}
-%\oddsidemargin      0in
-%\evensidemargin     0in
-%\setlength{\textwidth}{\paperwidth}
-%\addtolength{\textwidth}{-2.0in}
-%\setlength{\textheight}{\paperheight}
-%\addtolength{\textheight}{-2.0in}
-%\addtolength{\textheight}{-1\topskip}
-%\divide\textheight  by \baselineskip
-%\multiply\textheight  by \baselineskip
-%\addtolength{\textheight}{\topskip}
+%To-Do
+%1. Add pressure picture to results
+%2. Explain variabels in equations
+%3. Explain pictures
+%4. Infoga referenser i texten, även till bild för SPH
+%5. Bättre manual
+%6. Skriv mer på resultat, mer siffror
+
+%extra, se till att exe fil fungerar på pc
 
 \renewcommand{\contentsname}{Table of contents}
 \begin{document}
@@ -200,7 +194,22 @@ The particle system’s functionality was tested in MATLAB, however the final pr
 
 %----------------------------- Result
 \chapter{Result}
-The end product is an interactive program simulating a customizable amount of particles in either zero gravity or with gravity. The particle system is rendered in 2D in a window. Up to 900 particles run at full speed, it is also possible to change shader by pressing “s”. The shader with black water and red transparent squares displays the particles’ pressure. \\
+
+\begin{table}[h]
+  \centering
+  \caption{SPH parameters from Matlab simulation}
+  \label{Matlab table}
+    \begin{tabularx}{\textwidth}{| X | X | X |}
+    \hline
+    SPH parameters & Water & Yoghurt \\ \hline
+    Particle mass & 0.013 & 0.014 \\ \hline
+    Ideal density & 1000 & 1050 \\ \hline
+    Viscosity constant & 3.5 & 20.0 \\ \hline
+    Stiffness & 3.0 & 5.0 \\ \hline
+    \end{tabularx}
+\end{table}
+
+\noindent The end product is an interactive program simulating a customizable amount of particles in either zero gravity or with gravity. The particle system is rendered in 2D in a window. Up to 900 particles run at full speed, it is also possible to change shader by pressing “s”. The shader with black water and red transparent squares displays the particles’ pressure. \\
 
 \begin{figure}[H]
 \begin{center}
