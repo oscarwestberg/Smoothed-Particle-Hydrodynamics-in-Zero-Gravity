@@ -102,6 +102,12 @@ Navier-Stokes \cite{kelager06} equations describe the motion of fluid substances
 
 \noindent The forces are based on the physical quantities of the fluid, velocity $v$, mass density $\rho$ and pressure $p$, and also viscosity $\mu$ and $f_{ext}$ external forces. Equation \ref{e1} describes the conservation of momentum, and basically it is Newton’s second law for a fluid.\\
 
+\noindent  $\overrightarrow \nabla p$ the pressure gradient, is due to the particles’ will to even out the pressure based on its surroundings. Without it the particles would not know which way to go. \\
+
+\noindent $\mu$ the viscosity term, will basically determine how much the velocity of neighbouring particles will affect each other. With a high viscosity constant it is more likely that nearby particles will move together. \\
+
+\noindent $f_{ext}$ is external forces such as gravity.
+
 
 %----------------------------- SPH
 \section{Smoothed Particle Hydrodynamics}
@@ -187,13 +193,13 @@ The particle system’s functionality was tested in MATLAB, however the final pr
 
 \noindent  If the accumulated contribution of several metaball fields reaches a certain threshold, the shader renders the color blue. The metaball technique makes the entire particle system look like a fluid.
 
-\begin{figure}[H]
-\begin{center}
-    \includegraphics[width=11cm]{figs/image_2.png} 
-\end{center}
-\caption{Running the program without metaballs activated}
-\label{model_block}
-\end{figure}
+%\begin{figure}[h]
+%\begin{center}
+%    \includegraphics[width=11cm]{figs/metaballs.jpg} 
+%\end{center}
+%\caption{Metaball fields}
+%\label{metaballs}
+%\end{figure}
 
 
 
@@ -208,7 +214,7 @@ The SPH-parameters for water and yoghurt were obtained by trial and error during
   \label{Matlab table}
     \begin{tabularx}{\textwidth}{| X | X | X | l |}
     \hline
-    SPH parameters & Water & Yoghurt & \\ \hline
+    \pmb{SPH parameters} & \pmb{Water} & \pmb{Yoghurt} & \pmb{Unit} \\ \hline
     Particle mass & 0.013 & 0.014 & $kg$ \\ \hline
     Ideal density & 1000 & 1050 & $kg/m^3$ \\ \hline
     Viscosity constant & 3.5 & 20.0 & $Pa \cdot s$ \\ \hline
@@ -219,6 +225,14 @@ The SPH-parameters for water and yoghurt were obtained by trial and error during
 \end{table}
 
 \noindent The end product is an interactive program simulating a customizable amount of particles in either zero gravity or with gravity. The particle system is rendered in 2D in a window. Up to 900 particles run at full speed, it is also possible to change shader by pressing the “s" button on the keyboard. The shader with black water and red transparent squares displays the particles’ pressure. \\
+
+\begin{figure}[H]
+\begin{center}
+    \includegraphics[width=11cm]{figs/image_2.png} 
+\end{center}
+\caption{Running the program without metaballs activated}
+\label{model_block}
+\end{figure}
 
 \begin{figure}[H]
 \begin{center}
@@ -239,11 +253,9 @@ Matlab was a great tool to test if the implementation of the physics for the sys
 
 \noindent The initial idea of the program was to render water in 3D and to use advanced shaders to create a realistic look. The final result however is in only two dimensions. By adding a third dimensions it will drastically increase the shear number of particles and it was decided to stick with two dimension in the final version because of the performance restrictions of the system. The calculations are basically the same if a third dimension is added and will not be difficult to add in terms of coding. \\
 
-\noindent There are several improvements to be made, for instance by introducing multi-core calculations on the CPU or making calculations on the GPU instead. \\
-
 \noindent C++ is well known for being a fast programming language and was an obvious choice to start, in retrospect it was still a good choice to use C++. While the final product does not have 3D functionality, any other choice of programming language would most likely not reach the same level of speed with the team’s current programming proficiency. \\
 
-\noindent OpenGL is a vital part of drawing in 3D and was a must in the project’s initial phase. Since the final product only uses 2D rendering other drawing libraries such as SFML and SDL would have been viable. The group did however want to learn OpenGL.
+\noindent There are several improvements to be made, for instance by introducing multi-core calculations on the CPU or making calculations on the GPU instead. OpenGL is a vital part of drawing in 3D and was a must in the project’s initial phase. Since the final product only uses 2D rendering other drawing libraries such as SFML and SDL would have been viable.
 
 
 
@@ -301,7 +313,7 @@ Matlab was a great tool to test if the implementation of the physics for the sys
 %----------------------------- Attachments
 \appendix
 \chapter{Manual}
-Manual, how to run the program and hardware requirements. \\
-\noindent The easiest way to run the program is to execute the runnable file included with this file. It is also possible to use the source code to create a new executable but that requires linking of glfw, glm and glew. Make sure all the shader files are included in the same folder as the runnable file, another requirement is hardware supporting OpenGL 3.3 and above.
+\pmb{How to run the program and hardware requirements} \\
+\noindent The easiest way to run the program is to execute the runnable files (water.exe or yoghurt.exe).. Make sure all the shader files and the glew32.dll-file are included in the same folder as the runnable file. The computer running the program must have hardware supporting OpenGL 3.3 or above.
 
 \end{document}
