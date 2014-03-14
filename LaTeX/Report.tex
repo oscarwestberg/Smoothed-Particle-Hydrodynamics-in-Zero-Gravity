@@ -88,21 +88,19 @@ The Lagrangian method is based on a collection of particles that, in addition to
 %----------------------------- Navier-Stokes
 \section{Navier-Stokes equations}
 
-Navier-Stokes equations describe the motion of fluid substances as a result of forces. \\
+Navier-Stokes \cite{kelager06} equations describe the motion of fluid substances as a result of forces. \\
 
 \begin{equation}
 \frac{\partial \overrightarrow v}{\partial t} + ({\overrightarrow v}\cdot{\overrightarrow \nabla}){\overrightarrow v} = \frac{-\overrightarrow \nabla p}{\rho_m} + \frac{\mu}{\rho_m}{ \nabla^2}{\overrightarrow v} + \frac{\overrightarrow f_{ext}}{\rho_m}
 \label{e1}
 \end{equation}
 
-\noindent$\rho_m$ = mass density\\*
-$v$ = velocity\\*
-$\nabla$= gradient\\*
-$p$ = pressure\\*
-$f_{ext}$ = external force\\*
-$\mu$ = viscosity\\*
+\begin{equation}
+{\nabla v} = {0}
+\label{e0}
+\end{equation}
 
-\noindent Navier-Stokes equations describe the motion of fluid substances as a result of forces. The forces are based on the physical quantities of the fluid (velocity v, mass density p and pressure) and also viscosity and external forces. Equation \ref{e1} describes the conservation of momentum, and basically it is Newton’s second law for a fluid.\\
+\noindent The forces are based on the physical quantities of the fluid, velocity $v$, mass density $\rho$ and pressure $p$, and also viscosity $\mu$ and $f_{ext}$ external forces. Equation \ref{e1} describes the conservation of momentum, and basically it is Newton’s second law for a fluid.\\
 
 
 %----------------------------- SPH
@@ -177,7 +175,7 @@ Smoothed Particle Hydrodynamics (SPH) is a Lagrangian method that divides the fl
 
 %----------------------------- Matlab
 \section{Matlab}
-A simple version of the model was simulated in MATLAB in order to test the theory behind the system. This eliminated the chances of any potential errors being caused by the rendering or implemented functions. The calculations was performed in the order that was previously described.
+A simple version of the model was simulated in MATLAB in order to test the theory behind the system. This eliminated the chances of any potential errors being caused by the rendering or implemented functions. The calculations were performed in the order that was previously described in section 2.3.
 
 %----------------------------- OpenGL
 \section{OpenGL}
@@ -202,23 +200,25 @@ The particle system’s functionality was tested in MATLAB, however the final pr
 %----------------------------- Result
 \chapter{Result}
 
+The SPH-parameters for water and yoghurt were obtained by trial and error during the simulations in matlab.
+
 \begin{table}[h]
   \centering
   \caption{SPH parameters from Matlab simulation}
   \label{Matlab table}
-    \begin{tabularx}{\textwidth}{| X | X | X |}
+    \begin{tabularx}{\textwidth}{| X | X | X | l |}
     \hline
-    SPH parameters & Water & Yoghurt \\ \hline
-    Particle mass & 0.013 & 0.014 \\ \hline
-    Ideal density & 1000 & 1050 \\ \hline
-    Viscosity constant & 3.5 & 20.0 \\ \hline
-    Stiffness & 3.0 & 5.0 \\ \hline
-    Smoothing distance & 0.032 & 0.04 \\ \hline
-    Kernel particles  & 32 & 50 \\ \hline
+    SPH parameters & Water & Yoghurt & \\ \hline
+    Particle mass & 0.013 & 0.014 & $kg$ \\ \hline
+    Ideal density & 1000 & 1050 & $kg/m^3$ \\ \hline
+    Viscosity constant & 3.5 & 20.0 & $Pa \cdot s$ \\ \hline
+    Stiffness & 3.0 & 5.0 & $J$ \\ \hline
+    Smoothing distance & 0.032 & 0.04 & $m$ \\ \hline
+    Kernel particles  & 32 & 50 & $n/a$ \\ \hline
     \end{tabularx}
 \end{table}
 
-\noindent The end product is an interactive program simulating a customizable amount of particles in either zero gravity or with gravity. The particle system is rendered in 2D in a window. Up to 900 particles run at full speed, it is also possible to change shader by pressing “s”. The shader with black water and red transparent squares displays the particles’ pressure. \\
+\noindent The end product is an interactive program simulating a customizable amount of particles in either zero gravity or with gravity. The particle system is rendered in 2D in a window. Up to 900 particles run at full speed, it is also possible to change shader by pressing the “s" button on the keyboard. The shader with black water and red transparent squares displays the particles’ pressure. \\
 
 \begin{figure}[H]
 \begin{center}
@@ -266,23 +266,32 @@ Matlab was a great tool to test if the implementation of the physics for the sys
   Auer, S.
   \emph{Realtime Particle-Based Fluid Simulation}.
   Computer Graphics and Visualization,
-  October 4th,
+  October 4,
   2008.
   
   \bibitem{kelager06}
   Kelager, M.
   \emph{Lagrangian Fluid Dynamics Using Smoothed Particle Hydrodynamics}.
   Department of Computer Science, University of Copenhagen,
-  January 9th,
+  January 9,
   2006.
+  [www] http://image.diku.dk/projects/media/kelager.06.pdf , 24 January 2014.
+  
+  \bibitem{geiss00}
+  Geiss, R.
+  \emph{Lagrangian Fluid Dynamics Using Smoothed Particle Hydrodynamics}.
+  Department of Computer Science, University of Copenhagen,
+  March 3,
+  2000.
+  [www] http://www.geisswerks.com/ryan/BLOBS/blobs.html , 13 February 2014.
   
   \bibitem{sph}
     Dr. Michael J. Gourlay.
   \emph{Fluid Simulation for Video Games (part 2)}.
   Intel Developer Zone,
-  January 9th,
-  2006.
-  [www] http://software.intel.com/en-us/articles/fluid-simulation-for-video-games-part-2 , 24 January 2014.
+  May 30,
+  2012.
+  [www] http://software.intel.com/en-us/articles/fluid-simulation-for-video-games-part-2 , 28 January 2014.
   
 \end{thebibliography}
 
