@@ -36,7 +36,7 @@
 %----------------------------- Front matter of the document
 
 \title{Smoothed Particle Hydrodynamics in Zero Gravity}
-\author{Oscar Westberg, Teodor Vik, Mikael Zackrisson, Anton Österblad}
+\author{\pmb{Group 7} \\ Oscar Westberg, Teodor Vik, Mikael Zackrisson, Anton Österblad}
 \maketitle
 
 \thispagestyle{empty}
@@ -66,7 +66,7 @@ This project was part of the course TNM085, Modeling project at Linköping Unive
 
 %----------------------------- Background
 \section{Background}
-Fluid simulation is a popular tool in computer graphics and it is often used to simulate liquid, smoke and explosions. Depending on the quality requirements fluid simulations can be extremely time-consuming animations or simple real-time particle systems. Since particle system is a good way to simulate a complex effect it is very popular amongst developers and thus there are a lot of information to find about the subject. The report is based on Smoothed Particle Hydrodynamics, which is one of the most popular techniques when creating a fluid.
+Fluid simulation is a popular tool in computer graphics \cite{auer08} and it is often used to simulate liquid, smoke and explosions. Depending on the quality requirements fluid simulations can be extremely time-consuming animations or simple real-time particle systems. Since particle system is a good way to simulate a complex effect it is very popular amongst developers and thus there are a lot of information to find about the subject. The report is based on Smoothed Particle Hydrodynamics, which is one of the most popular techniques when creating a fluid.
 
 
 %----------------------------- Purpose
@@ -111,7 +111,7 @@ Navier-Stokes \cite{kelager06} equations describe the motion of fluid substances
 
 %----------------------------- SPH
 \section{Smoothed Particle Hydrodynamics}
-Smoothed Particle Hydrodynamics (SPH) is a Lagrangian method that divides the fluid into a set of particles. Mass-density, pressure, etc. are estimated using SPH approximations. The properties of a SPH-particle is affected by other particles that lie within a certain “smoothing” distance, thus affected only by its neighbours. The "smoothing" distance is illustrated in Figure ~\ref{fig:sph} b. Any desired scalar quantity can be determined for each particle by weighting that quantity from neighboring particles with a “kernel function”, which is illustrated in Figure ~\ref{fig:sph} a. \\
+Smoothed Particle Hydrodynamics (SPH) \cite{kelager06} is a Lagrangian method that divides the fluid into a set of particles. Mass-density, pressure, etc. are estimated using SPH approximations. The properties of a SPH-particle is affected by other particles that lie within a certain “smoothing” distance, thus affected only by its neighbours. The "smoothing" distance is illustrated in Figure ~\ref{fig:sph} b \cite{sph}. Any desired scalar quantity can be determined for each particle by weighting that quantity from neighboring particles with a “kernel function”, which is illustrated in Figure ~\ref{fig:sph} a. \\
 
 \begin{figure}[h]
 \begin{center}
@@ -189,24 +189,24 @@ The particle system’s functionality was tested in MATLAB, however the final pr
 
 \noindent Since only the closest neighbors of each particle will have an effect on its behavior it’s unnecessary to calculate the effect on every particle for each particle. This gives $N^2$ calculations. The performance was improved by using spatial subdivision. A uniform grid subdivides the simulation space into a grid of uniformly sized cells. This means that the the force for a given particle can be calculated by only comparing it with all its neighbors within a certain radius. \\
 
-\noindent To ensure the rendered scene looks like water instead of a collections of dots the technique metaballs was implemented. A metaball emits an electric field according to the formula: $[f(x,y) = 1.0 / (x^2 + y^2)]$ \\
+\noindent To ensure the rendered scene looks like water instead of a collections of dots the technique metaballs \cite{geiss00} was implemented. A metaball emits an electric field according to the formula: $[f(x,y) = 1.0 / (x^2 + y^2)]$ \\
 
-\noindent  If the accumulated contribution of several metaball fields reaches a certain threshold, the shader renders the color blue. The metaball technique makes the entire particle system look like a fluid.
+\noindent  If the accumulated contribution of several metaball fields reaches a certain threshold, the shader renders the color blue. The metaball technique makes the entire particle system look like a fluid. Figure 3.1 illustrates how the metaballs emits electric fields. \\
 
-%\begin{figure}[h]
-%\begin{center}
-%    \includegraphics[width=11cm]{figs/metaballs.jpg} 
-%\end{center}
-%\caption{Metaball fields}
-%\label{metaballs}
-%\end{figure}
+\begin{figure}[H]
+\begin{center}
+    \includegraphics[width=11cm]{figs/metaball.png} 
+\end{center}
+\caption{Metaball fields}
+\label{fig:meta}
+\end{figure}
 
 
 
 %----------------------------- Result
 \chapter{Result}
 
-The SPH-parameters for water and yoghurt were obtained by trial and error during the simulations in matlab.
+The SPH-parameters for water and yoghurt were obtained by trial and error during the simulations in matlab. The determined constans are given in Table 4.1. 
 
 \begin{table}[h]
   \centering
@@ -226,20 +226,24 @@ The SPH-parameters for water and yoghurt were obtained by trial and error during
 
 \noindent The end product is an interactive program simulating a customizable amount of particles in either zero gravity or with gravity. The particle system is rendered in 2D in a window. Up to 900 particles run at full speed, it is also possible to change shader by pressing the “s" button on the keyboard. The shader with black water and red transparent squares displays the particles’ pressure. \\
 
+\noindent Figure 4.1 displays a picture of the running simulation without metaballs activated. Figure 4.2 displays a picture of the running simulation with metaballs activated. When the metaballs are activated the simulation appear to graphically look like a fluid.
+
+\newpage
+
 \begin{figure}[H]
 \begin{center}
     \includegraphics[width=11cm]{figs/image_2.png} 
 \end{center}
 \caption{Running the program without metaballs activated}
-\label{model_block}
+\label{water 2}
 \end{figure}
 
-\begin{figure}[H]
+\begin{figure}[h]
 \begin{center}
     \includegraphics[width=11cm]{figs/image_1.png} 
 \end{center}
-\caption{Running the program with metaballs}
-\label{model_block}
+\caption{Running the program with metaballs activated}
+\label{water 1}
 \end{figure}
 
 
@@ -289,6 +293,14 @@ Matlab was a great tool to test if the implementation of the physics for the sys
   2006.
   [www] http://image.diku.dk/projects/media/kelager.06.pdf , 24 January 2014.
   
+  \bibitem{sph}
+    Dr. Michael J. Gourlay.
+  \emph{Fluid Simulation for Video Games (part 2)}.
+  Intel Developer Zone,
+  May 30,
+  2012.
+  [www] http://software.intel.com/en-us/articles/fluid-simulation-for-video-games-part-2 , 28 January 2014.  
+  
   \bibitem{geiss00}
   Geiss, R.
   \emph{Lagrangian Fluid Dynamics Using Smoothed Particle Hydrodynamics}.
@@ -297,13 +309,7 @@ Matlab was a great tool to test if the implementation of the physics for the sys
   2000.
   [www] http://www.geisswerks.com/ryan/BLOBS/blobs.html , 13 February 2014.
   
-  \bibitem{sph}
-    Dr. Michael J. Gourlay.
-  \emph{Fluid Simulation for Video Games (part 2)}.
-  Intel Developer Zone,
-  May 30,
-  2012.
-  [www] http://software.intel.com/en-us/articles/fluid-simulation-for-video-games-part-2 , 28 January 2014.
+
   
 \end{thebibliography}
 
