@@ -45,9 +45,9 @@
 \setcounter{page}{2}
 \renewcommand{\abstractname}{Summary}
 \begin{abstract}
-This project was part of the course TNM085, Modeling project at Linköping University. Groups were able to choose their own research topics and simulate a physical model. This report describes a simulation of a system using Smoothed Particle Hydrodynamics (SPH) in both zero gravity and under the effect of gravity. \\
+This project was part of the course TNM085, Modeling project at Linköping University. Groups were able to choose their own research topics and simulate a physical model. This report describes a simulation of a system using Smoothed Particle Hydrodynamics (SPH). \\
 
-\noindent The result is a program able to simulate a 2D SPH particle system with water-like attributes, up to 900 particles are simulated simultaneously. The program uses C++ and OpenGL to simulate this system using Navier-Stokes in real time.
+\noindent The result is a program able to simulate a 2D SPH particle system with water-like attributes. Up to 900 particles can be simulated simultaneously. The program uses C++ and OpenGL to simulate the system in real time.
 \vfill
 \end{abstract}
 \newpage{}
@@ -76,6 +76,9 @@ The purpose of this project is to, based on mathematical models and physical for
 
 %----------------------------- Physical systems
 \chapter{Physical systems}
+
+%----------------------------- Research
+\section{Research}
 There are several techniques for simulating a fluid. The most common techniques are based on the Navier-Stokes equations which describes the flow of fluids. To practically use the Navier-Stokes equations it is common to make some simplifications in which some properties are assumed to be constant. There are two fundamental approaches on how to implement the Navier-Stokes equations; the Eulerian method and the Lagrangian method. Both are widely used in computer graphics. \\
 
 \noindent The Eulerian method uses a grid-based system, in which each grid point has fluid properties, like velocity, density, pressure, etc., but the points never move.
@@ -104,17 +107,17 @@ $\mu$ = viscosity\\*
 
 %----------------------------- SPH
 \section{Smoothed Particle Hydrodynamics}
-Smoothed Particle Hydrodynamics (SPH) is a Lagrangian method that divides the fluid into a set of particles. Mass-density, pressure, etc. are estimated using SPH approximations. The properties of a SPH-particle is affected by other particles that lie within a certain “smoothing” distance, thus affected only by its neighbours. Any desired scalar quantity can be determined for each particle by weighting that quantity from neighboring particles with a “kernel function”. \\
+Smoothed Particle Hydrodynamics (SPH) is a Lagrangian method that divides the fluid into a set of particles. Mass-density, pressure, etc. are estimated using SPH approximations. The properties of a SPH-particle is affected by other particles that lie within a certain “smoothing” distance, thus affected only by its neighbours. The "smoothing" distance is illustrated in Figure ~\ref{fig:sph} b. Any desired scalar quantity can be determined for each particle by weighting that quantity from neighboring particles with a “kernel function”, which is illustrated in Figure ~\ref{fig:sph} a. \\
 
 \begin{figure}[h]
 \begin{center}
     \includegraphics[width=11cm]{figs/sph.jpg} 
 \end{center}
 \caption{Smoothed Particle Hydrodynamics}
-\label{model_block}
+\label{fig:sph}
 \end{figure}
 
-\noindent An SPH simulation involves repeating these steps as time advances:
+\noindent An SPH simulation involves repeating the following steps as time advances:
 \begin{enumerate}
 
 \item Compute density at each particle. \\ \\
@@ -123,9 +126,10 @@ Smoothed Particle Hydrodynamics (SPH) is a Lagrangian method that divides the fl
 {\rho_s}{(\overrightarrow r_j)} {\approx} {\sum_i}{w(\overrightarrow r_{ij})}
 \label{e3}
 \end{equation}
+\noindent $r_j$ and $r_i$ are two different points in the particle system. $r_{ij}$ is the difference between them. \\
 
 \item Compute pressure from density. \\ \\
-\noindent The pressure can be approximately calculated using the density. k is a constant T.
+\noindent The pressure can be approximately calculated using the density. $k$ is a constant. $\rho_0$ is the ideal density of the fluid.
 \begin{equation}
 {p_i} = {k(\rho_i -\rho_o)}
 \label{e4}
@@ -137,8 +141,7 @@ Smoothed Particle Hydrodynamics (SPH) is a Lagrangian method that divides the fl
 {\nabla p(\overrightarrow r_j)} =  {\rho_j}{\sum_j}(\frac{p_i}{\rho_i^2}+\frac{p_j}{\rho_j^2}){\nabla w(\overrightarrow r_{ij})}
 \label{e5}
 \end{equation}
-\noindent $r_j$ and $r_i$ are two different points, $r_{ij}$ is the difference between them. \\
-\noindent $\nabla w$ is a gradient calculation using the smoothing function.
+\noindent $\nabla w$ is a gradient calculation using the smoothing function. \\
 
 \item Compute viscosity.
 \begin{equation}
@@ -150,17 +153,21 @@ Smoothed Particle Hydrodynamics (SPH) is a Lagrangian method that divides the fl
 \noindent Laws of gravity $F_{gravity}=\rho_i \cdot g$
 
 \item Apply those forces to move particles. \\
-\noindent In order to advance the particles we calculate the equations below every time we change the particles’ position.
+\noindent In order to advance the particles the equations below were calculated for each particle..
 \begin{equation}
-{a} = {(-\nabla p(\overrightarrow r_j) + \frac{\mu}{\rho_i}{ \nabla^2 v_i} + g)}
+{a_i} = {(-\nabla p(\overrightarrow r_j) + \frac{\mu}{\rho_i}{ \nabla^2 v_i} + g)}
 \label{e7}
-\end{equation} \\
+\end{equation}
 
 \noindent \begin{equation}
-{v} = {v + \Delta t \cdot a}
+{v_i} = {v_i + \Delta t \cdot a_i}
 \label{e8}
 \end{equation}
-%pos = pos + TIME_STEP*v;
+
+\noindent \begin{equation}
+{r_i} = {r_i + \Delta t \cdot v_i}
+\label{e9}
+\end{equation}
 
 \end{enumerate}
 
@@ -170,7 +177,7 @@ Smoothed Particle Hydrodynamics (SPH) is a Lagrangian method that divides the fl
 
 %----------------------------- Matlab
 \section{Matlab}
-A simple version of the model was simulated in MATLAB in order to test the theory behind the system as this eliminated the chances of any potential errors being caused by the rendering or implemented functions. The calculations was performed in the order that was previously described.
+A simple version of the model was simulated in MATLAB in order to test the theory behind the system. This eliminated the chances of any potential errors being caused by the rendering or implemented functions. The calculations was performed in the order that was previously described.
 
 %----------------------------- OpenGL
 \section{OpenGL}
@@ -206,6 +213,8 @@ The particle system’s functionality was tested in MATLAB, however the final pr
     Ideal density & 1000 & 1050 \\ \hline
     Viscosity constant & 3.5 & 20.0 \\ \hline
     Stiffness & 3.0 & 5.0 \\ \hline
+    Smoothing distance & 0.032 & 0.04 \\ \hline
+    Kernel particles  & 32 & 50 \\ \hline
     \end{tabularx}
 \end{table}
 
@@ -240,9 +249,6 @@ Matlab was a great tool to test if the implementation of the physics for the sys
 
 %-----------------------------
 
-%\bibliographystyle{vancouver}
-%\bibliography{refs/references}
-
 %\addcontentsline{toc}{chapter}{References}
 %\pagestyle{empty}
 %\appendix
@@ -250,6 +256,9 @@ Matlab was a great tool to test if the implementation of the physics for the sys
 %\cite{kelager06}
 
 %----------------------------- Bibliography
+
+\bibliographystyle{plainnat}
+\bibliography{references}
 
 \begin{thebibliography}{11}
 
@@ -266,7 +275,15 @@ Matlab was a great tool to test if the implementation of the physics for the sys
   Department of Computer Science, University of Copenhagen,
   January 9th,
   2006.
-
+  
+  \bibitem{sph}
+    Dr. Michael J. Gourlay.
+  \emph{Fluid Simulation for Video Games (part 2)}.
+  Intel Developer Zone,
+  January 9th,
+  2006.
+  [www] http://software.intel.com/en-us/articles/fluid-simulation-for-video-games-part-2 , 24 January 2014.
+  
 \end{thebibliography}
 
 \newpage
