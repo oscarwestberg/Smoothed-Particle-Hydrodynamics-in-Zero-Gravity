@@ -23,7 +23,7 @@ float previousTime = 0;
 float mouseTimer = 0;
 const float width = 800, height = 600;
 ParticleSystem particleSystem;
-bool usePressureShader = false;
+int shaderLoaded = 1;
 
 
 // Updates all the views using user input
@@ -37,38 +37,6 @@ void update()
 		particleSystem.updateParticles(deltaTime);
 		previousTime = time;
 	}
-    /*
-    // -----------------------------------
-    // Model Matrix - currently ignored
-    // -----------------------------------
-    
-    // Create a 4x4 matrix
-    glm::mat4 trans;
-    GLint uniTrans = glGetUniformLocation(shaderProgram, "M");
-    glUniformMatrix4fv(uniTrans, 1, GL_FALSE, glm::value_ptr(trans));
-    
-    // -----------------------------------
-    // View Matrix
-    // -----------------------------------
-    
-    // Position of the camera, Point centered on-screen and the Up axis.
-    glm::mat4 view = glm::lookAt(
-                                 glm::vec2(1.2f, 1.2f, 1.2f),
-                                 glm::vec2(0.0f, 0.0f, 0.0f),
-                                 glm::vec2(0.0f, 0.0f, 1.0f)
-                                 );
-    GLint uniView = glGetUniformLocation(shaderProgram, "V");
-    glUniformMatrix4fv(uniView, 1, GL_FALSE, glm::value_ptr(view));
-    
-    // -----------------------------------
-    // Projection Matrix
-    // -----------------------------------
-    
-    // Vertical field-of-view, Aspect ratio, Near and Far planes.
-    glm::mat4 proj = glm::perspective(45.0f, width / height, 0.1f, 20.0f);
-    GLint uniProj = glGetUniformLocation(shaderProgram, "P");
-    glUniformMatrix4fv(uniProj, 1, GL_FALSE, glm::value_ptr(proj));
-    */
 }
 
 // Compile and link shaders
@@ -77,11 +45,12 @@ void switchShaders(){
     // Load and compile shaders
     glEnable(GL_BLEND);
     
-    if(!usePressureShader)
+    if(shaderLoaded == 1)
         shaderProgram = LoadShaders( "vertexshader.vert", "fragmentshader.frag" );
-    else
+    else if(shaderLoaded == 2)
         shaderProgram = LoadShaders( "vertexshader.vert", "fragmentshader_pressure.frag" );
-    
+    else
+        shaderProgram = LoadShaders( "vertexshader.vert", "fragmentshader_balls.frag" );
     // Fragment shaders can have several outputs, so we have to define which one we're looking for
     glBindFragDataLocation(shaderProgram, 0, "outColor");
     
@@ -126,7 +95,7 @@ void render()
     glUniform2fv(myLoc, MAX_PARTICLES, &particlePositions[0][0]);
     
     // If we are using the pressure shader, send pressure information to shader program
-    if(usePressureShader){
+    if(shaderLoaded == 2){
         float particlePressures[MAX_PARTICLES];
         
         for(int i = 0; i < MAX_PARTICLES; i++){
@@ -232,7 +201,10 @@ int main(int argc, char* argv[])
             float pressTimer = time-previousTimePress;
             if(pressTimer > 0.2)
             {
-                usePressureShader = !usePressureShader;
+                shaderLoaded++;
+                if(shaderLoaded > 3)
+                    shaderLoaded = 1;
+                
                 shaderChanged = true;
                 previousTimePress = time;
             }

@@ -9,7 +9,7 @@ const float Settings::VISCOSITY_CONST = 3.5;
 //const float SURFACE_TENSION = 0.003;
 //const float TENSION_THRESHOLD = 12;
 const float Settings::STIFFNESS = 3;
-const float Settings::H = 0.035;
+const float Settings::H = 0.032;
 
 // External forces
 const float Settings::INPUTFORCE = 0.6;
